@@ -1,0 +1,46 @@
+*{margin:0; padding:0; font-size:100%; color: aliceblue; text-decoration: none; list-style-type: none;}
+html, body{height:100%;}
+body{
+    background-color: #220303;
+    font-family: 'Didact Gothic', sans-serif;
+    font-size: 20px;
+    text-decoration: none;
+    letter-spacing: 0.05em
+
+}
+
+.osnov{
+    margin: 0 auto;
+    width: 260px;
+    height: 307px;  
+    background: linear-gradient(140.05deg, #303C3D 17.26%, #942C7D 96.63%);
+}
+
+.head{
+    
+    text-align: center;
+    position: relative;
+    margin: 0 auto;
+    padding-bottom: 50px;
+    background-repeat: no-repeat;
+}
+
+.head p{
+   color: aliceblue;
+    position: absolute ;
+    text-align: center;
+    padding-bottom: 30px;
+}
+
+
+.otpravit{
+    margin-top: 70px;
+}
+
+.otpravit a{
+padding: 10px 55px;
+background: linear-gradient(270deg, #057A17 0%, rgba(253, 247, 249, 0) 100%);
+}
+.otpravit a:hover{
+    background: linear-gradient(270deg, rgba(253, 247, 249, 0) 0%, #057A17 100%);
+}
