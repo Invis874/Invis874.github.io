@@ -58,66 +58,66 @@
         }
 
         .envelope {
-    position: relative;
-    width: 280px;
-    height: 200px;
-    background: #f9a8b8; /* Основной цвет конверта */
-    border: 2px solid #d46b7a; /* Тёмная обводка для чёткости */
-    border-radius: 0 0 15px 15px; /* Чуть скругляем нижние углы */
-    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
-    cursor: pointer;
-    transition: transform 0.2s;
-    margin-top: 40px; /* Добавляем отступ сверху, чтобы освободить место для клапана */
-}
+            position: relative;
+            width: 280px;
+            height: 200px;
+            background: #f9a8b8; /* Основной цвет конверта */
+            border: 2px solid #d46b7a; /* Тёмная обводка для чёткости */
+            border-radius: 0 0 15px 15px; /* Чуть скругляем нижние углы */
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            transition: transform 0.2s;
+            margin-top: 40px; /* Добавляем отступ сверху, чтобы освободить место для клапана */
+        }
 
-.envelope:hover {
-    transform: scale(1.02);
-}
-
-/* Верхний клапан (треугольник) */
-.envelope:before {
-    content: '';
-    position: absolute;
-    top: -42px; /* Поднимаем ровно на высоту клапана, чтобы он накладывался на границу */
-    left: -2px; /* Компенсируем левую границу */
-    width: 280px; /* Ширина как у конверта + границы */
-    height: 42px; /* Высота клапана */
-    background: #fbc1cb; /* Чуть светлее основного цвета */
-    clip-path: polygon(0% 0%, 50% 100%, 100% 0%);
-    border-left: 2px solid #d46b7a;
-    border-right: 2px solid #d46b7a;
-    border-top: 2px solid #d46b7a;
-    border-bottom: none;
-    border-radius: 15px 15px 0 0; /* Скругляем верхние уголки */
-    box-sizing: content-box;
-}
-
-/* Можно добавить нижнюю тень, чтобы клапан не выглядел плоским */
-.envelope:after {
-    content: '';
-    position: absolute;
-    top: -15px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 60px;
-    height: 20px;
-    background: rgba(0,0,0,0.05);
-    border-radius: 50%;
-    filter: blur(3px);
-    z-index: 1;
-}
-
-/* Сердечко на клапане */
-.heart-on-envelope {
-    position: absolute;
-    top: -35px;
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: 2.5rem;
-    z-index: 10;
-    filter: drop-shadow(0 2px 2px rgba(0,0,0,0.2));
-    animation: heartbeat 1.2s infinite;
-}
+        .envelope:hover {
+            transform: scale(1.02);
+        }
+        
+        /* Верхний клапан (треугольник) */
+        .envelope:before {
+            content: '';
+            position: absolute;
+            top: -42px; /* Поднимаем ровно на высоту клапана, чтобы он накладывался на границу */
+            left: -2px; /* Компенсируем левую границу */
+            width: 280px; /* Ширина как у конверта + границы */
+            height: 42px; /* Высота клапана */
+            background: #fbc1cb; /* Чуть светлее основного цвета */
+            clip-path: polygon(0% 0%, 50% 100%, 100% 0%);
+            border-left: 2px solid #d46b7a;
+            border-right: 2px solid #d46b7a;
+            border-top: 2px solid #d46b7a;
+            border-bottom: none;
+            border-radius: 15px 15px 0 0; /* Скругляем верхние уголки */
+            box-sizing: content-box;
+        }
+        
+        /* Можно добавить нижнюю тень, чтобы клапан не выглядел плоским */
+        .envelope:after {
+            content: '';
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 20px;
+            background: rgba(0,0,0,0.05);
+            border-radius: 50%;
+            filter: blur(3px);
+            z-index: 1;
+        }
+        
+        /* Сердечко на клапане */
+        .heart-on-envelope {
+            position: absolute;
+            top: -35px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 2.5rem;
+            z-index: 10;
+            filter: drop-shadow(0 2px 2px rgba(0,0,0,0.2));
+            animation: heartbeat 1.2s infinite;
+        }
 
         @keyframes heartbeat {
             0% { transform: translateX(-50%) scale(1); }
@@ -301,4 +301,5 @@
 
 </body>
 </html>
+
 
