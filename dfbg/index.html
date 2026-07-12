@@ -202,36 +202,8 @@
             justify-content: center;
             align-items: flex-end;
             position: relative;
-            min-height: 160px;
+            min-height: 180px;
             margin-top: 10px;
-        }
-
-        /* Лента для букета */
-        .bouquet::before {
-            content: '';
-            position: absolute;
-            bottom: 15px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 70%;
-            height: 18px;
-            background: linear-gradient(90deg, #ff6b6b, #ff8787, #ff6b6b);
-            border-radius: 10px;
-            box-shadow: 0 3px 12px rgba(200, 50, 50, 0.3);
-            z-index: 0;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-        }
-
-        /* Бант на ленте */
-        .bouquet::after {
-            content: '🎀';
-            position: absolute;
-            bottom: 10px;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 28px;
-            z-index: 1;
-            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
         }
 
         /* Контейнер для подсолнухов */
@@ -239,11 +211,11 @@
             display: flex;
             justify-content: center;
             align-items: flex-end;
-            gap: 2px;
             position: relative;
             z-index: 2;
-            padding-bottom: 25px;
-            flex-wrap: nowrap;
+            padding-bottom: 30px;
+            gap: 0px;
+            width: 100%;
         }
 
         /* ===== ПОДСОЛНУХ (общие стили) ===== */
@@ -254,7 +226,7 @@
             align-items: center;
             justify-content: flex-end;
             flex-shrink: 0;
-            margin: 0 -2px;
+            transform-origin: bottom center;
         }
 
         .sunflower-head {
@@ -307,12 +279,14 @@
             transform: rotate(-20deg);
         }
 
-        /* ---- Размеры подсолнухов (индивидуальные) ---- */
+        /* ---- Индивидуальные размеры и наклоны ---- */
 
-        /* 1-й подсолнух (слева) - средний, высокий */
+        /* 1-й подсолнух (слева) - наклон вправо */
         .sunflower-1 {
             height: 130px;
-            margin-bottom: 5px;
+            transform: rotate(15deg);
+            margin-right: -8px;
+            margin-bottom: 10px;
         }
         .sunflower-1 .sunflower-head {
             width: 44px;
@@ -353,10 +327,12 @@
             height: 5px;
         }
 
-        /* 2-й подсолнух - маленький, низкий */
+        /* 2-й подсолнух - наклон вправо, меньше */
         .sunflower-2 {
             height: 100px;
-            margin-bottom: 0px;
+            transform: rotate(10deg);
+            margin-right: -8px;
+            margin-bottom: 5px;
         }
         .sunflower-2 .sunflower-head {
             width: 34px;
@@ -397,10 +373,13 @@
             height: 4px;
         }
 
-        /* 3-й подсолнух (центр) - большой, высокий */
+        /* 3-й подсолнух (центр) - прямо, большой */
         .sunflower-3 {
             height: 150px;
-            margin-bottom: 8px;
+            transform: rotate(0deg);
+            margin: 0 -4px;
+            margin-bottom: 15px;
+            z-index: 3;
         }
         .sunflower-3 .sunflower-head {
             width: 54px;
@@ -441,10 +420,12 @@
             height: 6px;
         }
 
-        /* 4-й подсолнух - средний, средний */
+        /* 4-й подсолнух - наклон влево */
         .sunflower-4 {
             height: 115px;
-            margin-bottom: 2px;
+            transform: rotate(-10deg);
+            margin-left: -8px;
+            margin-bottom: 8px;
         }
         .sunflower-4 .sunflower-head {
             width: 40px;
@@ -485,10 +466,12 @@
             height: 5px;
         }
 
-        /* 5-й подсолнух (справа) - маленький, низкий */
+        /* 5-й подсолнух (справа) - наклон влево, маленький */
         .sunflower-5 {
             height: 95px;
-            margin-bottom: 0px;
+            transform: rotate(-15deg);
+            margin-left: -8px;
+            margin-bottom: 5px;
         }
         .sunflower-5 .sunflower-head {
             width: 32px;
@@ -529,6 +512,65 @@
             height: 4px;
         }
 
+        /* ===== ЛЕНТА, КОТОРАЯ ПЕРЕВЯЗЫВАЕТ БУКЕТ ===== */
+        .ribbon {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 75%;
+            height: 22px;
+            background: linear-gradient(90deg, #ff4757, #ff6b81, #ff4757);
+            border-radius: 12px;
+            box-shadow: 0 3px 15px rgba(255, 50, 50, 0.4);
+            z-index: 5;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        /* Бантик */
+        .ribbon-bow {
+            position: absolute;
+            bottom: 28px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 6;
+            font-size: 32px;
+            filter: drop-shadow(0 3px 8px rgba(0, 0, 0, 0.2));
+            animation: bowFloat 2s ease-in-out infinite;
+        }
+
+        @keyframes bowFloat {
+            0%, 100% { transform: translateX(-50%) scale(1); }
+            50% { transform: translateX(-50%) scale(1.1); }
+        }
+
+        /* Концы ленты (хвостики) */
+        .ribbon::before {
+            content: '';
+            position: absolute;
+            bottom: -18px;
+            left: 15%;
+            width: 30px;
+            height: 20px;
+            background: linear-gradient(135deg, #ff4757, #ff6b81);
+            clip-path: polygon(0 0, 100% 0, 50% 100%);
+            transform: rotate(-15deg);
+            border-radius: 0 0 4px 4px;
+        }
+
+        .ribbon::after {
+            content: '';
+            position: absolute;
+            bottom: -18px;
+            right: 15%;
+            width: 30px;
+            height: 20px;
+            background: linear-gradient(225deg, #ff4757, #ff6b81);
+            clip-path: polygon(0 0, 100% 0, 50% 100%);
+            transform: rotate(15deg);
+            border-radius: 0 0 4px 4px;
+        }
+
         /* ===== АДАПТИВ ===== */
         @media (max-width: 480px) {
             .rose {
@@ -561,29 +603,36 @@
             }
 
             .bouquet {
-                min-height: 130px;
+                min-height: 140px;
                 padding: 15px 5px 5px;
             }
 
-            .bouquet::before {
-                height: 14px;
-                width: 75%;
-                bottom: 12px;
+            .ribbon {
+                height: 18px;
+                width: 80%;
+                bottom: 15px;
             }
 
-            .bouquet::after {
-                font-size: 22px;
-                bottom: 8px;
+            .ribbon-bow {
+                font-size: 26px;
+                bottom: 22px;
+            }
+
+            .ribbon::before,
+            .ribbon::after {
+                width: 22px;
+                height: 15px;
+                bottom: -14px;
             }
 
             .sunflowers-container {
-                gap: 0px;
-                padding-bottom: 20px;
+                padding-bottom: 25px;
             }
 
-            /* Уменьшаем все подсолнухи */
+            /* Уменьшаем подсолнухи */
             .sunflower-1 {
                 height: 100px;
+                transform: rotate(12deg);
             }
             .sunflower-1 .sunflower-head {
                 width: 36px;
@@ -612,6 +661,7 @@
 
             .sunflower-2 {
                 height: 75px;
+                transform: rotate(8deg);
             }
             .sunflower-2 .sunflower-head {
                 width: 28px;
@@ -640,6 +690,7 @@
 
             .sunflower-3 {
                 height: 115px;
+                transform: rotate(0deg);
             }
             .sunflower-3 .sunflower-head {
                 width: 44px;
@@ -672,6 +723,7 @@
 
             .sunflower-4 {
                 height: 85px;
+                transform: rotate(-8deg);
             }
             .sunflower-4 .sunflower-head {
                 width: 32px;
@@ -700,6 +752,7 @@
 
             .sunflower-5 {
                 height: 70px;
+                transform: rotate(-12deg);
             }
             .sunflower-5 .sunflower-head {
                 width: 26px;
@@ -728,6 +781,27 @@
         }
 
         @media (max-width: 380px) {
+            .bouquet {
+                min-height: 120px;
+            }
+            
+            .ribbon {
+                height: 14px;
+                bottom: 12px;
+            }
+            
+            .ribbon-bow {
+                font-size: 20px;
+                bottom: 18px;
+            }
+
+            .ribbon::before,
+            .ribbon::after {
+                width: 18px;
+                height: 12px;
+                bottom: -11px;
+            }
+
             .sunflower-1 {
                 height: 80px;
             }
@@ -748,15 +822,6 @@
             }
             .sunflower-3 .sunflower-stem {
                 height: 55px;
-            }
-
-            .bouquet::before {
-                height: 12px;
-                bottom: 10px;
-            }
-            .bouquet::after {
-                font-size: 18px;
-                bottom: 6px;
             }
         }
     </style>
@@ -784,32 +849,36 @@
     <!-- БУКЕТ ПОДСОЛНУХОВ -->
     <div class="bouquet">
         <div class="sunflowers-container">
-            <!-- 1 -->
+            <!-- 1 - наклон вправо -->
             <div class="sunflower sunflower-1">
                 <div class="sunflower-head"></div>
                 <div class="sunflower-stem"></div>
             </div>
-            <!-- 2 -->
+            <!-- 2 - наклон вправо, меньше -->
             <div class="sunflower sunflower-2">
                 <div class="sunflower-head"></div>
                 <div class="sunflower-stem"></div>
             </div>
-            <!-- 3 (центр, самый большой) -->
+            <!-- 3 - центр, прямо, самый большой -->
             <div class="sunflower sunflower-3">
                 <div class="sunflower-head"></div>
                 <div class="sunflower-stem"></div>
             </div>
-            <!-- 4 -->
+            <!-- 4 - наклон влево -->
             <div class="sunflower sunflower-4">
                 <div class="sunflower-head"></div>
                 <div class="sunflower-stem"></div>
             </div>
-            <!-- 5 -->
+            <!-- 5 - наклон влево, маленький -->
             <div class="sunflower sunflower-5">
                 <div class="sunflower-head"></div>
                 <div class="sunflower-stem"></div>
             </div>
         </div>
+        
+        <!-- ЛЕНТА, ПЕРЕВЯЗЫВАЮЩАЯ БУКЕТ -->
+        <div class="ribbon"></div>
+        <div class="ribbon-bow">🎀</div>
     </div>
 
 </body>
