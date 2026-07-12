@@ -486,11 +486,11 @@
         /* ===== ЛЕНТА ===== */
         .ribbon {
             position: absolute;
-            bottom: 50px;
+            bottom: 18px;
             left: 50%;
             transform: translateX(-50%);
-            width: 180px;
-            height: 22px;
+            width: 39px;
+            height: 10px;
             background: linear-gradient(90deg, #ff4757, #ff6b81, #ff4757);
             border-radius: 12px;
             box-shadow: 0 3px 15px rgba(255, 50, 50, 0.4);
@@ -500,7 +500,6 @@
 
         .ribbon-bow {
             position: absolute;
-            bottom: 58px;
             left: 50%;
             transform: translateX(-50%);
             z-index: 6;
@@ -517,10 +516,10 @@
         .ribbon::before {
             content: '';
             position: absolute;
-            bottom: -18px;
+            bottom: -12px;
             left: 15px;
             width: 30px;
-            height: 20px;
+            height: 17px;
             background: linear-gradient(135deg, #ff4757, #ff6b81);
             clip-path: polygon(0 0, 100% 0, 50% 100%);
             transform: rotate(-15deg);
@@ -530,10 +529,10 @@
         .ribbon::after {
             content: '';
             position: absolute;
-            bottom: -18px;
+            bottom: -12px;
             right: 15px;
             width: 30px;
-            height: 20px;
+            height: 17px;
             background: linear-gradient(225deg, #ff4757, #ff6b81);
             clip-path: polygon(0 0, 100% 0, 50% 100%);
             transform: rotate(15deg);
@@ -584,7 +583,6 @@
 
             .ribbon-bow {
                 font-size: 26px;
-                bottom: 47px;
             }
 
             .ribbon::before,
@@ -754,7 +752,6 @@
             
             .ribbon-bow {
                 font-size: 20px;
-                bottom: 41px;
             }
 
             .ribbon::before,
