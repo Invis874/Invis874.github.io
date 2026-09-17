@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Конструктор приглашений</title>
+
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/builder.css" />
+</head>
+<body>
+
+    <!-- ===== TOAST-КОНТЕЙНЕР ===== -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <div class="app">
+        <!-- ===== ЛЕВАЯ ПАНЕЛЬ ===== -->
+        <aside class="panel panel-left">
+            <div class="panel-header">
+                <div class="logo">
+                    <span class="logo-icon">✉️</span>
+                    <div>
+                        <h1>Конструктор</h1>
+                        <p class="subhead">Настрой внешний вид приглашения</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel-body" id="panelBody">
+
+                <!-- ======================================== -->
+                <!-- ШАГ 1: СПОСОБ ПОКАЗА -->
+                <!-- ======================================== -->
+                <div class="step active" data-step="1">
+                    <div class="step-header">
+                        <span class="step-number">1</span>
+                        <span class="step-title">Способ показа</span>
+                    </div>
+                    <div class="step-content">
+                        <div class="form-group">
+                            <label>Как будет открываться приглашение?</label>
+                            <div class="mode-selector mode-grid-2">
+                                <div class="mode-option active" data-mode="instant">
+                                    <span class="mode-icon">✨</span>
+                                    <span class="mode-label">Сразу показать</span>
+                                </div>
+                                <div class="mode-option" data-mode="envelope">
+                                    <span class="mode-icon">📩</span>
+                                    <span class="mode-label">Конверт</span>
+                                </div>
+                            </div>
+                            <input type="hidden" id="selectedMode" value="instant" />
+                        </div>
+                    </div>
+                    <div class="step-footer">
+                        <button class="btn-next btn-full" data-next="2">Продолжить →</button>
+                    </div>
+                </div>
+
+                <!-- ======================================== -->
+                <!-- ШАГ 2: ОСНОВНОЙ ЭКРАН -->
+                <!-- ======================================== -->
+                <div class="step" data-step="2">
+                    <div class="step-header">
+                        <span class="step-number">2</span>
+                        <span class="step-title">Основной экран</span>
+                    </div>
+                    <div class="step-content">
+                        <div class="form-group">
+                            <label>Стиль оформления</label>
+                            <div class="style-selector style-grid-2">
+                                <div class="style-option active" data-style="romantic">
+                                    <span class="style-dot romantic-dot"></span>
+                                    Романтичный
+                                </div>
+                                <div class="style-option" data-style="party">
+                                    <span class="style-dot party-dot"></span>
+                                    Праздничный
+                                </div>
+                                <div class="style-option" data-style="business">
+                                    <span class="style-dot business-dot"></span>
+                                    Деловой
+                                </div>
+                            </div>
+                            <input type="hidden" id="selectedStyle" value="romantic" />
+                        </div>
+
+                        <div class="form-group">
+                            <label>Эмодзи на обложке</label>
+                            <select id="coverImage">
+                                <option value="🎉">🎉 Праздник</option>
+                                <option value="🌹">🌹 Розы</option>
+                                <option value="🎂">🎂 День рождения</option>
+                                <option value="💍">💍 Свадьба</option>
+                                <option value="🏖️">🏖️ Пляж</option>
+                                <option value="🎊">🎊 Торжество</option>
+                                <option value="💖">💖 Сердце</option>
+                                <option value="⭐">⭐ Звезда</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Заголовок</label>
+                            <input type="text" id="mainTitle" placeholder="Например: Приглашаю тебя на вечеринку!" value="Приглашаю тебя!" />
+                        </div>
+
+                        <!-- КНОПКА 1 -->
+                        <div class="form-group">
+                            <label>Кнопка 1 (всегда активна)</label>
+                            <input type="text" id="btn1Text" value="💖 Согласен" />
+                        </div>
+
+                        <!-- АНИМАЦИЯ КНОПКИ 1 -->
+                        <div class="form-group">
+                            <label>Анимация кнопки 1</label>
+                            <div class="animation-selector anim-grid-2">
+                                <div class="anim-option active" data-anim="none" data-target="btn1">
+                                    <span class="anim-icon">⏸️</span>
+                                    Без анимации
+                                </div>
+                                <div class="anim-option" data-anim="pulse" data-target="btn1">
+                                    <span class="anim-icon">💓</span>
+                                    Пульсация
+                                </div>
+                                <div class="anim-option" data-anim="shake" data-target="btn1">
+                                    <span class="anim-icon">🌀</span>
+                                    Тряска
+                                </div>
+                                <div class="anim-option" data-anim="bounce" data-target="btn1">
+                                    <span class="anim-icon">⬆️</span>
+                                    Подпрыгивание
+                                </div>
+                            </div>
+                            <input type="hidden" id="btn1Animation" value="none" />
+                        </div>
+
+                        <!-- КНОПКА 2 С ЧЕКБОКСОМ "Активна" -->
+                        <div class="form-group">
+                            <div style="display:flex; align-items:center; gap:12px; margin-bottom:6px;">
+                                <label style="margin:0; font-weight:600; font-size:0.85rem; color:#2d1b3d;">Кнопка 2</label>
+                            </div>
+                            <div style="display:flex; align-items:center; gap:10px;">
+                                <input type="text" id="btn2Text" value="🤔 Подумаю" style="flex:1; height:42px;" />
+                                <label title="Возможность нажатия" style="display:flex; align-items:center; justify-content:center; cursor:pointer; height:42px; width:42px; border:2px solid #ede8f2; border-radius:12px; background:#faf8fc; transition:all 0.2s; user-select:none;">
+                                    <input type="checkbox" id="btn2Enabled" checked style="width:20px; height:20px; accent-color:#7c5b9a; cursor:pointer; margin:0;" />
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- АНИМАЦИЯ КНОПКИ 2 (активна) -->
+                        <div class="form-group" id="btn2AnimationGroup">
+                            <label>Анимация кнопки 2</label>
+                            <div class="animation-selector anim-grid-2">
+                                <div class="anim-option active" data-anim="none" data-target="btn2">
+                                    <span class="anim-icon">⏸️</span>
+                                    Без анимации
+                                </div>
+                                <div class="anim-option" data-anim="pulse" data-target="btn2">
+                                    <span class="anim-icon">💓</span>
+                                    Пульсация
+                                </div>
+                                <div class="anim-option" data-anim="shake" data-target="btn2">
+                                    <span class="anim-icon">🌀</span>
+                                    Тряска
+                                </div>
+                                <div class="anim-option" data-anim="bounce" data-target="btn2">
+                                    <span class="anim-icon">⬆️</span>
+                                    Подпрыгивание
+                                </div>
+                            </div>
+                            <input type="hidden" id="btn2Animation" value="none" />
+                        </div>
+
+                        <!-- ЭФФЕКТЫ ДЛЯ ЗАБЛОКИРОВАННОЙ КНОПКИ 2 -->
+                        <div class="form-group" id="btn2TrapGroup" style="display:none;">
+                            <input type="hidden" id="btn2Trap" value="none" />
+                            <div style="margin-bottom:8px; font-size:0.75rem; color:#8a7a9e; background:#f5f0fa; padding:8px 12px; border-radius:8px;">
+                                🔒 Кнопка 2 заблокирована — гость не сможет её нажать
+                            </div>
+                            <label>Эффект при наведении (ловушка)</label>
+                            <div class="animation-selector anim-grid-2">
+                                <div class="trap-option active" data-trap="none">
+                                    <span class="anim-icon">⏸️</span>
+                                    Без эффекта
+                                </div>
+                                <div class="trap-option" data-trap="fade">
+                                    <span class="anim-icon">👻</span>
+                                    Исчезает
+                                </div>
+                                <div class="trap-option" data-trap="shake">
+                                    <span class="anim-icon">🌀</span>
+                                    Тряска
+                                </div>
+                                <div class="trap-option" data-trap="push">
+                                    <span class="anim-icon">👉</span>
+                                    Отталкивает
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="step-footer">
+                        <button class="btn-prev" data-prev="1">← Назад</button>
+                        <button class="btn-next" data-next="3">Продолжить →</button>
+                    </div>
+                </div>
+
+                <!-- ======================================== -->
+                <!-- ШАГ 3: ЭКРАН ПОДТВЕРЖДЕНИЯ -->
+                <!-- ======================================== -->
+                <div class="step" data-step="3">
+                    <div class="step-header">
+                        <span class="step-number">3</span>
+                        <span class="step-title">Экран подтверждения</span>
+                    </div>
+                    <div class="step-content">
+                        <div class="form-group">
+                            <label>Эмодзи</label>
+                            <select id="confirmImage">
+                                <option value="🎊">🎊 Праздник</option>
+                                <option value="💖">💖 Сердце</option>
+                                <option value="✨">✨ Звезды</option>
+                                <option value="🎁">🎁 Подарок</option>
+                                <option value="🥂">🥂 Тосты</option>
+                                <option value="🌟">🌟 Сияние</option>
+                                <option value="🎉">🎉 Ура!</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Заголовок</label>
+                            <input type="text" id="confirmTitle" value="Отлично! Жду тебя!" />
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group half">
+                                <label>Дата</label>
+                                <input type="date" id="eventDate" />
+                            </div>
+                            <div class="form-group half">
+                                <label>Время</label>
+                                <input type="time" id="eventTime" value="19:00" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="step-footer">
+                        <button class="btn-prev" data-prev="2">← Назад</button>
+                        <button class="btn-generate">🚀 Создать ссылку</button>
+                    </div>
+                </div>
+
+            </div>
+        </aside>
+
+        <!-- ===== ПРАВАЯ ПАНЕЛЬ ===== -->
+        <main class="panel panel-right">
+            <div class="panel-header">
+                <div class="preview-header">
+                    <h2>👁️ Превью</h2>
+                    <div class="preview-badges">
+                        <span class="preview-badge" id="previewBadge">✨ Сразу показать</span>
+                        <span class="preview-badge style-badge" id="styleBadge">🌹 Романтичный</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel-body preview-body">
+                <div class="preview-container" id="previewContainer">
+                    <div id="previewContent">
+                        <div class="preview-placeholder">
+                            <div class="preview-icon">✉️</div>
+                            <p>Настройте приглашение</p>
+                            <p class="preview-hint">Изменения отображаются в реальном времени</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- ===== МОДАЛКА С РЕЗУЛЬТАТОМ ===== -->
+    <div class="result-overlay" id="resultOverlay">
+        <div class="result-modal">
+            <div class="result-header">
+                <span class="result-icon">✅</span>
+                <h3>Ссылка готова!</h3>
+            </div>
+            <p class="result-hint">Отправьте эту ссылку другу — он увидит ваше приглашение</p>
+            <div class="result-link">
+                <input type="text" id="resultLinkInput" readonly />
+                <button class="btn-copy" id="copyBtn">📋 Копировать</button>
+            </div>
+            <button class="btn-close-result" id="closeResult">Закрыть</button>
+        </div>
+    </div>
+
+    <script src="js/builder.js"></script>
+
+</body>
+</html>
