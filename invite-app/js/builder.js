@@ -147,14 +147,14 @@ document.addEventListener('DOMContentLoaded', function() {
 
             // Проверка размера
             if (file.size > MAX_FILE_SIZE) {
-                showToast('⚠️ Файл слишком большой. Максимум 450 КБ', 'warning');
+                showToast('Файл слишком большой. Максимум 450 КБ', 'warning');
                 upload.value = '';
                 return;
             }
 
             // Проверка типа
             if (!['image/png', 'image/jpeg', 'image/gif'].includes(file.type)) {
-                showToast('⚠️ Поддерживаются только PNG, JPG, GIF', 'warning');
+                showToast('Поддерживаются только PNG, JPG, GIF', 'warning');
                 upload.value = '';
                 return;
             }
@@ -177,7 +177,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 hiddenInput.value = dataUrl;
                 updatePreview();
 
-                showToast('✅ Картинка загружена!', 'success');
+                showToast('Картинка загружена!', 'success');
             };
             reader.readAsDataURL(file);
         });
@@ -445,10 +445,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
             resultLinkInput.value = link;
             resultOverlay.classList.add('show');
-            showToast('✅ Ссылка успешно создана!', 'success');
+            showToast('Ссылка успешно создана!', 'success');
         } catch (error) {
             console.error('Ошибка:', error);
-            showToast('❌ Ошибка при создании ссылки', 'error');
+            showToast('Ошибка при создании ссылки', 'error');
         }
     });
 
@@ -461,12 +461,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
         copyToClipboard(text)
             .then(function() {
-                showToast('✅ Ссылка скопирована в буфер!', 'success');
+                showToast('Ссылка скопирована в буфер!', 'success');
             })
             .catch(function() {
                 resultLinkInput.select();
                 document.execCommand('copy');
-                showToast('✅ Ссылка скопирована в буфер!', 'success');
+                showToast('Ссылка скопирована в буфер!', 'success');
             });
     });
 
