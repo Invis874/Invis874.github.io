@@ -86,17 +86,19 @@
                         </div>
 
                         <div class="form-group">
-                            <label>Эмодзи на обложке</label>
-                            <select id="coverImage">
-                                <option value="🎉">🎉 Праздник</option>
-                                <option value="🌹">🌹 Розы</option>
-                                <option value="🎂">🎂 День рождения</option>
-                                <option value="💍">💍 Свадьба</option>
-                                <option value="🏖️">🏖️ Пляж</option>
-                                <option value="🎊">🎊 Торжество</option>
-                                <option value="💖">💖 Сердце</option>
-                                <option value="⭐">⭐ Звезда</option>
-                            </select>
+                            <label>Картинка на обложке</label>
+                            <div class="image-picker" id="coverImagePicker"></div>
+                                <input type="hidden" id="coverImage" value="" />
+
+                            <!-- Кнопка загрузки своей картинки -->
+                            <label class="upload-btn">
+                                📁 Загрузить свою картинку
+                                <input type="file" id="coverUpload" accept="image/png,image/jpeg,image/gif" style="display:none;" />
+                            </label>
+                            <div class="upload-preview" id="coverUploadPreview" style="display:none;">
+                                <img id="coverUploadImg" src="" alt="Загруженная" />
+                                <button type="button" class="upload-remove" id="coverUploadRemove">✕</button>
+                            </div>
                         </div>
 
                         <div class="form-group">
@@ -214,16 +216,18 @@
                     </div>
                     <div class="step-content">
                         <div class="form-group">
-                            <label>Эмодзи</label>
-                            <select id="confirmImage">
-                                <option value="🎊">🎊 Праздник</option>
-                                <option value="💖">💖 Сердце</option>
-                                <option value="✨">✨ Звезды</option>
-                                <option value="🎁">🎁 Подарок</option>
-                                <option value="🥂">🥂 Тосты</option>
-                                <option value="🌟">🌟 Сияние</option>
-                                <option value="🎉">🎉 Ура!</option>
-                            </select>
+                            <label>Картинка подтверждения</label>
+                            <div class="image-picker" id="confirmImagePicker"></div>
+                            <input type="hidden" id="confirmImage" value="" />
+
+                            <label class="upload-btn">
+                                📁 Загрузить свою картинку
+                                <input type="file" id="confirmUpload" accept="image/png,image/jpeg,image/gif" style="display:none;" />
+                            </label>
+                            <div class="upload-preview" id="confirmUploadPreview" style="display:none;">
+                                <img id="confirmUploadImg" src="" alt="Загруженная" />
+                                <button type="button" class="upload-remove" id="confirmUploadRemove">✕</button>
+                            </div>
                         </div>
 
                         <div class="form-group">
@@ -293,6 +297,7 @@
         </div>
     </div>
 
+    <script src="js/image-picker.js"></script>
     <script src="js/builder.js"></script>
 
 </body>

@@ -15,6 +15,16 @@ document.addEventListener('DOMContentLoaded', function() {
     const closeResult = document.getElementById('closeResult');
     const toastContainer = document.getElementById('toastContainer');
 
+    // ============================================================
+    // ФОРМАТИРОВАНИЕ ДАТЫ (YYYY-MM-DD → DD.MM.YYYY)
+    // ============================================================
+    function formatDate(isoDate) {
+        if (!isoDate) return '';
+        const parts = isoDate.split('-'); // [yyyy, mm, dd]
+        if (parts.length !== 3) return isoDate;
+        return parts[2] + '.' + parts[1] + '.' + parts[0];
+    }
+
     // --- МАППИНГ ---
     const styleMap = {
         romantic: '🌹 Романтичный',
@@ -115,6 +125,96 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
+
+    // ============================================================
+    // ЗАГРУЗКА СВОИХ КАРТИНОК
+    // ============================================================
+    const MAX_FILE_SIZE = 450 * 1024; // 450 КБ
+
+    function setupImageUpload(uploadId, previewId, previewImgId, removeId, pickerId, hiddenInputId) {
+        const upload = document.getElementById(uploadId);
+        const preview = document.getElementById(previewId);
+        const previewImg = document.getElementById(previewImgId);
+        const removeBtn = document.getElementById(removeId);
+        const picker = document.getElementById(pickerId);
+        const hiddenInput = document.getElementById(hiddenInputId);
+
+        if (!upload) return;
+
+        upload.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            // Проверка размера
+            if (file.size > MAX_FILE_SIZE) {
+                showToast('⚠️ Файл слишком большой. Максимум 450 КБ', 'warning');
+                upload.value = '';
+                return;
+            }
+
+            // Проверка типа
+            if (!['image/png', 'image/jpeg', 'image/gif'].includes(file.type)) {
+                showToast('⚠️ Поддерживаются только PNG, JPG, GIF', 'warning');
+                upload.value = '';
+                return;
+            }
+
+            // Читаем файл как Data URL
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                const dataUrl = event.target.result;
+
+                // Показываем превью
+                previewImg.src = dataUrl;
+                preview.style.display = 'inline-block';
+
+                // Снимаем активность со всех готовых картинок
+                picker.querySelectorAll('.image-option').forEach(function(opt) {
+                    opt.classList.remove('active');
+                });
+
+                // Сохраняем в hidden input
+                hiddenInput.value = dataUrl;
+                updatePreview();
+
+                showToast('✅ Картинка загружена!', 'success');
+            };
+            reader.readAsDataURL(file);
+        });
+
+        removeBtn.addEventListener('click', function() {
+            upload.value = '';
+            preview.style.display = 'none';
+            previewImg.src = '';
+
+            // Возвращаем первую готовую картинку
+            const firstOption = picker.querySelector('.image-option');
+            if (firstOption) {
+                firstOption.classList.add('active');
+                hiddenInput.value = firstOption.dataset.image;
+            }
+            updatePreview();
+        });
+    }
+
+    setupImageUpload(
+        'coverUpload',
+        'coverUploadPreview',
+        'coverUploadImg',
+        'coverUploadRemove',
+        'coverImagePicker',
+        'coverImage'
+    );
+
+    setupImageUpload(
+        'confirmUpload',
+        'confirmUploadPreview',
+        'confirmUploadImg',
+        'confirmUploadRemove',
+        'confirmImagePicker',
+        'confirmImage'
+    );
+
     // ============================================================
     // ВЫБОР АНИМАЦИЙ (Шаг 2)
     // ============================================================
@@ -185,7 +285,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function updatePreview() {
         const mode = document.getElementById('selectedMode').value || 'instant';
         const style = document.getElementById('selectedStyle').value || 'romantic';
-        const coverImage = document.getElementById('coverImage').value || '🎉';
+        const coverImage = document.getElementById('coverImage').value || 'assets/images/covers/1.png';
         const mainTitle = document.getElementById('mainTitle').value || 'Приглашаю тебя!';
         const btn1Text = document.getElementById('btn1Text').value || '💖 Согласен';
         const btn2Text = document.getElementById('btn2Text').value || '🤔 Подумаю';
@@ -193,7 +293,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const btn2Animation = document.getElementById('btn2Animation').value || 'none';
         const btn2Enabled = document.getElementById('btn2Enabled').checked;
         const btn2Trap = document.getElementById('btn2Trap').value || 'none';
-        const confirmImage = document.getElementById('confirmImage').value || '🎊';
+        const confirmImage = document.getElementById('confirmImage').value || 'assets/images/confirms/1.png';
         const confirmTitle = document.getElementById('confirmTitle').value || 'Отлично!';
         const eventDate = document.getElementById('eventDate').value || '2026-09-15';
         const eventTime = document.getElementById('eventTime').value || '19:00';
@@ -278,7 +378,9 @@ document.addEventListener('DOMContentLoaded', function() {
             slideIndex++;
 
             const contentSlide = `
-                <div style="font-size:3.4rem;">${coverImage}</div>
+                <div style="display:flex; justify-content:center; margin:8px 0;">
+                    <img src="${coverImage}" style="width:160px; height:160px; object-fit:contain;" alt="" />
+                </div>
                 <div style="font-size:1.3rem; font-weight:700; color:#1c0f27; margin:6px 0;">${mainTitle}</div>
                 <div style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin-top:14px;">
                     <button class="preview-btn preview-btn-1 ${anim1Class}" style="background: ${colors.accent}; color:white; border:none; padding:10px 24px; border-radius:40px; font-weight:600; font-size:0.9rem; cursor:default;">${btn1Text}</button>
@@ -290,7 +392,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
         } else {
             const mainContent = `
-                <div style="font-size:3.4rem;">${coverImage}</div>
+                <div style="display:flex; justify-content:center; margin:8px 0;">
+                    <img src="${coverImage}" style="width:160px; height:160px; object-fit:contain;" alt="" />
+                </div>
                 <div style="font-size:1.3rem; font-weight:700; color:#1c0f27; margin:6px 0;">${mainTitle}</div>
                 <div style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin-top:14px;">
                     <button class="preview-btn preview-btn-1 ${anim1Class}" style="background: ${colors.accent}; color:white; border:none; padding:10px 24px; border-radius:40px; font-weight:600; font-size:0.9rem; cursor:default;">${btn1Text}</button>
@@ -303,7 +407,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // --- ЭКРАН ПОДТВЕРЖДЕНИЯ ---
         const confirmContent = `
-            <div style="font-size:3.4rem;">${confirmImage}</div>
+            <div style="display:flex; justify-content:center; margin:8px 0;">
+                <img src="${confirmImage}" style="width:160px; height:160px; object-fit:contain;" alt="" />
+            </div>
             <div style="font-size:1.3rem; font-weight:700; color:${colors.text}; margin:6px 0;">${confirmTitle}</div>
             <div style="color:#5b4a6b; font-size:0.95rem; margin:4px 0;">📅 ${formatDate(eventDate)} в ${eventTime}</div>
         `;
@@ -319,7 +425,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const payload = {
             mode: document.getElementById('selectedMode').value || 'instant',
             style: document.getElementById('selectedStyle').value || 'romantic',
-            coverImage: document.getElementById('coverImage').value || '🎉',
+            coverImage: document.getElementById('coverImage').value || 'assets/images/covers/1.png',
             mainTitle: document.getElementById('mainTitle').value || 'Приглашаю тебя!',
             btn1Text: document.getElementById('btn1Text').value || '💖 Согласен',
             btn2Text: document.getElementById('btn2Text').value || '🤔 Подумаю',
@@ -327,7 +433,7 @@ document.addEventListener('DOMContentLoaded', function() {
             btn2Animation: document.getElementById('btn2Animation').value || 'none',
             btn2Enabled: document.getElementById('btn2Enabled').checked,
             btn2Trap: document.getElementById('btn2Trap').value || 'none',
-            confirmImage: document.getElementById('confirmImage').value || '🎊',
+            confirmImage: document.getElementById('confirmImage').value || 'assets/images/confirms/1.png',
             confirmTitle: document.getElementById('confirmTitle').value || 'Отлично!',
             eventDate: document.getElementById('eventDate').value || '2026-09-15',
             eventTime: document.getElementById('eventTime').value || '19:00'
@@ -419,13 +525,9 @@ document.addEventListener('DOMContentLoaded', function() {
     updatePreview();
 
     // ============================================================
-    // ФОРМАТИРОВАНИЕ ДАТЫ (2026-09-15 → 15.09.2026)
+    // РЕНДЕР ПИКЕРОВ КАРТИНОК (через компонент)
     // ============================================================
-    function formatDate(isoDate) {
-        if (!isoDate) return '';
-        const parts = isoDate.split('-'); // [2026, 09, 15]
-        if (parts.length !== 3) return isoDate;
-        return parts[2] + '.' + parts[1] + '.' + parts[0];
-    }
+    ImagePicker.renderCovers('coverImagePicker', 'coverImage', updatePreview);
+    ImagePicker.renderConfirms('confirmImagePicker', 'confirmImage', updatePreview);
 
 });

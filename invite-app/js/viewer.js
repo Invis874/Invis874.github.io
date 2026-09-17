@@ -33,6 +33,16 @@ document.addEventListener('DOMContentLoaded', function() {
         return;
     }
 
+    // ============================================================
+    // ФОРМАТИРОВАНИЕ ДАТЫ (2026-09-15 → 15.09.2026)
+    // ============================================================
+    function formatDate(isoDate) {
+        if (!isoDate) return '';
+        const parts = isoDate.split('-'); // [2026, 09, 15]
+        if (parts.length !== 3) return isoDate;
+        return parts[2] + '.' + parts[1] + '.' + parts[0];
+    }
+
     // --- ПРИМЕНЯЕМ СТИЛЬ ---
     if (data.style) {
         document.body.className = 'style-' + data.style;
@@ -199,7 +209,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 </div>
             </div>
             <div class="slide-content" id="slideContent" style="display:none;">
-                <div class="slide-icon">${data.coverImage || '🎉'}</div>
+                <div class="slide-icon">
+                    <img src="${data.coverImage || 'assets/images/covers/1.png'}" 
+                         style="width:160px; height:160px; object-fit:contain;" alt="" />
+                </div>
                 <div class="slide-title">${escapeHtml(data.mainTitle || 'Приглашаю тебя!')}</div>
                 <div class="slide-buttons">
                     <button class="slide-btn slide-btn-primary ${anim1Class}" data-action="agree" style="background: ${colors.accent};">
@@ -213,7 +226,10 @@ document.addEventListener('DOMContentLoaded', function() {
         `;
     } else {
         slide1.innerHTML = `
-            <div class="slide-icon">${data.coverImage || '🎉'}</div>
+            <div class="slide-icon">
+                <img src="${data.coverImage || 'assets/images/covers/1.png'}" 
+                     style="width:160px; height:160px; object-fit:contain;" alt="" />
+            </div>
             <div class="slide-title">${escapeHtml(data.mainTitle || 'Приглашаю тебя!')}</div>
             <div class="slide-buttons">
                 <button class="slide-btn slide-btn-primary ${anim1Class}" data-action="agree" style="background: ${colors.accent};">
@@ -231,7 +247,10 @@ document.addEventListener('DOMContentLoaded', function() {
     slide2.className = 'slide';
     slide2.dataset.slide = '1';
     slide2.innerHTML = `
-        <div class="slide-icon">${data.confirmImage || '🎊'}</div>
+        <div class="slide-icon">
+            <img src="${data.confirmImage || 'assets/images/confirms/1.png'}" 
+                 style="width:160px; height:160px; object-fit:contain;" alt="" />
+        </div>
         <div class="slide-title">${escapeHtml(data.confirmTitle || 'Отлично! Жду тебя!')}</div>
         <div class="slide-datetime">📅 ${formatDate(data.eventDate || '2026-09-15')} в ${escapeHtml(data.eventTime || '19:00')}</div>
     `;
@@ -348,16 +367,6 @@ document.addEventListener('DOMContentLoaded', function() {
         const div = document.createElement('div');
         div.textContent = text;
         return div.innerHTML;
-    }
-
-    // ============================================================
-    // ФОРМАТИРОВАНИЕ ДАТЫ (2026-09-15 → 15.09.2026)
-    // ============================================================
-    function formatDate(isoDate) {
-        if (!isoDate) return '';
-        const parts = isoDate.split('-'); // [2026, 09, 15]
-        if (parts.length !== 3) return isoDate;
-        return parts[2] + '.' + parts[1] + '.' + parts[0];
     }
 
     console.log('✅ Приглашение загружено!', data);

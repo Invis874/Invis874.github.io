@@ -296,6 +296,115 @@ body {
     color: #b5a8c4;
 }
 
+/* ============================================================
+   ВИЗУАЛЬНЫЙ ВЫБОР КАРТИНОК
+   ============================================================ */
+.image-picker {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin-bottom: 10px;
+}
+
+.image-option {
+    aspect-ratio: 1 / 1;
+    border-radius: 12px;
+    border: 2px solid #ede8f2;
+    background: #faf8fc;
+    cursor: pointer;
+    overflow: hidden;
+    transition: all 0.25s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4px;
+}
+
+.image-option img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    border-radius: 8px;
+    pointer-events: none;
+}
+
+.image-option:hover {
+    border-color: #d5c5e6;
+    background: #f5f0fa;
+}
+
+.image-option.active {
+    border-color: #7c5b9a;
+    background: #ede5f5;
+    box-shadow: 0 0 0 3px rgba(124, 91, 154, 0.15);
+}
+
+/* Кнопка загрузки */
+.upload-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px;
+    border: 2px dashed #d5c5e6;
+    border-radius: 12px;
+    background: #faf8fc;
+    font-size: 0.8rem;
+    color: #7c5b9a;
+    cursor: pointer;
+    transition: all 0.25s;
+    font-weight: 500;
+    width: 100%;
+    justify-content: center;
+}
+
+.upload-btn:hover {
+    border-color: #7c5b9a;
+    background: #f5f0fa;
+    color: #5f4379;
+}
+
+/* Превью загруженной картинки */
+.upload-preview {
+    position: relative;
+    width: 80px;
+    height: 80px;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 2px solid #7c5b9a;
+    margin-top: 8px;
+    display: inline-block;
+}
+
+.upload-preview img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    background: white;
+}
+
+.upload-remove {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #e74c3c;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 0.7rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.2s;
+}
+
+.upload-remove:hover {
+    background: #c0392b;
+    transform: scale(1.1);
+}
+
 .form-row {
     display: flex;
     gap: 12px;
