@@ -8,7 +8,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const steps = document.querySelectorAll('.step');
     const previewContent = document.getElementById('previewContent');
     const previewBadge = document.getElementById('previewBadge');
-    const styleBadge = document.getElementById('styleBadge');
     const resultOverlay = document.getElementById('resultOverlay');
     const resultLinkInput = document.getElementById('resultLinkInput');
     const copyBtn = document.getElementById('copyBtn');
@@ -29,11 +28,8 @@ document.addEventListener('DOMContentLoaded', function() {
     let currentStep = 1; // текущий шаг
 
     // --- МАППИНГ ---
-    const styleMap = {
-        romantic: '🌹 Романтичный',
-        party: '🎉 Праздничный',
-        business: '💼 Деловой'
-    };
+    let selectedShape = 'rounded';
+    let selectedColor = 'rose';
 
     const modeMap = {
         instant: '✨ Сразу показать',
@@ -141,17 +137,31 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // ============================================================
-    // ВЫБОР СТИЛЯ (Шаг 2)
+    // ВЫБОР ВИДА ГРАНЕЙ (Шаг 2)
     // ============================================================
-    document.querySelectorAll('.style-option').forEach(function(el) {
+    document.querySelectorAll('.shape-option').forEach(function(el) {
         el.addEventListener('click', function() {
-            document.querySelectorAll('.style-option').forEach(function(opt) {
+            document.querySelectorAll('.shape-option').forEach(function(opt) {
                 opt.classList.remove('active');
             });
             this.classList.add('active');
-            const style = this.dataset.style;
-            document.getElementById('selectedStyle').value = style;
-            styleBadge.textContent = styleMap[style] || style;
+            selectedShape = this.dataset.shape;
+            document.getElementById('selectedShape').value = selectedShape;
+            updatePreview();
+        });
+    });
+
+    // ============================================================
+    // ВЫБОР ЦВЕТА
+    // ============================================================
+    document.querySelectorAll('.color-option').forEach(function(el) {
+        el.addEventListener('click', function() {
+            document.querySelectorAll('.color-option').forEach(function(opt) {
+                opt.classList.remove('active');
+            });
+            this.classList.add('active');
+            selectedColor = this.dataset.color;
+            document.getElementById('selectedColor').value = selectedColor;
             updatePreview();
         });
     });
@@ -160,7 +170,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // ============================================================
     // ЗАГРУЗКА СВОИХ КАРТИНОК
     // ============================================================
-    const MAX_FILE_SIZE = 450 * 1024; // 450 КБ
+    const MAX_FILE_SIZE = 50 * 1024; // 450 КБ
 
     function setupImageUpload(uploadId, previewId, previewImgId, removeId, pickerId, hiddenInputId) {
         const upload = document.getElementById(uploadId);
@@ -315,7 +325,8 @@ document.addEventListener('DOMContentLoaded', function() {
     // ============================================================
     function updatePreview() {
         const mode = document.getElementById('selectedMode').value || 'instant';
-        const style = document.getElementById('selectedStyle').value || 'romantic';
+        const shape = document.getElementById('selectedShape').value || 'rounded';
+        const color = document.getElementById('selectedColor').value || 'rose';
         const coverImage = document.getElementById('coverImage').value || 'assets/images/covers/1.png';
         const mainTitle = document.getElementById('mainTitle').value || 'Приглашаю тебя!';
         const btn1Text = document.getElementById('btn1Text').value || '💖 Согласен';
@@ -329,14 +340,27 @@ document.addEventListener('DOMContentLoaded', function() {
         const eventDate = document.getElementById('eventDate').value || '2026-09-15';
         const eventTime = document.getElementById('eventTime').value || '19:00';
 
+        function getShapeRadius(shape) {
+            switch (shape) {
+                case 'rounded':  return '20px';
+                case 'soft':     return '32px';
+                case 'sharp':    return '0px';
+                case 'wave':     return '50% 50% 50% 50% / 20% 20% 20% 20%';
+                default:         return '20px';
+            }
+        }
+
         // Стили для превью
-        const styleColors = {
-            romantic: { bg: '#fce4ec', accent: '#d4617e', text: '#2d1b3d' },
-            party: { bg: '#fef2d6', accent: '#e5a500', text: '#2d1b3d' },
-            business: { bg: '#dce5f2', accent: '#1f5090', text: '#1c0f27' }
+        const colorPalettes = {
+            rose:     { bg: '#fce4ec', accent: '#d4617e', text: '#2d1b3d', dark: '#b14a63' },
+            gold:     { bg: '#fff3d6', accent: '#e5a500', text: '#2d1b3d', dark: '#b88200' },
+            ocean:    { bg: '#dce5f2', accent: '#1f5090', text: '#1c0f27', dark: '#14376a' },
+            mint:     { bg: '#d6f5e6', accent: '#2e9c6a', text: '#1c3d2d', dark: '#1f7050' },
+            lavender: { bg: '#ede5f5', accent: '#7c5b9a', text: '#2d1b3d', dark: '#5f4379' },
+            peach:    { bg: '#ffe8d6', accent: '#e07b39', text: '#3d241c', dark: '#b85e25' }
         };
 
-        const colors = styleColors[style] || styleColors.romantic;
+        const colors = colorPalettes[color] || colorPalettes.rose;
         const anim1Class = btn1Animation !== 'none' ? btn1Animation : '';
         const anim2Class = btn2Animation !== 'none' ? btn2Animation : '';
         const isEnvelope = mode === 'envelope';
@@ -365,8 +389,14 @@ document.addEventListener('DOMContentLoaded', function() {
         // ХЕЛПЕР: обёртка слайда
         // ============================================================
         function wrapSlide(content) {
+            const radius = getShapeRadius(shape);
             return `
-                <div class="preview-slide" style="${baseSlideStyle}">
+                <div class="preview-slide" style="
+                    background: ${colors.bg};
+                    border-radius: ${radius};
+                    padding: 30px 24px;
+                    text-align: center;
+                ">
                     ${content}
                 </div>
             `;
@@ -443,7 +473,8 @@ document.addEventListener('DOMContentLoaded', function() {
     document.querySelector('.btn-generate').addEventListener('click', function() {
         const payload = {
             mode: document.getElementById('selectedMode').value || 'instant',
-            style: document.getElementById('selectedStyle').value || 'romantic',
+            shape: document.getElementById('selectedShape').value || 'rounded',
+            color: document.getElementById('selectedColor').value || 'rose',
             coverImage: document.getElementById('coverImage').value || 'assets/images/covers/1.png',
             mainTitle: document.getElementById('mainTitle').value || 'Приглашаю тебя!',
             btn1Text: document.getElementById('btn1Text').value || '💖 Согласен',

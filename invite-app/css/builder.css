@@ -426,57 +426,123 @@ body {
 }
 
 /* ============================================================
-   СТИЛИ — ОПЦИИ
+   ВИД ГРАНЕЙ (SHAPE SELECTOR)
    ============================================================ */
-.style-option {
-    padding: 10px 12px;
+.shape-grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+}
+
+.shape-option {
+    padding: 12px 8px;
     border-radius: 12px;
     border: 2px solid #ede8f2;
     background: #faf8fc;
-    font-weight: 500;
-    font-size: 0.85rem;
     cursor: pointer;
     transition: all 0.25s;
-    text-align: center;
     display: flex;
+    flex-direction: column;
     align-items: center;
-    justify-content: center;
     gap: 8px;
-    color: #5b4a6b;
     user-select: none;
 }
 
-.style-option:hover {
+.shape-option:hover {
     border-color: #d5c5e6;
     background: #f5f0fa;
 }
 
-.style-option.active {
+.shape-option.active {
     border-color: #2d1b3d;
     background: #2d1b3d;
+}
+
+.shape-option.active .shape-label {
     color: white;
 }
 
-.style-dot {
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    display: inline-block;
-    flex-shrink: 0;
+/* Мини-превью формы */
+.shape-preview {
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(135deg, #ede5f5, #7c5b9a);
+    transition: all 0.3s;
 }
 
-.romantic-dot {
-    background: #d4617e;
-}
-.party-dot {
-    background: #e5a500;
-}
-.business-dot {
-    background: #1f5090;
+.shape-rounded {
+    border-radius: 8px;
 }
 
-.style-option.active .style-dot {
-    border: 2px solid rgba(255, 255, 255, 0.5);
+.shape-soft {
+    border-radius: 14px;
+}
+
+.shape-sharp {
+    border-radius: 0;
+}
+
+.shape-wave {
+    border-radius: 50% 50% 50% 50% / 20% 20% 20% 20%;
+}
+
+.shape-label {
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: #5b4a6b;
+    transition: color 0.25s;
+}
+
+/* ============================================================
+   ЦВЕТОВАЯ ПАЛИТРА (COLOR SELECTOR)
+   ============================================================ */
+.color-grid-3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+}
+
+.color-option {
+    padding: 8px 4px;
+    border-radius: 12px;
+    border: 2px solid #ede8f2;
+    background: #faf8fc;
+    cursor: pointer;
+    transition: all 0.25s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    user-select: none;
+}
+
+.color-option:hover {
+    border-color: #d5c5e6;
+    background: #f5f0fa;
+}
+
+.color-option.active {
+    border-color: #2d1b3d;
+    background: #2d1b3d;
+}
+
+.color-option.active .color-label {
+    color: white;
+}
+
+.color-swatch {
+    width: 100%;
+    height: 32px;
+    border-radius: 8px;
+    transition: all 0.3s;
+}
+
+.color-label {
+    font-size: 0.7rem;
+    font-weight: 500;
+    color: #5b4a6b;
+    transition: color 0.25s;
+    text-align: center;
 }
 
 /* ============================================================

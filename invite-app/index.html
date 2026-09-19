@@ -69,23 +69,60 @@
                         <span class="step-title">Основной экран</span>
                     </div>
                     <div class="step-content">
+                        <!-- ВИД ГРАНЕЙ -->
                         <div class="form-group">
-                            <label>Стиль оформления</label>
-                            <div class="style-selector style-grid-2">
-                                <div class="style-option active" data-style="romantic">
-                                    <span class="style-dot romantic-dot"></span>
-                                    Романтичный
+                            <label>Вид граней</label>
+                            <div class="shape-selector shape-grid-2">
+                                <div class="shape-option active" data-shape="rounded">
+                                    <div class="shape-preview shape-rounded"></div>
+                                    <span class="shape-label">Скруглённые</span>
                                 </div>
-                                <div class="style-option" data-style="party">
-                                    <span class="style-dot party-dot"></span>
-                                    Праздничный
+                                <div class="shape-option" data-shape="soft">
+                                    <div class="shape-preview shape-soft"></div>
+                                    <span class="shape-label">Мягкие</span>
                                 </div>
-                                <div class="style-option" data-style="business">
-                                    <span class="style-dot business-dot"></span>
-                                    Деловой
+                                <div class="shape-option" data-shape="sharp">
+                                    <div class="shape-preview shape-sharp"></div>
+                                    <span class="shape-label">Острые</span>
+                                </div>
+                                <div class="shape-option" data-shape="wave">
+                                    <div class="shape-preview shape-wave"></div>
+                                    <span class="shape-label">Волнистые</span>
                                 </div>
                             </div>
-                            <input type="hidden" id="selectedStyle" value="romantic" />
+                            <input type="hidden" id="selectedShape" value="rounded" />
+                        </div>
+
+                        <!-- ЦВЕТОВАЯ ПАЛИТРА -->
+                        <div class="form-group">
+                            <label>Цветовая палитра</label>
+                            <div class="color-selector color-grid-3">
+                                <div class="color-option active" data-color="rose">
+                                    <div class="color-swatch" style="background: linear-gradient(135deg, #fce4ec, #d4617e);"></div>
+                                    <span class="color-label">Роза</span>
+                                </div>
+                                <div class="color-option" data-color="gold">
+                                    <div class="color-swatch" style="background: linear-gradient(135deg, #fff3d6, #e5a500);"></div>
+                                    <span class="color-label">Золото</span>
+                                </div>
+                                <div class="color-option" data-color="ocean">
+                                    <div class="color-swatch" style="background: linear-gradient(135deg, #dce5f2, #1f5090);"></div>
+                                    <span class="color-label">Океан</span>
+                                </div>
+                                <div class="color-option" data-color="mint">
+                                    <div class="color-swatch" style="background: linear-gradient(135deg, #d6f5e6, #2e9c6a);"></div>
+                                    <span class="color-label">Мята</span>
+                                </div>
+                                <div class="color-option" data-color="lavender">
+                                    <div class="color-swatch" style="background: linear-gradient(135deg, #ede5f5, #7c5b9a);"></div>
+                                    <span class="color-label">Лаванда</span>
+                                </div>
+                                <div class="color-option" data-color="peach">
+                                    <div class="color-swatch" style="background: linear-gradient(135deg, #ffe8d6, #e07b39);"></div>
+                                    <span class="color-label">Персик</span>
+                                </div>
+                            </div>
+                            <input type="hidden" id="selectedColor" value="rose" />
                         </div>
 
                         <div class="form-group">
@@ -265,7 +302,6 @@
                     <h2>👁️ Превью</h2>
                     <div class="preview-badges">
                         <span class="preview-badge" id="previewBadge">✨ Сразу показать</span>
-                        <span class="preview-badge style-badge" id="styleBadge">🌹 Романтичный</span>
                     </div>
                 </div>
             </div>
