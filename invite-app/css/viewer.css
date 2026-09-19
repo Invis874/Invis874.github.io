@@ -42,6 +42,7 @@ body {
     width: 100%;
     max-width: 380px;
     aspect-ratio: 3 / 2;
+    cursor: pointer;
     position: relative;
     perspective: 1200px;
 }

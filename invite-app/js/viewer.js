@@ -175,7 +175,7 @@ document.addEventListener('DOMContentLoaded', function() {
             <div class="envelope-container" id="envelopeContainer">
                 <!-- Тело конверта -->
                 <div class="envelope-letter" id="envelopeLetter" 
-                     style="background: ${sheetBg}; border-radius: ${slideRadius};"">
+                     style="background: ${sheetBg}; border-radius: ${slideRadius};">
                     <div class="envelope-letter-icon">
                         <img src="${data.coverImage || 'assets/images/covers/1.png'}" alt="" />
                     </div>
@@ -198,17 +198,15 @@ document.addEventListener('DOMContentLoaded', function() {
         container.appendChild(slide2);
 
         // === ЛОГИКА ОТКРЫТИЯ КОНВЕРТА ===
-        const envelopeBody = document.getElementById('envelopeBody');
+        const envelopeContainer = document.getElementById('envelopeContainer');
         const flap = document.getElementById('envelopeFlap');
         const letter = document.getElementById('envelopeLetter');
 
-        if (envelopeBody) {
-            envelopeBody.addEventListener('click', function(e) {
+        if (envelopeContainer) {
+            envelopeContainer.addEventListener('click', function(e) {
                 e.stopPropagation();
-
-                // Защита от повторного клика
-                if (envelopeBody.dataset.opened === 'true') return;
-                envelopeBody.dataset.opened = 'true';
+                if (envelopeContainer.dataset.opened === 'true') return;
+                envelopeContainer.dataset.opened = 'true';
 
                 // 1. Открываем клапан (0.8 сек)
                 if (flap) flap.classList.add('open');
