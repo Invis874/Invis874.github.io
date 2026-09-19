@@ -43,19 +43,40 @@ document.addEventListener('DOMContentLoaded', function() {
         return parts[2] + '.' + parts[1] + '.' + parts[0];
     }
 
-    // --- ПРИМЕНЯЕМ СТИЛЬ ---
-    if (data.style) {
-        document.body.className = 'style-' + data.style;
-    }
-
-    // --- ЦВЕТА ДЛЯ СТИЛЕЙ ---
-    const styleColors = {
-        romantic: { bg: '#fce4ec', accent: '#d4617e', text: '#2d1b3d' },
-        party: { bg: '#fef2d6', accent: '#e5a500', text: '#2d1b3d' },
-        business: { bg: '#dce5f2', accent: '#1f5090', text: '#1c0f27' }
+    // ============================================================
+    // ЦВЕТА (палитры)
+    // ============================================================
+    const colorPalettes = {
+        rose:     { bg: '#fce4ec', accent: '#d4617e', text: '#2d1b3d', dark: '#b14a63' },
+        gold:     { bg: '#fff3d6', accent: '#e5a500', text: '#2d1b3d', dark: '#b88200' },
+        ocean:    { bg: '#dce5f2', accent: '#1f5090', text: '#1c0f27', dark: '#14376a' },
+        mint:     { bg: '#d6f5e6', accent: '#2e9c6a', text: '#1c3d2d', dark: '#1f7050' },
+        lavender: { bg: '#ede5f5', accent: '#7c5b9a', text: '#2d1b3d', dark: '#5f4379' },
+        peach:    { bg: '#ffe8d6', accent: '#e07b39', text: '#3d241c', dark: '#b85e25' }
     };
 
-    const colors = styleColors[data.style] || styleColors.romantic;
+    const colors = colorPalettes[data.color] || colorPalettes.rose;
+
+    // ============================================================
+    // ФОРМА ГРАНЕЙ (radius)
+    // ============================================================
+    function getShapeRadius(shape) {
+        switch (shape) {
+            case 'rounded':  return '20px';
+            case 'soft':     return '32px';
+            case 'sharp':    return '0px';
+            case 'wave':     return '50% 50% 50% 50% / 20% 20% 20% 20%';
+            default:         return '20px';
+        }
+    }
+
+    const slideRadius = getShapeRadius(data.shape);
+
+    // ============================================================
+    // ПРИМЕНЯЕМ ФОН СТРАНИЦЫ (по цвету)
+    // ============================================================
+    document.body.style.background = `linear-gradient(145deg, ${colors.bg}, ${colors.bg}dd)`;
+    
     const anim1Class = data.btn1Animation && data.btn1Animation !== 'none' ? data.btn1Animation : '';
     const anim2Class = data.btn2Animation && data.btn2Animation !== 'none' ? data.btn2Animation : '';
     const isEnvelope = data.mode === 'envelope';
@@ -258,6 +279,13 @@ document.addEventListener('DOMContentLoaded', function() {
     container.appendChild(slide1);
     container.appendChild(slide2);
     slides = [slide1, slide2];
+
+    // ============================================================
+    // ПРИМЕНЯЕМ ФОРМУ К СЛАЙДАМ
+    // ============================================================
+    slides.forEach(function(slide) {
+        slide.style.borderRadius = slideRadius;
+    });
 
     // ============================================================
     // ЛОГИКА КОНВЕРТА
