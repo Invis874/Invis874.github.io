@@ -25,6 +25,9 @@ document.addEventListener('DOMContentLoaded', function() {
         return parts[2] + '.' + parts[1] + '.' + parts[0];
     }
 
+    const previewProgress = document.getElementById('previewProgress');
+    let currentStep = 1; // текущий шаг
+
     // --- МАППИНГ ---
     const styleMap = {
         romantic: '🌹 Романтичный',
@@ -85,11 +88,39 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
+    // ============================================================
+    // ОБНОВЛЕНИЕ ПРОГРЕСС-ПОЛЗУНКА
+    // ============================================================
+    function updateProgress(step) {
+        if (!previewProgress) return;
+
+        const progressSteps = previewProgress.querySelectorAll('.progress-step');
+        const progressLines = previewProgress.querySelectorAll('.progress-line');
+
+        progressSteps.forEach(function(el) {
+            const elStep = parseInt(el.dataset.step);
+            
+            el.classList.toggle('active', elStep === step);
+            el.classList.toggle('completed', elStep < step);
+        });
+
+        // Линии между шагами
+        progressLines.forEach(function(line, index) {
+            // Линия считается completed, если следующий шаг уже достигнут
+            // index 0 — линия между шагом 1 и 2
+            // index 1 — линия между шагом 2 и 3
+            const nextStep = index + 2;
+            line.classList.toggle('completed', step >= nextStep);
+        });
+    }
+
     function showStep(num) {
+        currentStep = num; // ← запоминаем текущий шаг
         steps.forEach(function(step) {
             const stepNum = parseInt(step.dataset.step);
             step.classList.toggle('active', stepNum === num);
         });
+        updateProgress(num);
         updatePreview();
     }
 
@@ -330,90 +361,78 @@ document.addEventListener('DOMContentLoaded', function() {
 
         const baseSlideStyle = `background: ${colors.bg}; border-radius: 20px; padding: 30px 24px; text-align: center;`;
         
-        function createSlide(content, activeIndex, totalSlides, isLast) {
-            const marginBottom = isLast ? '0' : '20px';
-            let dots = '';
-            for (let i = 0; i < totalSlides; i++) {
-                const isActive = i === activeIndex;
-                dots += `
-                    <span class="preview-dot" style="
-                        width: ${isActive ? '24px' : '8px'};
-                        height: 8px;
-                        border-radius: ${isActive ? '6px' : '50%'};
-                        background: ${isActive ? '#7c5b9a' : '#d5c5e6'};
-                        display: inline-block;
-                        transition: all 0.3s;
-                    "></span>
-                `;
-            }
-
+        // ============================================================
+        // ХЕЛПЕР: обёртка слайда
+        // ============================================================
+        function wrapSlide(content) {
             return `
-                <div class="preview-slide" style="${baseSlideStyle} margin-bottom: ${marginBottom}; ${isEnvelope && activeIndex === 0 ? 'position:relative; overflow:hidden;' : ''}">
+                <div class="preview-slide" style="${baseSlideStyle}">
                     ${content}
-                    <div style="display:flex; justify-content:center; gap:6px; margin-top:14px;">
-                        ${dots}
-                    </div>
                 </div>
             `;
         }
 
         let html = '';
-        const totalSlides = isEnvelope ? 3 : 2;
-        let slideIndex = 0;
 
-        // --- ОСНОВНОЙ СЛАЙД ---
-        if (isEnvelope) {
-            const mainContent = `
-                <div style="padding-top:20px; cursor:pointer; transition: transform 0.2s;"
-                     onmouseenter="this.style.transform='rotate(-2deg) scale(1.02)'"
-                     onmouseleave="this.style.transform='rotate(0) scale(1)'"
-                     onclick="this.style.transform='scale(0.95)'; setTimeout(()=>{this.style.transform='scale(1)'},200)">
-                    <div style="font-size:3.6rem; margin-bottom:4px;">✉️</div>
-                    <div style="font-size:0.8rem; color:#7a6990; margin-top:8px; animation: pulseText 2s ease-in-out infinite;">
-                        👆 Нажми на конверт
+        // ============================================================
+        // ШАГ 1: СПОСОБ ПОКАЗА — только конверт ИЛИ приглашение
+        // ============================================================
+        if (currentStep === 1) {
+            if (isEnvelope) {
+                // Показываем конверт
+                html = wrapSlide(`
+                    <div style="padding-top:20px; cursor:pointer; transition: transform 0.2s;"
+                         onmouseenter="this.style.transform='rotate(-2deg) scale(1.02)'"
+                         onmouseleave="this.style.transform='rotate(0) scale(1)'">
+                        <div style="font-size:3.6rem; margin-bottom:4px;">✉️</div>
+                        <div style="font-size:0.8rem; color:#7a6990; margin-top:8px; animation: pulseText 2s ease-in-out infinite;">
+                            👆 Нажми на конверт
+                        </div>
                     </div>
-                </div>
-            `;
-            html += createSlide(mainContent, slideIndex, totalSlides, false);
-            slideIndex++;
-
-            const contentSlide = `
-                <div style="display:flex; justify-content:center; margin:8px 0;">
-                    <img src="${coverImage}" style="width:160px; height:160px; object-fit:contain;" alt="" />
-                </div>
-                <div style="font-size:1.3rem; font-weight:700; color:#1c0f27; margin:6px 0;">${mainTitle}</div>
-                <div style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin-top:14px;">
-                    <button class="preview-btn preview-btn-1 ${anim1Class}" style="background: ${colors.accent}; color:white; border:none; padding:10px 24px; border-radius:40px; font-weight:600; font-size:0.9rem; cursor:default;">${btn1Text}</button>
-                    <button class="preview-btn preview-btn-2 ${anim2Class}" style="background:#ede8f2; border:none; padding:10px 24px; border-radius:40px; font-weight:600; font-size:0.9rem; cursor:default; color:#2d1b3d; ${btn2TrapStyle}">${btn2Text}</button>
-                </div>
-            `;
-            html += createSlide(contentSlide, slideIndex, totalSlides, false);
-            slideIndex++;
-
-        } else {
-            const mainContent = `
-                <div style="display:flex; justify-content:center; margin:8px 0;">
-                    <img src="${coverImage}" style="width:160px; height:160px; object-fit:contain;" alt="" />
-                </div>
-                <div style="font-size:1.3rem; font-weight:700; color:#1c0f27; margin:6px 0;">${mainTitle}</div>
-                <div style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin-top:14px;">
-                    <button class="preview-btn preview-btn-1 ${anim1Class}" style="background: ${colors.accent}; color:white; border:none; padding:10px 24px; border-radius:40px; font-weight:600; font-size:0.9rem; cursor:default;">${btn1Text}</button>
-                    <button class="preview-btn preview-btn-2 ${anim2Class}" style="background:#ede8f2; border:none; padding:10px 24px; border-radius:40px; font-weight:600; font-size:0.9rem; cursor:default; color:#2d1b3d; ${btn2TrapStyle}">${btn2Text}</button>
-                </div>
-            `;
-            html += createSlide(mainContent, slideIndex, totalSlides, false);
-            slideIndex++;
+                `);
+            } else {
+                // Показываем сразу приглашение
+                html = wrapSlide(`
+                    <div style="display:flex; justify-content:center; margin:8px 0;">
+                        <img src="${coverImage}" style="width:160px; height:160px; object-fit:contain;" alt="" />
+                    </div>
+                    <div style="font-size:1.3rem; font-weight:700; color:#1c0f27; margin:6px 0;">${mainTitle}</div>
+                    <div style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin-top:14px;">
+                        <button class="preview-btn preview-btn-1 ${anim1Class}" style="background: ${colors.accent}; color:white; border:none; padding:10px 24px; border-radius:40px; font-weight:600; font-size:0.9rem; cursor:default;">${btn1Text}</button>
+                        <button class="preview-btn preview-btn-2 ${anim2Class}" style="background:#ede8f2; border:none; padding:10px 24px; border-radius:40px; font-weight:600; font-size:0.9rem; cursor:default; color:#2d1b3d; ${btn2TrapStyle}">${btn2Text}</button>
+                    </div>
+                `);
+            }
         }
 
-        // --- ЭКРАН ПОДТВЕРЖДЕНИЯ ---
-        const confirmContent = `
-            <div style="display:flex; justify-content:center; margin:8px 0;">
-                <img src="${confirmImage}" style="width:160px; height:160px; object-fit:contain;" alt="" />
-            </div>
-            <div style="font-size:1.3rem; font-weight:700; color:${colors.text}; margin:6px 0;">${confirmTitle}</div>
-            <div style="color:#5b4a6b; font-size:0.95rem; margin:4px 0;">📅 ${formatDate(eventDate)} в ${eventTime}</div>
-        `;
-        html += createSlide(confirmContent, slideIndex, totalSlides, true);
+        // ============================================================
+        // ШАГ 2: ОСНОВНОЙ ЭКРАН — только приглашение с кнопками
+        // ============================================================
+        else if (currentStep === 2) {
+            html = wrapSlide(`
+                <div style="display:flex; justify-content:center; margin:8px 0;">
+                    <img src="${coverImage}" style="width:160px; height:160px; object-fit:contain;" alt="" />
+                </div>
+                <div style="font-size:1.3rem; font-weight:700; color:#1c0f27; margin:6px 0;">${mainTitle}</div>
+                <div style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin-top:14px;">
+                    <button class="preview-btn preview-btn-1 ${anim1Class}" style="background: ${colors.accent}; color:white; border:none; padding:10px 24px; border-radius:40px; font-weight:600; font-size:0.9rem; cursor:default;">${btn1Text}</button>
+                    <button class="preview-btn preview-btn-2 ${anim2Class}" style="background:#ede8f2; border:none; padding:10px 24px; border-radius:40px; font-weight:600; font-size:0.9rem; cursor:default; color:#2d1b3d; ${btn2TrapStyle}">${btn2Text}</button>
+                </div>
+            `);
+        }
+
+        // ============================================================
+        // ШАГ 3: ПОДТВЕРЖДЕНИЕ — только экран подтверждения
+        // ============================================================
+        else if (currentStep === 3) {
+            html = wrapSlide(`
+                <div style="display:flex; justify-content:center; margin:8px 0;">
+                    <img src="${confirmImage}" style="width:100px; height:100px; object-fit:contain;" alt="" />
+                </div>
+                <div style="font-size:1.3rem; font-weight:700; color:${colors.text}; margin:6px 0;">${confirmTitle}</div>
+                <div style="color:#5b4a6b; font-size:0.95rem; margin:4px 0;">📅 ${formatDate(eventDate)} в ${eventTime}</div>
+            `);
+        }
 
         previewContent.innerHTML = html;
     }

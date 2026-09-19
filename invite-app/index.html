@@ -270,13 +270,34 @@
                 </div>
             </div>
 
-            <div class="panel-body preview-body">
-                <div class="preview-container" id="previewContainer">
-                    <div id="previewContent">
-                        <div class="preview-placeholder">
-                            <div class="preview-icon">✉️</div>
-                            <p>Настройте приглашение</p>
-                            <p class="preview-hint">Изменения отображаются в реальном времени</p>
+            <div class="preview-body">
+                <div class="preview-wrapper">
+                    <!-- ПОЛЗУНОК ЭТАПОВ -->
+                    <div class="preview-progress" id="previewProgress">
+                        <div class="progress-step active" data-step="1">
+                            <span class="progress-dot">1</span>
+                            <span class="progress-label">Способ</span>
+                        </div>
+                        <div class="progress-line"></div>
+                        <div class="progress-step" data-step="2">
+                            <span class="progress-dot">2</span>
+                            <span class="progress-label">Экран</span>
+                        </div>
+                        <div class="progress-line"></div>
+                        <div class="progress-step" data-step="3">
+                            <span class="progress-dot">3</span>
+                            <span class="progress-label">Финал</span>
+                        </div>
+                    </div>
+
+                    <!-- КОНТЕЙНЕР С ПРЕВЬЮ -->
+                    <div class="preview-container" id="previewContainer">
+                        <div id="previewContent">
+                            <div class="preview-placeholder">
+                                <div class="preview-icon">✉️</div>
+                                <p>Настройте приглашение</p>
+                                <p class="preview-hint">Изменения отображаются в реальном времени</p>
+                            </div>
                         </div>
                     </div>
                 </div>

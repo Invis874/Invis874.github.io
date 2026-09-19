@@ -711,6 +711,102 @@ body {
     overflow-y: auto;
 }
 
+/* ============================================================
+   ПРОГРЕСС-ПОЛЗУНОК ЭТАПОВ (в превью)
+   ============================================================ */
+.preview-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+    width: 100%;
+    max-width: 520px;
+}
+
+.preview-progress {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 0 20px;
+    user-select: none;
+}
+
+.progress-step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    opacity: 0.35;
+    transition: all 0.3s ease;
+    cursor: default;
+}
+
+.progress-step.active {
+    opacity: 1;
+    transform: scale(1.05);
+}
+
+.progress-step.completed {
+    opacity: 0.7;
+}
+
+.progress-dot {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: #f0ebf5;
+    color: #7a6990;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.85rem;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+}
+
+.progress-step.active .progress-dot {
+    background: #2d1b3d;
+    color: white;
+    box-shadow: 0 4px 16px rgba(45, 27, 61, 0.25);
+    border-color: #2d1b3d;
+}
+
+.progress-step.completed .progress-dot {
+    background: #7c5b9a;
+    color: white;
+    border-color: #7c5b9a;
+}
+
+.progress-label {
+    font-size: 0.7rem;
+    font-weight: 500;
+    color: #7a6990;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.progress-step.active .progress-label {
+    color: #2d1b3d;
+    font-weight: 600;
+}
+
+.progress-line {
+    flex: 1;
+    height: 2px;
+    background: #ede8f2;
+    margin: 0 8px;
+    margin-bottom: 22px; /* чтобы линия была на уровне кружков, а не подписей */
+    border-radius: 2px;
+    transition: background 0.3s ease;
+}
+
+.progress-line.completed {
+    background: #7c5b9a;
+}   
+
 .preview-container {
     width: 100%;
     max-width: 520px;
@@ -1102,6 +1198,20 @@ body {
 
     .preview-body {
         padding: 12px;
+    }
+
+    .progress-dot {
+        width: 28px;
+        height: 28px;
+        font-size: 0.75rem;
+    }
+
+    .progress-label {
+        font-size: 0.6rem;
+    }
+
+    .preview-wrapper {
+        gap: 16px;
     }
 
     .preview-container {
