@@ -73,10 +73,77 @@ document.addEventListener('DOMContentLoaded', function() {
     const slideRadius = getShapeRadius(data.shape);
 
     // ============================================================
+    // ОТТЕНОК ЧЕРЕЗ HSL (сохраняет насыщенность)
+    // ============================================================
+    function adjustColorHSL(hex, lightnessDelta, saturationDelta) {
+        // Hex → RGB
+        hex = hex.replace('#', '');
+        let r = parseInt(hex.substring(0, 2), 16) / 255;
+        let g = parseInt(hex.substring(2, 4), 16) / 255;
+        let b = parseInt(hex.substring(4, 6), 16) / 255;
+        
+        // RGB → HSL
+        const max = Math.max(r, g, b);
+        const min = Math.min(r, g, b);
+        let h, s, l = (max + min) / 2;
+        
+        if (max === min) {
+            h = s = 0;
+        } else {
+            const d = max - min;
+            s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+            
+            switch (max) {
+                case r: h = (g - b) / d + (g < b ? 6 : 0); break;
+                case g: h = (b - r) / d + 2; break;
+                case b: h = (r - g) / d + 4; break;
+            }
+            h /= 6;
+        }
+        
+        // Меняем L и S
+        l = Math.max(0, Math.min(1, l + lightnessDelta / 100));
+        s = Math.max(0, Math.min(1, s + saturationDelta / 100));
+        
+        // HSL → RGB
+        function hue2rgb(p, q, t) {
+            if (t < 0) t += 1;
+            if (t > 1) t -= 1;
+            if (t < 1/6) return p + (q - p) * 6 * t;
+            if (t < 1/2) return q;
+            if (t < 2/3) return p + (q - p) * (2/3 - t) * 6;
+            return p;
+        }
+        
+        let r2, g2, b2;
+        if (s === 0) {
+            r2 = g2 = b2 = l;
+        } else {
+            const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+            const p = 2 * l - q;
+            r2 = hue2rgb(p, q, h + 1/3);
+            g2 = hue2rgb(p, q, h);
+            b2 = hue2rgb(p, q, h - 1/3);
+        }
+        
+        // RGB → Hex
+        return '#' + [r2, g2, b2].map(function(c) {
+            const v = Math.round(c * 255).toString(16);
+            return v.length === 1 ? '0' + v : v;
+        }).join('');
+    }
+
+    // Вычисляем оттенки
+    const pageBg = colors.bg;
+    const envelopeBg = adjustColorHSL(colors.bg, -3, +5);  // темнее на 3%, насыщеннее на 5%
+    const flapBg     = adjustColorHSL(colors.bg, -6, +8);   // клапан — темнее
+    const sheetBg = adjustColorHSL(colors.bg, -6, +10);   // темнее на 6%, насыщеннее на 10%
+
+    // ============================================================
     // ПРИМЕНЯЕМ ФОН СТРАНИЦЫ (по цвету)
     // ============================================================
-    document.body.style.background = `linear-gradient(145deg, ${colors.bg}, ${colors.bg}dd)`;
-    
+    document.body.style.background = `linear-gradient(145deg, ${pageBg}, ${pageBg}dd)`;
+
     const anim1Class = data.btn1Animation && data.btn1Animation !== 'none' ? data.btn1Animation : '';
     const anim2Class = data.btn2Animation && data.btn2Animation !== 'none' ? data.btn2Animation : '';
     const isEnvelope = data.mode === 'envelope';
@@ -109,90 +176,10 @@ document.addEventListener('DOMContentLoaded', function() {
     let slides = [];
 
     // ============================================================
-    // TOAST-СИСТЕМА
-    // ============================================================
-    function showToast(message, type) {
-        type = type || 'info';
-        
-        const oldToasts = document.querySelectorAll('.viewer-toast');
-        oldToasts.forEach(function(t) { t.remove(); });
-
-        const icons = {
-            success: '✅',
-            error: '❌',
-            warning: '⚠️',
-            info: 'ℹ️'
-        };
-
-        const toast = document.createElement('div');
-        toast.className = 'viewer-toast';
-        toast.style.cssText = `
-            position: fixed;
-            bottom: 30px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: #1c0f27;
-            color: white;
-            padding: 12px 28px;
-            border-radius: 40px;
-            font-weight: 500;
-            font-size: 0.95rem;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-            z-index: 9999;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            animation: toastIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            max-width: 90%;
-            pointer-events: none;
-        `;
-        toast.innerHTML = `
-            <span style="font-size:1.2rem;">${icons[type] || 'ℹ️'}</span>
-            <span>${message}</span>
-        `;
-
-        document.body.appendChild(toast);
-
-        setTimeout(function() {
-            toast.style.animation = 'toastOut 0.3s ease forwards';
-            setTimeout(function() {
-                if (toast.parentNode) {
-                    toast.parentNode.removeChild(toast);
-                }
-            }, 300);
-        }, 2000);
-    }
-
-    // Стили для тостов
-    const toastStyles = document.createElement('style');
-    toastStyles.textContent = `
-        @keyframes toastIn {
-            from { opacity: 0; transform: translateX(-50%) translateY(20px) scale(0.95); }
-            to { opacity: 1; transform: translateX(-50%) translateY(0) scale(1); }
-        }
-        @keyframes toastOut {
-            from { opacity: 1; transform: translateX(-50%) translateY(0) scale(1); }
-            to { opacity: 0; transform: translateX(-50%) translateY(20px) scale(0.95); }
-        }
-        @keyframes pushAway {
-            0% { transform: translateX(0); }
-            50% { transform: translateX(-20px); }
-            100% { transform: translateX(0); }
-        }
-    `;
-    document.head.appendChild(toastStyles);
-
-    // ============================================================
     // ФУНКЦИЯ ДЛЯ ПЕРЕКЛЮЧЕНИЯ СЛАЙДОВ
     // ============================================================
     function goToSlide(index) {
         if (index < 0 || index >= slides.length) return;
-
-        if (isEnvelope && !isEnvelopeOpen && index > 0) {
-            showToast('📩 Сначала открой конверт!', 'warning');
-            return;
-        }
 
         slides.forEach(function(s, i) {
             s.classList.toggle('active', i === index);
@@ -203,15 +190,9 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // ============================================================
-    // СОЗДАНИЕ СЛАЙДОВ
+    // ЭФФЕКТ PUSH
     // ============================================================
 
-    // --- СЛАЙД 1: КОНВЕРТ ИЛИ ПРИГЛАШЕНИЕ ---
-    const slide1 = document.createElement('div');
-    slide1.className = 'slide active';
-    slide1.dataset.slide = '0';
-
-    // Эффект push для кнопки 2
     let pushEffect = '';
     if (!btn2Enabled && btn2Trap === 'push') {
         pushEffect = `
@@ -220,109 +201,126 @@ document.addEventListener('DOMContentLoaded', function() {
         `;
     }
 
-    if (isEnvelope) {
-        slide1.innerHTML = `
-            <div class="envelope-container" id="envelopeContainer">
-                <div class="envelope-flap" id="envelopeFlap"></div>
-                <div class="envelope-body" style="background: ${colors.bg}; cursor:pointer;" id="envelopeBody">
-                    <div class="envelope-seal">✉️</div>
-                    <div class="envelope-hint">👆 Нажми на конверт</div>
-                </div>
-            </div>
-            <div class="slide-content" id="slideContent" style="display:none;">
-                <div class="slide-icon">
-                    <img src="${data.coverImage || 'assets/images/covers/1.png'}" 
-                         style="width:160px; height:160px; object-fit:contain;" alt="" />
-                </div>
-                <div class="slide-title">${escapeHtml(data.mainTitle || 'Приглашаю тебя!')}</div>
-                <div class="slide-buttons">
-                    <button class="slide-btn slide-btn-primary ${anim1Class}" data-action="agree" style="background: ${colors.accent};">
-                        ${escapeHtml(data.btn1Text || '💖 Согласен')}
-                    </button>
-                    <button class="slide-btn slide-btn-secondary ${anim2Class}" data-action="maybe" ${btn2DisabledAttr} style="background:#ede8f2; border:none; padding:10px 24px; border-radius:40px; font-weight:600; font-size:1rem; cursor:default; color:#2d1b3d; ${btn2TrapStyle}" ${pushEffect}>
-                        ${escapeHtml(data.btn2Text || '🤔 Подумаю')}
-                    </button>
-                </div>
-            </div>
-        `;
-    } else {
-        slide1.innerHTML = `
-            <div class="slide-icon">
-                <img src="${data.coverImage || 'assets/images/covers/1.png'}" 
-                     style="width:160px; height:160px; object-fit:contain;" alt="" />
-            </div>
-            <div class="slide-title">${escapeHtml(data.mainTitle || 'Приглашаю тебя!')}</div>
-            <div class="slide-buttons">
-                <button class="slide-btn slide-btn-primary ${anim1Class}" data-action="agree" style="background: ${colors.accent};">
-                    ${escapeHtml(data.btn1Text || '💖 Согласен')}
-                </button>
-                <button class="slide-btn slide-btn-secondary ${anim2Class}" data-action="maybe" ${btn2DisabledAttr} style="background:#ede8f2; border:none; padding:10px 24px; border-radius:40px; font-weight:600; font-size:1rem; cursor:default; color:#2d1b3d; ${btn2TrapStyle}" ${pushEffect}>
-                    ${escapeHtml(data.btn2Text || '🤔 Подумаю')}
-                </button>
-            </div>
-        `;
-    }
+    // ============================================================
+    // СОЗДАНИЕ СЛАЙДОВ
+    // ============================================================
+
+    // --- СЛАЙД 1: ПРИГЛАШЕНИЕ (лист) ---
+    const slide1 = document.createElement('div');
+    slide1.className = 'slide';
+    slide1.dataset.slide = '0';
+    slide1.style.borderRadius = slideRadius;
+    slide1.style.background = sheetBg;
+
+    slide1.innerHTML = `
+        <div class="slide-icon">
+            <img src="${data.coverImage || 'assets/images/covers/1.png'}" alt="" />
+        </div>
+        <div class="slide-title" style="color: ${colors.text};">${escapeHtml(data.mainTitle || 'Приглашаю тебя!')}</div>
+        <div class="slide-buttons">
+            <button class="slide-btn slide-btn-primary ${anim1Class}" data-action="agree" style="background: ${colors.accent};">
+                ${escapeHtml(data.btn1Text || '💖 Согласен')}
+            </button>
+            <button class="slide-btn slide-btn-secondary ${anim2Class}" data-action="maybe" ${btn2DisabledAttr} style="background:#ede8f2; color:#2d1b3d; ${btn2TrapStyle}" ${pushEffect}>
+                ${escapeHtml(data.btn2Text || '🤔 Подумаю')}
+            </button>
+        </div>
+    `;
 
     // --- СЛАЙД 2: ПОДТВЕРЖДЕНИЕ ---
     const slide2 = document.createElement('div');
     slide2.className = 'slide';
     slide2.dataset.slide = '1';
+    slide2.style.borderRadius = slideRadius;
+    slide2.style.background = sheetBg;
+
     slide2.innerHTML = `
         <div class="slide-icon">
-            <img src="${data.confirmImage || 'assets/images/confirms/1.png'}" 
-                 style="width:160px; height:160px; object-fit:contain;" alt="" />
+            <img src="${data.confirmImage || 'assets/images/confirms/1.png'}" alt="" />
         </div>
-        <div class="slide-title">${escapeHtml(data.confirmTitle || 'Отлично! Жду тебя!')}</div>
+        <div class="slide-title" style="color: ${colors.text};">${escapeHtml(data.confirmTitle || 'Отлично! Жду тебя!')}</div>
         <div class="slide-datetime">📅 ${formatDate(data.eventDate || '2026-09-15')} в ${escapeHtml(data.eventTime || '19:00')}</div>
     `;
 
-    container.appendChild(slide1);
-    container.appendChild(slide2);
     slides = [slide1, slide2];
 
     // ============================================================
-    // ПРИМЕНЯЕМ ФОРМУ К СЛАЙДАМ
+    // ДОБАВЛЯЕМ В DOM
     // ============================================================
-    slides.forEach(function(slide) {
-        slide.style.borderRadius = slideRadius;
-    });
 
-    // ============================================================
-    // ЛОГИКА КОНВЕРТА
-    // ============================================================
     if (isEnvelope) {
+        // === РЕЖИМ КОНВЕРТА ===
+        // Создаём отдельный экран конверта
+        const envelopeScreen = document.createElement('div');
+        envelopeScreen.className = 'envelope-screen';
+        envelopeScreen.id = 'envelopeScreen';
+
+        envelopeScreen.innerHTML = `
+            <div class="envelope-container" id="envelopeContainer">
+                <!-- Тело конверта -->
+                <div class="envelope-letter" id="envelopeLetter" 
+                     style="background: ${sheetBg}; border-radius: ${slideRadius};"">
+                    <div class="envelope-letter-icon">
+                        <img src="${data.coverImage || 'assets/images/covers/1.png'}" alt="" />
+                    </div>
+                    <div class="envelope-letter-title" style="color: ${colors.text};">
+                        ${escapeHtml(data.mainTitle || 'Приглашаю тебя!')}
+                    </div>
+                </div>
+
+                <!-- Тело конверта -->
+                <div class="envelope-body" id="envelopeBody" style="background: ${envelopeBg};"></div>
+
+                <!-- Треугольный клапан -->
+                <div class="envelope-flap" id="envelopeFlap" style="background: ${flapBg};"></div>
+            </div>
+            <div class="envelope-hint">👆 Нажми на конверт</div>
+        `;
+
+        container.appendChild(envelopeScreen);
+        container.appendChild(slide1);
+        container.appendChild(slide2);
+
+        // === ЛОГИКА ОТКРЫТИЯ КОНВЕРТА ===
         const envelopeBody = document.getElementById('envelopeBody');
-        const envelopeContainer = document.getElementById('envelopeContainer');
-        const slideContent = document.getElementById('slideContent');
         const flap = document.getElementById('envelopeFlap');
+        const letter = document.getElementById('envelopeLetter');
 
         if (envelopeBody) {
-            // Эффект тряски при наведении
-            envelopeBody.addEventListener('mouseenter', function() {
-                this.style.animation = 'shake 0.5s ease-in-out';
-            });
-            envelopeBody.addEventListener('mouseleave', function() {
-                this.style.animation = '';
-            });
-
-            // Открытие по клику
             envelopeBody.addEventListener('click', function(e) {
                 e.stopPropagation();
 
-                if (isEnvelopeOpen) return;
-                isEnvelopeOpen = true;
+                // Защита от повторного клика
+                if (envelopeBody.dataset.opened === 'true') return;
+                envelopeBody.dataset.opened = 'true';
 
-                if (flap) {
-                    flap.classList.add('open');
-                }
+                // 1. Открываем клапан (0.8 сек)
+                if (flap) flap.classList.add('open');
 
+                // 2. Через 0.8 сек — выезжает мини-слайд
                 setTimeout(function() {
-                    envelopeContainer.style.display = 'none';
-                    slideContent.style.display = 'block';
-                    slideContent.style.animation = 'fadeIn 0.6s ease';
+                    if (letter) letter.classList.add('show');
                 }, 800);
+
+                // 3. Через 1.8 сек — всё исчезает
+                setTimeout(function() {
+                    envelopeScreen.style.animation = 'fadeOut 0.5s ease forwards';
+                }, 1800);
+
+                // 4. Через 2.3 сек — показываем настоящий slide1
+                setTimeout(function() {
+                    envelopeScreen.remove();
+                    slide1.classList.add('active');
+                }, 2300);
             });
         }
+
+    } else {
+        // === РЕЖИМ "СРАЗУ ПОКАЗАТЬ" ===
+        // Сразу показываем слайд 1
+        slide1.classList.add('active');
+        container.appendChild(slide1);
+        container.appendChild(slide2);
     }
 
     // ============================================================
@@ -347,45 +345,14 @@ document.addEventListener('DOMContentLoaded', function() {
         const action = btn.dataset.action;
 
         if (action === 'agree') {
-            showToast('🎉 Отлично! Переходим к деталям...', 'success');
+            Toast.success('🎉 Отлично! Переходим к деталям...');
             setTimeout(function() {
                 goToSlide(1);
             }, 600);
         } else if (action === 'maybe') {
-            showToast('🤔 Хорошо, подумай. Но не затягивай! 😉', 'info');
+            Toast.info('🤔 Хорошо, подумай. Но не затягивай! 😉');
         }
     });
-
-    // ============================================================
-    // ДОБАВЛЯЕМ СТИЛЬ ДЛЯ АНИМАЦИЙ
-    // ============================================================
-    const style = document.createElement('style');
-    style.textContent = `
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes shake {
-            0%, 100% { transform: rotate(0deg); }
-            25% { transform: rotate(-3deg); }
-            75% { transform: rotate(3deg); }
-        }
-        .envelope-hint {
-            font-size: 0.8rem;
-            color: #7a6990;
-            margin-top: 12px;
-            animation: pulseText 2s ease-in-out infinite;
-        }
-        @keyframes pulseText {
-            0%, 100% { opacity: 0.6; transform: scale(1); }
-            50% { opacity: 1; transform: scale(1.05); }
-        }
-        .slide-btn:disabled {
-            pointer-events: auto !important;
-            cursor: not-allowed !important;
-        }
-    `;
-    document.head.appendChild(style);
 
     // ============================================================
     // ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ

@@ -12,7 +12,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const resultLinkInput = document.getElementById('resultLinkInput');
     const copyBtn = document.getElementById('copyBtn');
     const closeResult = document.getElementById('closeResult');
-    const toastContainer = document.getElementById('toastContainer');
 
     // ============================================================
     // ФОРМАТИРОВАНИЕ ДАТЫ (YYYY-MM-DD → DD.MM.YYYY)
@@ -35,37 +34,6 @@ document.addEventListener('DOMContentLoaded', function() {
         instant: '✨ Сразу показать',
         envelope: '📩 Конверт'
     };
-
-    // ============================================================
-    // TOAST-СИСТЕМА
-    // ============================================================
-    function showToast(message, type) {
-        type = type || 'info';
-        const icons = {
-            success: '✅',
-            error: '❌',
-            warning: '⚠️',
-            info: 'ℹ️'
-        };
-
-        const toast = document.createElement('div');
-        toast.className = 'toast ' + type;
-        toast.innerHTML = `
-            <span class="toast-icon">${icons[type] || 'ℹ️'}</span>
-            <span class="toast-message">${message}</span>
-        `;
-
-        toastContainer.appendChild(toast);
-
-        setTimeout(function() {
-            toast.classList.add('hiding');
-            setTimeout(function() {
-                if (toast.parentNode) {
-                    toast.parentNode.removeChild(toast);
-                }
-            }, 300);
-        }, 2800);
-    }
 
     // ============================================================
     // ПЕРЕКЛЮЧЕНИЕ ШАГОВ
@@ -188,14 +156,14 @@ document.addEventListener('DOMContentLoaded', function() {
 
             // Проверка размера
             if (file.size > MAX_FILE_SIZE) {
-                showToast('Файл слишком большой. Максимум 450 КБ', 'warning');
+                Toast.warning('Файл слишком большой. Максимум 50 КБ');
                 upload.value = '';
                 return;
             }
 
             // Проверка типа
             if (!['image/png', 'image/jpeg', 'image/gif'].includes(file.type)) {
-                showToast('Поддерживаются только PNG, JPG, GIF', 'warning');
+                Toast.warning('Поддерживаются только PNG, JPG, GIF');
                 upload.value = '';
                 return;
             }
@@ -218,7 +186,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 hiddenInput.value = dataUrl;
                 updatePreview();
 
-                showToast('Картинка загружена!', 'success');
+                Toast.success('Картинка загружена!');
             };
             reader.readAsDataURL(file);
         });
@@ -410,16 +378,16 @@ document.addEventListener('DOMContentLoaded', function() {
         if (currentStep === 1) {
             if (isEnvelope) {
                 // Показываем конверт
-                html = wrapSlide(`
-                    <div style="padding-top:20px; cursor:pointer; transition: transform 0.2s;"
+                html = `
+                    <div class="preview-envelope" style="background: ${colors.bg};"
                          onmouseenter="this.style.transform='rotate(-2deg) scale(1.02)'"
                          onmouseleave="this.style.transform='rotate(0) scale(1)'">
-                        <div style="font-size:3.6rem; margin-bottom:4px;">✉️</div>
-                        <div style="font-size:0.8rem; color:#7a6990; margin-top:8px; animation: pulseText 2s ease-in-out infinite;">
+                        <div class="preview-envelope-icon">✉️</div>
+                        <div class="preview-envelope-label">
                             👆 Нажми на конверт
                         </div>
                     </div>
-                `);
+                `;
             } else {
                 // Показываем сразу приглашение
                 html = wrapSlide(`
@@ -495,10 +463,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
             resultLinkInput.value = link;
             resultOverlay.classList.add('show');
-            showToast('Ссылка успешно создана!', 'success');
+            Toast.success('Ссылка успешно создана!');
         } catch (error) {
             console.error('Ошибка:', error);
-            showToast('Ошибка при создании ссылки', 'error');
+            Toast.error('Ошибка при создании ссылки');
         }
     });
 
@@ -511,12 +479,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
         copyToClipboard(text)
             .then(function() {
-                showToast('Ссылка скопирована в буфер!', 'success');
+                Toast.success('Ссылка скопирована в буфер!');
             })
             .catch(function() {
                 resultLinkInput.select();
                 document.execCommand('copy');
-                showToast('Ссылка скопирована в буфер!', 'success');
+                Toast.success('Ссылка скопирована в буфер!');
             });
     });
 

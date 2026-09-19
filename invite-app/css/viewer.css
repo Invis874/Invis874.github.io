@@ -9,18 +9,9 @@ body {
     justify-content: center;
     padding: 20px;
     margin: 0;
+    font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
     background: #f5f0fa;
     transition: background 0.6s ease;
-}
-
-body.style-romantic {
-    background: linear-gradient(145deg, #fce4ec, #f8d7e3);
-}
-body.style-party {
-    background: linear-gradient(145deg, #fff3d6, #fde8b3);
-}
-body.style-business {
-    background: linear-gradient(145deg, #dce5f2, #c2d1e6);
 }
 
 .viewer-wrapper {
@@ -34,20 +25,124 @@ body.style-business {
 }
 
 /* ============================================================
-   СЛАЙДЫ
+   КОНВЕРТ
    ============================================================ */
-.slide {
-    background: white;
-    border-radius: 32px;
-    padding: 40px 30px;
-    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.12);
-    text-align: center;
-    display: none;
-    animation: slideIn 0.5s ease;
-    min-height: 380px;
+.envelope-screen {
+    width: 100%;
+    display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    padding: 40px 30px;
+    min-height: 480px;
+    animation: slideIn 0.5s ease;
+}
+
+.envelope-container {
+    width: 100%;
+    max-width: 380px;
+    aspect-ratio: 3 / 2;
+    position: relative;
+    perspective: 1200px;
+}
+
+/* ─────────── ТЕЛО КОНВЕРТА ─────────── */
+.envelope-body {
+    position: absolute;
+    inset: 0;
+    border-radius: 12px;
+    box-shadow:
+        0 20px 60px rgba(0, 0, 0, 0.15),
+        inset 0 -4px 12px rgba(0, 0, 0, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    z-index: 1;
+    transition: transform 0.2s ease, box-shadow 0.3s ease;
+}
+
+/* ─────────── ТРЕУГОЛЬНЫЙ КЛАПАН ─────────── */
+.envelope-flap {
+    position: absolute;
+    top: 2px;
+    left: 8px;
+    width: calc(100% - 16px);
+    height: 55%;
+    /* Треугольник через clip-path */
+    clip-path: polygon(0 0, 100% 0, 50% 100%);
+    transform-origin: top center;
+    transition: transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+    z-index: 3;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.08));
+}
+
+.envelope-flap.open {
+    transform: rotateX(180deg);
+    z-index: 0;
+}
+
+/* ─────────── ВЫЕЗЖАЮЩИЙ МИНИ-СЛАЙД ─────────── */
+.envelope-letter {
+    position: absolute;
+    top: 0;
+    left: 10%;
+    width: 80%;
+    padding: 40px 30px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transform: translateY(0);
+    transition: transform 0.9s cubic-bezier(0.34, 1.2, 0.64, 1) 0.3s;
+    z-index: 1;
+}
+
+.envelope-letter.show {
+    transform: translateY(-70%);           /* выехал наполовину */
+}
+
+.envelope-letter-icon img {
+    width: 75px;
+    height: 75px;
+    object-fit: contain;
+}
+
+.envelope-letter-title {
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-align: center;
+    line-height: 1.2;
+}
+
+/* ─────────── ПОДСКАЗКА ─────────── */
+.envelope-hint {
+    margin-top: 24px;
+    font-size: 0.85rem;
+    color: #7a6990;
+    animation: pulseText 2s ease-in-out infinite;
+}
+
+@keyframes pulseText {
+    0%, 100% { opacity: 0.6; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.05); }
+}
+
+/* ============================================================
+   СЛАЙДЫ
+   ============================================================ */
+.slide {
+    padding: 40px 30px;
+    box-shadow: 
+        0 30px 80px rgba(0, 0, 0, 0.15),
+        inset 0 1px 0 rgba(255, 255, 255, 0.5);
+    text-align: center;
+    display: none;
+    animation: slideIn 0.5s ease;
+    min-height: 480px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: border-radius 0.4s ease;
 }
 
 .slide.active {
@@ -65,105 +160,26 @@ body.style-business {
     }
 }
 
-body.style-romantic .slide {
-    background: linear-gradient(145deg, #fff5f7, #ffe3ec);
-}
-body.style-party .slide {
-    background: linear-gradient(145deg, #fffcf0, #fef2d6);
-}
-body.style-business .slide {
-    background: linear-gradient(145deg, #f0f5fc, #dde7f5);
-}
-
-/* ============================================================
-   КОНВЕРТ
-   ============================================================ */
-.envelope-container {
-    width: 100%;
-    position: relative;
-    perspective: 1200px;
-    margin-bottom: 10px;
-}
-
-.envelope-body {
-    border-radius: 20px;
-    padding: 40px 30px 35px;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.12);
-    border: 2px solid rgba(255, 255, 255, 0.3);
-    text-align: center;
-    position: relative;
-    z-index: 2;
-    transition: transform 0.2s ease;
-    cursor: pointer;
-}
-
-.envelope-body:hover {
-    transform: scale(1.01);
-}
-
-.envelope-flap {
-    position: absolute;
-    top: -28px;
-    left: 50%;
-    transform: translateX(-50%) rotateX(0deg);
-    width: 92%;
-    height: 50px;
-    background: inherit;
-    border-radius: 18px 18px 0 0;
-    border: 2px solid rgba(255, 255, 255, 0.3);
-    border-bottom: none;
-    transform-origin: bottom center;
-    transition: transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
-    z-index: 3;
-    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.03);
-}
-
-.envelope-flap.open {
-    transform: translateX(-50%) rotateX(180deg);
-}
-
-.envelope-seal {
-    font-size: 2.8rem;
-    margin-bottom: 4px;
-}
-
-.envelope-icon {
-    font-size: 3.4rem;
-    margin: 8px 0;
-}
-
-.envelope-title {
-    font-size: 1.2rem;
-    font-weight: 700;
-    color: #1c0f27;
-    margin-bottom: 4px;
-}
-
-.envelope-hint {
-    font-size: 0.8rem;
-    color: #7a6990;
-    margin-top: 4px;
-    animation: pulseText 2s ease-in-out infinite;
-}
-
-@keyframes pulseText {
-    0%, 100% { opacity: 0.6; transform: scale(1); }
-    50% { opacity: 1; transform: scale(1.05); }
-}
-
 /* ============================================================
    СОДЕРЖИМОЕ СЛАЙДОВ
    ============================================================ */
 .slide-icon {
-    font-size: 4rem;
-    margin-bottom: 8px;
+    display: flex;
+    justify-content: center;
+    margin: 8px 0 16px;
+}
+
+.slide-icon img {
+    max-width: 160px;
+    max-height: 160px;
+    object-fit: contain;
 }
 
 .slide-title {
     font-size: 1.5rem;
     font-weight: 700;
     color: #2d1b3d;
-    margin-bottom: 4px;
+    margin-bottom: 8px;
     line-height: 1.3;
 }
 
@@ -265,6 +281,21 @@ body.style-business .slide {
     }
 }
 
+@keyframes pushAway {
+    0%   { transform: translateX(0); }
+    50%  { transform: translateX(-20px); }
+    100% { transform: translateX(0); }
+}
+
+@keyframes fadeOut {
+    to { opacity: 0; transform: scale(0.9); }
+}
+
+.slide-btn:disabled {
+    pointer-events: auto !important;
+    cursor: not-allowed !important;
+}
+
 /* ============================================================
    ОШИБКА
    ============================================================ */
@@ -290,35 +321,39 @@ body.style-business .slide {
    АДАПТИВ
    ============================================================ */
 @media (max-width: 480px) {
+    body {
+        padding: 12px;
+    }
+
+    .envelope-body {
+        padding: 50px 20px 40px;
+    }
+
+    .envelope-container {
+        max-width: 300px;
+    }
+
+    .envelope-letter-icon img {
+        width: 62px;
+        height: 62px;
+    }
+
+    .envelope-letter-title {
+        font-size: 0.75rem;
+    }
+
     .slide {
-        padding: 28px 20px;
-        min-height: 300px;
-        border-radius: 24px;
+        padding: 30px 20px;
+        min-height: 420px;
     }
 
     .slide-title {
         font-size: 1.2rem;
     }
 
-    .slide-icon {
-        font-size: 3rem;
-    }
-
     .slide-btn {
         padding: 10px 20px;
         font-size: 0.9rem;
         min-width: 100px;
-    }
-
-    .envelope-body {
-        padding: 30px 20px 25px;
-    }
-
-    .envelope-title {
-        font-size: 1rem;
-    }
-
-    .envelope-icon {
-        font-size: 2.8rem;
     }
 }

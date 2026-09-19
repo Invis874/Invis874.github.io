@@ -24,87 +24,6 @@ body {
 }
 
 /* ============================================================
-   TOAST-УВЕДОМЛЕНИЯ
-   ============================================================ */
-.toast-container {
-    position: fixed;
-    top: 24px;
-    right: 24px;
-    z-index: 9999;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    max-width: 360px;
-    pointer-events: none;
-}
-
-.toast {
-    padding: 14px 20px;
-    border-radius: 14px;
-    background: #1c0f27;
-    color: white;
-    font-weight: 500;
-    font-size: 0.9rem;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-    animation: toastIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-    pointer-events: auto;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    border: 1px solid rgba(255, 255, 255, 0.08);
-}
-
-.toast.success {
-    background: #1a6d3c;
-    border-color: rgba(255, 255, 255, 0.1);
-}
-
-.toast.error {
-    background: #b13a3a;
-    border-color: rgba(255, 255, 255, 0.1);
-}
-
-.toast.warning {
-    background: #a67c1e;
-    border-color: rgba(255, 255, 255, 0.1);
-}
-
-.toast-icon {
-    font-size: 1.2rem;
-    flex-shrink: 0;
-}
-
-.toast-message {
-    flex: 1;
-}
-
-@keyframes toastIn {
-    from {
-        opacity: 0;
-        transform: translateX(40px) scale(0.95);
-    }
-    to {
-        opacity: 1;
-        transform: translateX(0) scale(1);
-    }
-}
-
-@keyframes toastOut {
-    from {
-        opacity: 1;
-        transform: translateX(0) scale(1);
-    }
-    to {
-        opacity: 0;
-        transform: translateX(40px) scale(0.95);
-    }
-}
-
-.toast.hiding {
-    animation: toastOut 0.3s ease forwards;
-}
-
-/* ============================================================
    ЛЕВАЯ ПАНЕЛЬ
    ============================================================ */
 .panel-left {
@@ -918,15 +837,10 @@ body {
 }
 
 .preview-envelope {
-    padding: 30px 24px;
+    padding: 80px 24px;
     border-radius: 20px;
     text-align: center;
     transition: background 0.4s;
-}
-
-.preview-envelope-seal {
-    font-size: 2.4rem;
-    margin-bottom: 4px;
 }
 
 .preview-envelope-label {
@@ -934,13 +848,8 @@ body {
     text-transform: uppercase;
     letter-spacing: 1.5px;
     color: #7a6990;
-    font-weight: 600;
-}
-
-.preview-envelope-from {
-    font-size: 0.85rem;
-    color: #5b4a6b;
-    margin-bottom: 12px;
+    margin-top:8px;
+    animation: pulseText 2s ease-in-out infinite;
 }
 
 .preview-envelope-icon {
@@ -948,19 +857,6 @@ body {
     margin: 8px 0;
 }
 
-.preview-envelope-title {
-    font-size: 1.3rem;
-    font-weight: 700;
-    color: #1c0f27;
-    margin-bottom: 14px;
-}
-
-.preview-buttons {
-    display: flex;
-    gap: 10px;
-    justify-content: center;
-    flex-wrap: wrap;
-}
 
 .preview-btn {
     padding: 10px 24px;
@@ -1017,10 +913,6 @@ body {
 
 .preview-slide {
     padding: 10px 0;
-}
-
-.preview-slide-icon {
-    font-size: 3.4rem;
 }
 
 .preview-slide-title {
