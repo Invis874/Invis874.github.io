@@ -34,16 +34,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // ============================================================
-    // ФОРМАТИРОВАНИЕ ДАТЫ (2026-09-15 → 15.09.2026)
-    // ============================================================
-    function formatDate(isoDate) {
-        if (!isoDate) return '';
-        const parts = isoDate.split('-'); // [2026, 09, 15]
-        if (parts.length !== 3) return isoDate;
-        return parts[2] + '.' + parts[1] + '.' + parts[0];
-    }
-
-    // ============================================================
     // ЦВЕТА (палитры)
     // ============================================================
     const colorPalettes = {
@@ -57,87 +47,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const colors = colorPalettes[data.color] || colorPalettes.rose;
 
-    // ============================================================
-    // ФОРМА ГРАНЕЙ (radius)
-    // ============================================================
-    function getShapeRadius(shape) {
-        switch (shape) {
-            case 'rounded':  return '20px';
-            case 'soft':     return '32px';
-            case 'sharp':    return '0px';
-            case 'wave':     return '50% 50% 50% 50% / 20% 20% 20% 20%';
-            default:         return '20px';
-        }
-    }
-
-    const slideRadius = getShapeRadius(data.shape);
-
-    // ============================================================
-    // ОТТЕНОК ЧЕРЕЗ HSL (сохраняет насыщенность)
-    // ============================================================
-    function adjustColorHSL(hex, lightnessDelta, saturationDelta) {
-        // Hex → RGB
-        hex = hex.replace('#', '');
-        let r = parseInt(hex.substring(0, 2), 16) / 255;
-        let g = parseInt(hex.substring(2, 4), 16) / 255;
-        let b = parseInt(hex.substring(4, 6), 16) / 255;
-        
-        // RGB → HSL
-        const max = Math.max(r, g, b);
-        const min = Math.min(r, g, b);
-        let h, s, l = (max + min) / 2;
-        
-        if (max === min) {
-            h = s = 0;
-        } else {
-            const d = max - min;
-            s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
-            
-            switch (max) {
-                case r: h = (g - b) / d + (g < b ? 6 : 0); break;
-                case g: h = (b - r) / d + 2; break;
-                case b: h = (r - g) / d + 4; break;
-            }
-            h /= 6;
-        }
-        
-        // Меняем L и S
-        l = Math.max(0, Math.min(1, l + lightnessDelta / 100));
-        s = Math.max(0, Math.min(1, s + saturationDelta / 100));
-        
-        // HSL → RGB
-        function hue2rgb(p, q, t) {
-            if (t < 0) t += 1;
-            if (t > 1) t -= 1;
-            if (t < 1/6) return p + (q - p) * 6 * t;
-            if (t < 1/2) return q;
-            if (t < 2/3) return p + (q - p) * (2/3 - t) * 6;
-            return p;
-        }
-        
-        let r2, g2, b2;
-        if (s === 0) {
-            r2 = g2 = b2 = l;
-        } else {
-            const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
-            const p = 2 * l - q;
-            r2 = hue2rgb(p, q, h + 1/3);
-            g2 = hue2rgb(p, q, h);
-            b2 = hue2rgb(p, q, h - 1/3);
-        }
-        
-        // RGB → Hex
-        return '#' + [r2, g2, b2].map(function(c) {
-            const v = Math.round(c * 255).toString(16);
-            return v.length === 1 ? '0' + v : v;
-        }).join('');
-    }
+    const slideRadius = Utils.getShapeRadius(data.shape);
 
     // Вычисляем оттенки
     const pageBg = colors.bg;
-    const envelopeBg = adjustColorHSL(colors.bg, -3, +5);  // темнее на 3%, насыщеннее на 5%
-    const flapBg     = adjustColorHSL(colors.bg, -6, +8);   // клапан — темнее
-    const sheetBg = adjustColorHSL(colors.bg, -6, +10);   // темнее на 6%, насыщеннее на 10%
+    const envelopeBg = Utils.adjustColorHSL(colors.bg, -3, +5);  // темнее на 3%, насыщеннее на 5%
+    const flapBg     = Utils.adjustColorHSL(colors.bg, -6, +8);   // клапан — темнее
+    const sheetBg = Utils.adjustColorHSL(colors.bg, -6, +10);   // темнее на 6%, насыщеннее на 10%
 
     // ============================================================
     // ПРИМЕНЯЕМ ФОН СТРАНИЦЫ (по цвету)
@@ -216,13 +132,13 @@ document.addEventListener('DOMContentLoaded', function() {
         <div class="slide-icon">
             <img src="${data.coverImage || 'assets/images/covers/1.png'}" alt="" />
         </div>
-        <div class="slide-title" style="color: ${colors.text};">${escapeHtml(data.mainTitle || 'Приглашаю тебя!')}</div>
+        <div class="slide-title" style="color: ${colors.text};">${Utils.escapeHtml(data.mainTitle || 'Приглашаю тебя!')}</div>
         <div class="slide-buttons">
             <button class="slide-btn slide-btn-primary ${anim1Class}" data-action="agree" style="background: ${colors.accent};">
-                ${escapeHtml(data.btn1Text || '💖 Согласен')}
+                ${Utils.escapeHtml(data.btn1Text || '💖 Согласен')}
             </button>
             <button class="slide-btn slide-btn-secondary ${anim2Class}" data-action="maybe" ${btn2DisabledAttr} style="background:#ede8f2; color:#2d1b3d; ${btn2TrapStyle}" ${pushEffect}>
-                ${escapeHtml(data.btn2Text || '🤔 Подумаю')}
+                ${Utils.escapeHtml(data.btn2Text || '🤔 Подумаю')}
             </button>
         </div>
     `;
@@ -238,8 +154,8 @@ document.addEventListener('DOMContentLoaded', function() {
         <div class="slide-icon">
             <img src="${data.confirmImage || 'assets/images/confirms/1.png'}" alt="" />
         </div>
-        <div class="slide-title" style="color: ${colors.text};">${escapeHtml(data.confirmTitle || 'Отлично! Жду тебя!')}</div>
-        <div class="slide-datetime">📅 ${formatDate(data.eventDate || '2026-09-15')} в ${escapeHtml(data.eventTime || '19:00')}</div>
+        <div class="slide-title" style="color: ${colors.text};">${Utils.escapeHtml(data.confirmTitle || 'Отлично! Жду тебя!')}</div>
+        <div class="slide-datetime">📅 ${Utils.formatDate(data.eventDate || '2026-09-15')} в ${Utils.escapeHtml(data.eventTime || '19:00')}</div>
     `;
 
     slides = [slide1, slide2];
@@ -264,7 +180,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         <img src="${data.coverImage || 'assets/images/covers/1.png'}" alt="" />
                     </div>
                     <div class="envelope-letter-title" style="color: ${colors.text};">
-                        ${escapeHtml(data.mainTitle || 'Приглашаю тебя!')}
+                        ${Utils.escapeHtml(data.mainTitle || 'Приглашаю тебя!')}
                     </div>
                 </div>
 
@@ -353,16 +269,6 @@ document.addEventListener('DOMContentLoaded', function() {
             Toast.info('🤔 Хорошо, подумай. Но не затягивай! 😉');
         }
     });
-
-    // ============================================================
-    // ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ
-    // ============================================================
-    function escapeHtml(text) {
-        if (!text) return '';
-        const div = document.createElement('div');
-        div.textContent = text;
-        return div.innerHTML;
-    }
 
     console.log('✅ Приглашение загружено!', data);
 

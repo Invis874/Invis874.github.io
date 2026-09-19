@@ -13,16 +13,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const copyBtn = document.getElementById('copyBtn');
     const closeResult = document.getElementById('closeResult');
 
-    // ============================================================
-    // ФОРМАТИРОВАНИЕ ДАТЫ (YYYY-MM-DD → DD.MM.YYYY)
-    // ============================================================
-    function formatDate(isoDate) {
-        if (!isoDate) return '';
-        const parts = isoDate.split('-'); // [yyyy, mm, dd]
-        if (parts.length !== 3) return isoDate;
-        return parts[2] + '.' + parts[1] + '.' + parts[0];
-    }
-
     const previewProgress = document.getElementById('previewProgress');
     let currentStep = 1; // текущий шаг
 
@@ -308,16 +298,6 @@ document.addEventListener('DOMContentLoaded', function() {
         const eventDate = document.getElementById('eventDate').value || '2026-09-15';
         const eventTime = document.getElementById('eventTime').value || '19:00';
 
-        function getShapeRadius(shape) {
-            switch (shape) {
-                case 'rounded':  return '20px';
-                case 'soft':     return '32px';
-                case 'sharp':    return '0px';
-                case 'wave':     return '50% 50% 50% 50% / 20% 20% 20% 20%';
-                default:         return '20px';
-            }
-        }
-
         // Стили для превью
         const colorPalettes = {
             rose:     { bg: '#fce4ec', accent: '#d4617e', text: '#2d1b3d', dark: '#b14a63' },
@@ -357,12 +337,11 @@ document.addEventListener('DOMContentLoaded', function() {
         // ХЕЛПЕР: обёртка слайда
         // ============================================================
         function wrapSlide(content) {
-            const radius = getShapeRadius(shape);
+            const radius = Utils.getShapeRadius(shape);
             return `
                 <div class="preview-slide" style="
                     background: ${colors.bg};
                     border-radius: ${radius};
-                    padding: 30px 24px;
                     text-align: center;
                 ">
                     ${content}
@@ -378,14 +357,20 @@ document.addEventListener('DOMContentLoaded', function() {
         if (currentStep === 1) {
             if (isEnvelope) {
                 // Показываем конверт
+                const pageBg = colors.bg;
+                const envelopeBg = Utils.adjustColorHSL(colors.bg, -3, +5);
+                const flapBg = Utils.adjustColorHSL(colors.bg, -6, +8);
+
                 html = `
-                    <div class="preview-envelope" style="background: ${colors.bg};"
-                         onmouseenter="this.style.transform='rotate(-2deg) scale(1.02)'"
-                         onmouseleave="this.style.transform='rotate(0) scale(1)'">
-                        <div class="preview-envelope-icon">✉️</div>
-                        <div class="preview-envelope-label">
-                            👆 Нажми на конверт
+                    <div class="preview-envelope-screen">
+                        <div class="preview-envelope-container">
+                            <!-- Тело конверта -->
+                            <div class="preview-envelope-body" style="background: ${envelopeBg}; border-radius: 12px;"></div>
+
+                            <!-- Треугольный клапан -->
+                            <div class="preview-envelope-flap" style="background: ${flapBg};"></div>
                         </div>
+                        <div class="preview-envelope-hint">👆 Нажми на конверт</div>
                     </div>
                 `;
             } else {
@@ -425,10 +410,10 @@ document.addEventListener('DOMContentLoaded', function() {
         else if (currentStep === 3) {
             html = wrapSlide(`
                 <div style="display:flex; justify-content:center; margin:8px 0;">
-                    <img src="${confirmImage}" style="width:100px; height:100px; object-fit:contain;" alt="" />
+                    <img src="${confirmImage}" style="width:160px; height:160px; object-fit:contain;" alt="" />
                 </div>
                 <div style="font-size:1.3rem; font-weight:700; color:${colors.text}; margin:6px 0;">${confirmTitle}</div>
-                <div style="color:#5b4a6b; font-size:0.95rem; margin:4px 0;">📅 ${formatDate(eventDate)} в ${eventTime}</div>
+                <div style="color:#5b4a6b; font-size:0.95rem; margin:4px 0;">📅 ${Utils.formatDate(eventDate)} в ${eventTime}</div>
             `);
         }
 
@@ -458,8 +443,8 @@ document.addEventListener('DOMContentLoaded', function() {
         };
 
         try {
-            const encoded = encodePayload(payload);
-            const link = buildInviteLink(encoded);
+            const encoded = Utils.encodePayload(payload);
+            const link = Utils.buildInviteLink(encoded);
 
             resultLinkInput.value = link;
             resultOverlay.classList.add('show');
@@ -477,7 +462,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const text = resultLinkInput.value;
         if (!text) return;
 
-        copyToClipboard(text)
+        Utils.copyToClipboard(text)
             .then(function() {
                 Toast.success('Ссылка скопирована в буфер!');
             })
@@ -500,42 +485,6 @@ document.addEventListener('DOMContentLoaded', function() {
             this.classList.remove('show');
         }
     });
-
-    // ============================================================
-    // УТИЛИТЫ
-    // ============================================================
-    function encodePayload(payload) {
-        const jsonString = JSON.stringify(payload);
-        return btoa(unescape(encodeURIComponent(jsonString)));
-    }
-
-    function buildInviteLink(encodedData) {
-        const currentPath = window.location.pathname;
-        const baseUrl = window.location.origin + currentPath.replace(/\/[^/]*$/, '/invite.html');
-        return baseUrl + '#data=' + encodedData;
-    }
-
-    function copyToClipboard(text) {
-        if (navigator.clipboard && navigator.clipboard.writeText) {
-            return navigator.clipboard.writeText(text);
-        }
-        return new Promise(function(resolve, reject) {
-            const textarea = document.createElement('textarea');
-            textarea.value = text;
-            textarea.style.position = 'fixed';
-            textarea.style.opacity = '0';
-            document.body.appendChild(textarea);
-            textarea.select();
-            try {
-                document.execCommand('copy');
-                document.body.removeChild(textarea);
-                resolve();
-            } catch (err) {
-                document.body.removeChild(textarea);
-                reject(err);
-            }
-        });
-    }
 
     // ============================================================
     // ПЕРВОНАЧАЛЬНОЕ ОБНОВЛЕНИЕ
