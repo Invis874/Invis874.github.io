@@ -61,28 +61,35 @@ document.addEventListener('DOMContentLoaded', function() {
     document.body.style.background = `linear-gradient(145deg, ${pageBg}, ${pageBg}dd)`;
 
     const anim1Class = data.btn1Animation && data.btn1Animation !== 'none' ? data.btn1Animation : '';
-    const anim2Class = data.btn2Animation && data.btn2Animation !== 'none' ? data.btn2Animation : '';
     const isEnvelope = data.mode === 'envelope';
     const btn2Enabled = data.btn2Enabled !== undefined ? data.btn2Enabled : true;
     const btn2Trap = data.btn2Trap || 'none';
 
-    // --- Стили для кнопки 2 (если заблокирована) ---
-    let btn2TrapStyle = '';
-    let btn2DisabledAttr = '';
-    if (!btn2Enabled) {
+    // ============================================================
+    // КНОПКА 2 — РАЗНАЯ ЛОГИКА ДЛЯ АКТИВНОЙ И ЗАБЛОКИРОВАННОЙ
+    // ============================================================
+    let btn2Class = '';         // CSS-класс для кнопки 2
+    let btn2TrapStyle = '';     // Inline-стили для кнопки-ловушки
+    let btn2DisabledAttr = '';  // Атрибут disabled
+
+    if (btn2Enabled) {
+        // Кнопка АКТИВНА → используем анимацию кнопки 2
+        btn2Class = data.btn2Animation && data.btn2Animation !== 'none' ? data.btn2Animation : '';
+    } else {
+        // Кнопка ЗАБЛОКИРОВАНА → используем trap-эффекты
         btn2DisabledAttr = 'disabled';
         switch (btn2Trap) {
             case 'fade':
-                btn2TrapStyle = 'opacity:0.3; transition: opacity 0.3s; cursor:not-allowed;';
+                btn2TrapStyle = 'opacity:0.3; transition: opacity 0.3s;';
                 break;
             case 'shake':
-                btn2TrapStyle = 'cursor:not-allowed; animation: shake 0.5s ease-in-out infinite;';
+                btn2Class = 'shake';
                 break;
             case 'push':
-                btn2TrapStyle = 'cursor:not-allowed; transition: transform 0.2s;';
+                btn2TrapStyle = 'transition: transform 0.2s;';
                 break;
             default:
-                btn2TrapStyle = 'cursor:not-allowed; opacity:0.5;';
+                btn2TrapStyle = 'opacity:0.5;';
         }
     }
 
@@ -123,21 +130,21 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // --- СЛАЙД 1: ПРИГЛАШЕНИЕ (лист) ---
     const slide1 = document.createElement('div');
-    slide1.className = 'slide';
+    slide1.className = 'invite-slide';
     slide1.dataset.slide = '0';
     slide1.style.borderRadius = slideRadius;
     slide1.style.background = sheetBg;
 
     slide1.innerHTML = `
-        <div class="slide-icon">
+        <div class="invite-slide-icon">
             <img src="${data.coverImage || 'assets/images/covers/1.png'}" alt="" />
         </div>
-        <div class="slide-title" style="color: ${colors.text};">${Utils.escapeHtml(data.mainTitle || 'Приглашаю тебя!')}</div>
-        <div class="slide-buttons">
-            <button class="slide-btn slide-btn-primary ${anim1Class}" data-action="agree" style="background: ${colors.accent};">
+        <div class="invite-slide-title" style="color: ${colors.text};">${Utils.escapeHtml(data.mainTitle || 'Приглашаю тебя!')}</div>
+        <div class="invite-buttons">
+            <button class="invite-btn invite-btn-primary ${anim1Class}" data-action="agree" style="background: ${colors.accent};">
                 ${Utils.escapeHtml(data.btn1Text || '💖 Согласен')}
             </button>
-            <button class="slide-btn slide-btn-secondary ${anim2Class}" data-action="maybe" ${btn2DisabledAttr} style="background:#ede8f2; color:#2d1b3d; ${btn2TrapStyle}" ${pushEffect}>
+            <button class="invite-btn invite-btn-secondary ${btn2Class}" data-action="maybe" ${btn2DisabledAttr} style="${btn2TrapStyle}" ${pushEffect}>
                 ${Utils.escapeHtml(data.btn2Text || '🤔 Подумаю')}
             </button>
         </div>
@@ -145,17 +152,17 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // --- СЛАЙД 2: ПОДТВЕРЖДЕНИЕ ---
     const slide2 = document.createElement('div');
-    slide2.className = 'slide';
+    slide2.className = 'invite-slide';
     slide2.dataset.slide = '1';
     slide2.style.borderRadius = slideRadius;
     slide2.style.background = sheetBg;
 
     slide2.innerHTML = `
-        <div class="slide-icon">
+        <div class="invite-slide-icon">
             <img src="${data.confirmImage || 'assets/images/confirms/1.png'}" alt="" />
         </div>
-        <div class="slide-title" style="color: ${colors.text};">${Utils.escapeHtml(data.confirmTitle || 'Отлично! Жду тебя!')}</div>
-        <div class="slide-datetime">📅 ${Utils.formatDate(data.eventDate || '2026-09-15')} в ${Utils.escapeHtml(data.eventTime || '19:00')}</div>
+        <div class="invite-slide-title" style="color: ${colors.text};">${Utils.escapeHtml(data.confirmTitle || 'Отлично! Жду тебя!')}</div>
+        <div class="invite-slide-datetime">📅 ${Utils.formatDate(data.eventDate || '2026-09-15')} в ${Utils.escapeHtml(data.eventTime || '19:00')}</div>
     `;
 
     slides = [slide1, slide2];
@@ -168,29 +175,29 @@ document.addEventListener('DOMContentLoaded', function() {
         // === РЕЖИМ КОНВЕРТА ===
         // Создаём отдельный экран конверта
         const envelopeScreen = document.createElement('div');
-        envelopeScreen.className = 'envelope-screen';
+        envelopeScreen.className = 'invite-envelope-screen';
         envelopeScreen.id = 'envelopeScreen';
 
         envelopeScreen.innerHTML = `
-            <div class="envelope-container" id="envelopeContainer">
+            <div class="invite-envelope-container" id="envelopeContainer">
                 <!-- Тело конверта -->
-                <div class="envelope-letter" id="envelopeLetter" 
+                <div class="invite-envelope-letter" id="envelopeLetter" 
                      style="background: ${sheetBg}; border-radius: ${slideRadius};">
-                    <div class="envelope-letter-icon">
+                    <div class="invite-envelope-letter-icon">
                         <img src="${data.coverImage || 'assets/images/covers/1.png'}" alt="" />
                     </div>
-                    <div class="envelope-letter-title" style="color: ${colors.text};">
+                    <div class="invite-envelope-letter-title" style="color: ${colors.text};">
                         ${Utils.escapeHtml(data.mainTitle || 'Приглашаю тебя!')}
                     </div>
                 </div>
 
                 <!-- Тело конверта -->
-                <div class="envelope-body" id="envelopeBody" style="background: ${envelopeBg};"></div>
+                <div class="invite-envelope-body" id="envelopeBody" style="background: ${envelopeBg};"></div>
 
                 <!-- Треугольный клапан -->
-                <div class="envelope-flap" id="envelopeFlap" style="background: ${flapBg};"></div>
+                <div class="invite-envelope-flap" id="envelopeFlap" style="background: ${flapBg};"></div>
             </div>
-            <div class="envelope-hint">👆 Нажми на конверт</div>
+            <div class="invite-envelope-hint">👆 Нажми на конверт</div>
         `;
 
         container.appendChild(envelopeScreen);
@@ -241,7 +248,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // ОБРАБОТКА КНОПОК
     // ============================================================
     document.addEventListener('click', function(e) {
-        const btn = e.target.closest('.slide-btn');
+        const btn = e.target.closest('.invite-btn');
         if (!btn) return;
 
         // Если кнопка заблокирована — игнорируем клик

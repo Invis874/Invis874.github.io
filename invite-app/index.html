@@ -9,12 +9,25 @@
     <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png" />
 
     <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/common.css" />
     <link rel="stylesheet" href="css/builder.css" />
 </head>
 <body>
 
     <!-- ===== TOAST-КОНТЕЙНЕР ===== -->
     <div class="toast-container" id="toastContainer"></div>
+
+    <!-- ТАБЫ ДЛЯ МОБИЛЬНЫХ -->
+    <div class="mobile-tabs" id="mobileTabs">
+        <button class="mobile-tab active" data-tab="builder">
+            <span class="mobile-tab-icon">⚙️</span>
+            Настройки
+        </button>
+        <button class="mobile-tab" data-tab="preview">
+            <span class="mobile-tab-icon">👁️</span>
+            Превью
+        </button>
+    </div>
 
     <div class="app">
         <!-- ===== ЛЕВАЯ ПАНЕЛЬ ===== -->

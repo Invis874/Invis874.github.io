@@ -309,25 +309,34 @@ document.addEventListener('DOMContentLoaded', function() {
         };
 
         const colors = colorPalettes[color] || colorPalettes.rose;
+
         const anim1Class = btn1Animation !== 'none' ? btn1Animation : '';
-        const anim2Class = btn2Animation !== 'none' ? btn2Animation : '';
         const isEnvelope = mode === 'envelope';
 
-        // Стили для кнопки 2 (если заблокирована)
-        let btn2TrapStyle = '';
-        if (!btn2Enabled) {
+        // ============================================================
+        // КНОПКА 2 — РАЗНАЯ ЛОГИКА ДЛЯ АКТИВНОЙ И ЗАБЛОКИРОВАННОЙ
+        // ============================================================
+        let btn2Class = '';      // CSS-класс для кнопки 2
+        let btn2TrapStyle = '';  // Inline-стили для кнопки-ловушки
+
+        if (btn2Enabled) {
+            // Кнопка АКТИВНА → используем анимацию кнопки 2
+            btn2Class = btn2Animation !== 'none' ? btn2Animation : '';
+        } else {
+            // Кнопка ЗАБЛОКИРОВАНА → используем trap-эффекты
             switch (btn2Trap) {
                 case 'fade':
-                    btn2TrapStyle = 'opacity:0.3; transition: opacity 0.3s; cursor:not-allowed;';
+                    btn2TrapStyle = 'opacity:0.3; transition: opacity 0.3s;';
                     break;
                 case 'shake':
-                    btn2TrapStyle = 'cursor:not-allowed; animation: shake 0.5s ease-in-out infinite;';
+                    // Используем CSS-класс .shake (анимация уже в common.css)
+                    btn2Class = 'shake';
                     break;
                 case 'push':
-                    btn2TrapStyle = 'cursor:not-allowed; transition: transform 0.2s;';
+                    btn2TrapStyle = 'transition: transform 0.2s;';
                     break;
                 default:
-                    btn2TrapStyle = 'cursor:not-allowed; opacity:0.5;';
+                    btn2TrapStyle = 'opacity:0.5;';
             }
         }
 
@@ -339,10 +348,9 @@ document.addEventListener('DOMContentLoaded', function() {
         function wrapSlide(content) {
             const radius = Utils.getShapeRadius(shape);
             return `
-                <div class="preview-slide" style="
+                <div class="invite-slide active" style="
                     background: ${colors.bg};
                     border-radius: ${radius};
-                    text-align: center;
                 ">
                     ${content}
                 </div>
@@ -362,27 +370,27 @@ document.addEventListener('DOMContentLoaded', function() {
                 const flapBg = Utils.adjustColorHSL(colors.bg, -6, +8);
 
                 html = `
-                    <div class="preview-envelope-screen">
-                        <div class="preview-envelope-container">
+                    <div class="invite-envelope-screen">
+                        <div class="invite-envelope-container">
                             <!-- Тело конверта -->
-                            <div class="preview-envelope-body" style="background: ${envelopeBg}; border-radius: 12px;"></div>
+                            <div class="invite-envelope-body" style="background: ${envelopeBg}; border-radius: 12px;"></div>
 
                             <!-- Треугольный клапан -->
-                            <div class="preview-envelope-flap" style="background: ${flapBg};"></div>
+                            <div class="invite-envelope-flap" style="background: ${flapBg};"></div>
                         </div>
-                        <div class="preview-envelope-hint">👆 Нажми на конверт</div>
+                        <div class="invite-envelope-hint">👆 Нажми на конверт</div>
                     </div>
                 `;
             } else {
                 // Показываем сразу приглашение
                 html = wrapSlide(`
-                    <div style="display:flex; justify-content:center; margin:8px 0;">
-                        <img src="${coverImage}" style="width:160px; height:160px; object-fit:contain;" alt="" />
+                    <div class="invite-slide-icon">
+                        <img src="${coverImage}" alt="" />
                     </div>
-                    <div style="font-size:1.3rem; font-weight:700; color:#1c0f27; margin:6px 0;">${mainTitle}</div>
-                    <div style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin-top:14px;">
-                        <button class="preview-btn preview-btn-1 ${anim1Class}" style="background: ${colors.accent}; color:white; border:none; padding:10px 24px; border-radius:40px; font-weight:600; font-size:0.9rem; cursor:default;">${btn1Text}</button>
-                        <button class="preview-btn preview-btn-2 ${anim2Class}" style="background:#ede8f2; border:none; padding:10px 24px; border-radius:40px; font-weight:600; font-size:0.9rem; cursor:default; color:#2d1b3d; ${btn2TrapStyle}">${btn2Text}</button>
+                    <div class="invite-slide-title">${mainTitle}</div>
+                    <div class="invite-buttons">
+                        <button class="invite-btn invite-btn-primary ${anim1Class}" style="background: ${colors.accent};">${btn1Text}</button>
+                        <button class="invite-btn invite-btn-secondary ${btn2Class}" style="${btn2TrapStyle}">${btn2Text}</button>
                     </div>
                 `);
             }
@@ -393,13 +401,13 @@ document.addEventListener('DOMContentLoaded', function() {
         // ============================================================
         else if (currentStep === 2) {
             html = wrapSlide(`
-                <div style="display:flex; justify-content:center; margin:8px 0;">
-                    <img src="${coverImage}" style="width:160px; height:160px; object-fit:contain;" alt="" />
+                <div class="invite-slide-icon">
+                    <img src="${coverImage}" alt="" />
                 </div>
-                <div style="font-size:1.3rem; font-weight:700; color:#1c0f27; margin:6px 0;">${mainTitle}</div>
-                <div style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin-top:14px;">
-                    <button class="preview-btn preview-btn-1 ${anim1Class}" style="background: ${colors.accent}; color:white; border:none; padding:10px 24px; border-radius:40px; font-weight:600; font-size:0.9rem; cursor:default;">${btn1Text}</button>
-                    <button class="preview-btn preview-btn-2 ${anim2Class}" style="background:#ede8f2; border:none; padding:10px 24px; border-radius:40px; font-weight:600; font-size:0.9rem; cursor:default; color:#2d1b3d; ${btn2TrapStyle}">${btn2Text}</button>
+                <div class="invite-slide-title" style="color: ${colors.text};">${mainTitle}</div>
+                <div class="invite-buttons">
+                    <button class="invite-btn invite-btn-primary ${anim1Class}" style="background: ${colors.accent};">${btn1Text}</button>
+                    <button class="invite-btn invite-btn-secondary ${btn2Class}" style="${btn2TrapStyle}">${btn2Text}</button>
                 </div>
             `);
         }
@@ -412,8 +420,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 <div style="display:flex; justify-content:center; margin:8px 0;">
                     <img src="${confirmImage}" style="width:160px; height:160px; object-fit:contain;" alt="" />
                 </div>
-                <div style="font-size:1.3rem; font-weight:700; color:${colors.text}; margin:6px 0;">${confirmTitle}</div>
-                <div style="color:#5b4a6b; font-size:0.95rem; margin:4px 0;">📅 ${Utils.formatDate(eventDate)} в ${eventTime}</div>
+                <div class="invite-slide-title" style="color:${colors.text};">${confirmTitle}</div>
+                <div class="invite-slide-datetime">📅 ${Utils.formatDate(eventDate)} в ${eventTime}</div>
             `);
         }
 
@@ -496,5 +504,43 @@ document.addEventListener('DOMContentLoaded', function() {
     // ============================================================
     ImagePicker.renderCovers('coverImagePicker', 'coverImage', updatePreview);
     ImagePicker.renderConfirms('confirmImagePicker', 'confirmImage', updatePreview);
+
+    // ============================================================
+    // МОБИЛЬНЫЕ ТАБЫ — ПЕРЕКЛЮЧЕНИЕ ПАНЕЛЕЙ
+    // ============================================================
+    const mobileTabs = document.getElementById('mobileTabs');
+    const panelLeft = document.querySelector('.panel-left');
+    const panelRight = document.querySelector('.panel-right');
+
+    if (mobileTabs) {
+        const tabs = mobileTabs.querySelectorAll('.mobile-tab');
+
+        tabs.forEach(function(tab) {
+            tab.addEventListener('click', function() {
+                const target = this.dataset.tab;
+
+                // Снимаем активность со всех
+                tabs.forEach(function(t) {
+                    t.classList.remove('active');
+                });
+                this.classList.add('active');
+
+                // Переключаем панели
+                if (target === 'builder') {
+                    panelLeft.classList.add('active');
+                    panelRight.classList.remove('active');
+                } else if (target === 'preview') {
+                    panelLeft.classList.remove('active');
+                    panelRight.classList.add('active');
+                }
+
+                // Скролл вверх
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        });
+
+        // По умолчанию — активна панель "Настройки"
+        panelLeft.classList.add('active');
+    }
 
 });

@@ -1,16 +1,8 @@
 /* ============================================================
-   BUILDER — СТИЛИ КОНСТРУКТОРА (ОБНОВЛЕННЫЙ)
+   BUILDER — Стили конструктора
    ============================================================ */
 
-/* ----- ОБЩИЙ ЛЕЙАУТ ----- */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
 body {
-    font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
     background: #f5f0fa;
     overflow: hidden;
     height: 100vh;
@@ -72,7 +64,7 @@ body {
 }
 
 /* ============================================================
-   ПАНЕЛЬ БОДИ — FLEX КОНТЕЙНЕР ДЛЯ ПРИЖАТИЯ КНОПОК
+   ПАНЕЛЬ БОДИ
    ============================================================ */
 .panel-body {
     flex: 1;
@@ -83,7 +75,7 @@ body {
 }
 
 /* ============================================================
-   ШАГИ — FLEX КОНТЕЙНЕР
+   ШАГИ
    ============================================================ */
 .step {
     display: none;
@@ -136,14 +128,13 @@ body {
 }
 
 /* ============================================================
-   STEP-CONTENT — ЗАНИМАЕТ ВСЁ СВОБОДНОЕ МЕСТО
+   STEP-CONTENT
    ============================================================ */
 .step-content {
     flex: 1;
     overflow-y: auto;
-    padding-right: 32px;  /* отступ справа для контента */
+    padding-right: 32px;
     padding-bottom: 16px;
-    margin-right: 0;       /* скролл прижат к правому краю */
 }
 
 .step-content::-webkit-scrollbar {
@@ -163,7 +154,7 @@ body {
 }
 
 /* ============================================================
-   STEP-FOOTER — ПРИЖАТ К НИЗУ
+   STEP-FOOTER
    ============================================================ */
 .step-footer {
     flex-shrink: 0;
@@ -172,7 +163,6 @@ body {
     display: flex;
     gap: 10px;
     background: #ffffff;
-    /* чтобы не просвечивало через скролл */
 }
 
 /* ============================================================
@@ -213,6 +203,15 @@ body {
 
 .form-group input::placeholder {
     color: #b5a8c4;
+}
+
+.form-row {
+    display: flex;
+    gap: 12px;
+}
+
+.form-row .half {
+    flex: 1;
 }
 
 /* ============================================================
@@ -258,7 +257,6 @@ body {
     box-shadow: 0 0 0 3px rgba(124, 91, 154, 0.15);
 }
 
-/* Кнопка загрузки */
 .upload-btn {
     display: inline-flex;
     align-items: center;
@@ -282,7 +280,6 @@ body {
     color: #5f4379;
 }
 
-/* Превью загруженной картинки */
 .upload-preview {
     position: relative;
     width: 80px;
@@ -324,35 +321,21 @@ body {
     transform: scale(1.1);
 }
 
-.form-row {
-    display: flex;
-    gap: 12px;
-}
-
-.form-row .half {
-    flex: 1;
-}
-
 /* ============================================================
-   СЕТКИ ДЛЯ СЕЛЕКТОРОВ (2 в строку)
+   СЕТКИ СЕЛЕКТОРОВ
    ============================================================ */
 .style-grid-2,
 .mode-grid-2,
-.anim-grid-2 {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 8px;
-}
-
-/* ============================================================
-   ВИД ГРАНЕЙ (SHAPE SELECTOR)
-   ============================================================ */
+.anim-grid-2,
 .shape-grid-2 {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 8px;
 }
 
+/* ============================================================
+   ВИД ГРАНЕЙ
+   ============================================================ */
 .shape-option {
     padding: 12px 8px;
     border-radius: 12px;
@@ -381,7 +364,6 @@ body {
     color: white;
 }
 
-/* Мини-превью формы */
 .shape-preview {
     width: 40px;
     height: 40px;
@@ -413,7 +395,7 @@ body {
 }
 
 /* ============================================================
-   ЦВЕТОВАЯ ПАЛИТРА (COLOR SELECTOR)
+   ЦВЕТОВАЯ ПАЛИТРА
    ============================================================ */
 .color-grid-3 {
     display: grid;
@@ -465,7 +447,7 @@ body {
 }
 
 /* ============================================================
-   РЕЖИМЫ — ОПЦИИ
+   РЕЖИМЫ
    ============================================================ */
 .mode-option {
     padding: 16px 12px;
@@ -508,7 +490,7 @@ body {
 }
 
 /* ============================================================
-   АНИМАЦИИ — ОПЦИИ
+   АНИМАЦИИ
    ============================================================ */
 .anim-option {
     padding: 10px 8px;
@@ -542,7 +524,7 @@ body {
 }
 
 /* ============================================================
-   TRAP-ОПЦИИ (для заблокированной кнопки) — НОВЫЕ СТИЛИ
+   TRAP-ОПЦИИ
    ============================================================ */
 .trap-option {
     padding: 10px 8px;
@@ -574,6 +556,7 @@ body {
     font-size: 1.4rem;
     margin-bottom: 2px;
 }
+
 /* ============================================================
    КНОПКИ НАВИГАЦИИ
    ============================================================ */
@@ -601,7 +584,6 @@ body {
     box-shadow: 0 4px 16px rgba(45, 27, 61, 0.25);
 }
 
-/* Полная ширина для кнопки на первом шаге */
 .btn-full {
     flex: 1;
     width: 100%;
@@ -682,11 +664,6 @@ body {
     transition: all 0.3s;
 }
 
-.preview-badge.style-badge {
-    background: #2d1b3d;
-    color: white;
-}
-
 .preview-body {
     flex: 1;
     display: flex;
@@ -697,7 +674,7 @@ body {
 }
 
 /* ============================================================
-   ПРОГРЕСС-ПОЛЗУНОК ЭТАПОВ (в превью)
+   ПРОГРЕСС-ПОЛЗУНОК
    ============================================================ */
 .preview-wrapper {
     display: flex;
@@ -783,14 +760,14 @@ body {
     height: 2px;
     background: #ede8f2;
     margin: 0 8px;
-    margin-bottom: 22px; /* чтобы линия была на уровне кружков, а не подписей */
+    margin-bottom: 22px;
     border-radius: 2px;
     transition: background 0.3s ease;
 }
 
 .progress-line.completed {
     background: #7c5b9a;
-}   
+}
 
 .preview-container {
     width: 100%;
@@ -806,7 +783,6 @@ body {
     transition: all 0.3s;
 }
 
-/* Плейсхолдер */
 .preview-placeholder {
     text-align: center;
     color: #b5a8c4;
@@ -829,163 +805,8 @@ body {
     color: #c5b8d4 !important;
 }
 
-/* ============================================================
-   ПРЕВЬЮ — ВНУТРЕННИЕ СТИЛИ
-   ============================================================ */
 #previewContent {
     width: 100%;
-}
-
-.preview-envelope-screen {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 30px 20px;
-    width: 100%;
-}
-
-.preview-envelope-container {
-    width: 100%;
-    max-width: 320px;
-    aspect-ratio: 3 / 2;
-    position: relative;
-    perspective: 1200px;
-    cursor: pointer;
-    transition: transform 0.2s ease;
-}
-
-.preview-envelope-container:hover {
-    transform: translateY(-3px);
-}
-
-.preview-envelope-body {
-    position: absolute;
-    inset: 0;
-    box-shadow:
-        0 20px 60px rgba(0, 0, 0, 0.15),
-        inset 0 -4px 12px rgba(0, 0, 0, 0.06);
-    border: 1px solid rgba(255, 255, 255, 0.4);
-    z-index: 1;
-    transition: border-radius 0.3s ease;
-}
-
-.preview-envelope-flap {
-    position: absolute;
-    top: 2px;
-    left: 8px;
-    width: calc(100% - 16px);
-    height: 55%;
-    clip-path: polygon(0 0, 100% 0, 50% 100%);
-    z-index: 2;
-    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.08));
-}
-
-.preview-envelope-hint {
-    margin-top: 20px;
-    font-size: 0.85rem;
-    color: #7a6990;
-    animation: pulseText 2s ease-in-out infinite;
-    text-align: center;
-}
-
-.preview-btn {
-    padding: 10px 24px;
-    border: none;
-    border-radius: 40px;
-    font-weight: 600;
-    font-size: 0.9rem;
-    cursor: default;
-    transition: all 0.3s;
-    flex: 1;
-    min-width: 100px;
-    background: #ede8f2;
-    color: #2d1b3d;
-}
-
-.preview-btn-1 {
-    color: white;
-}
-
-.preview-btn.pulse {
-    animation: pulsePreview 2s ease-in-out infinite;
-}
-
-@keyframes pulsePreview {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.04); }
-}
-
-.preview-btn.shake {
-    animation: shakePreview 0.5s ease-in-out infinite;
-}
-
-@keyframes shakePreview {
-    0%, 100% { transform: rotate(0deg); }
-    25% { transform: rotate(-2deg); }
-    75% { transform: rotate(2deg); }
-}
-
-.preview-btn.bounce {
-    animation: bouncePreview 1.5s ease-in-out infinite;
-}
-
-@keyframes bouncePreview {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-5px); }
-}
-
-.preview-slideshow {
-    padding: 24px 20px;
-    border-radius: 20px;
-    text-align: center;
-    transition: background 0.4s;
-}
-
-.preview-slide {
-    padding: 40px 30px;
-    display: flex;
-    min-height: 480px;
-    flex-direction: column;
-    justify-content: center;
-}
-
-.preview-slide-title {
-    font-size: 1.3rem;
-    font-weight: 700;
-    color: #1c0f27;
-    margin: 6px 0;
-}
-
-.preview-slide-sub {
-    font-size: 0.85rem;
-    color: #7a6990;
-    margin-bottom: 12px;
-}
-
-.preview-slide-indicators {
-    display: flex;
-    justify-content: center;
-    gap: 6px;
-    margin-top: 14px;
-}
-
-.preview-dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: #d5c5e6;
-    transition: 0.3s;
-}
-
-.preview-dot.active {
-    background: #7c5b9a;
-    width: 24px;
-    border-radius: 6px;
-}
-
-.preview-confirm {
-    transition: background 0.4s, color 0.4s;
 }
 
 /* ============================================================
@@ -1117,35 +938,102 @@ body {
 }
 
 /* ============================================================
+   МОБИЛЬНЫЕ ТАБЫ
+   ============================================================ */
+.mobile-tabs {
+    display: none;
+}
+
+/* ============================================================
    АДАПТИВ
    ============================================================ */
 @media (max-width: 900px) {
+    .mobile-tabs {
+        display: flex;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 100;
+        background: white;
+        border-bottom: 1px solid #ede8f2;
+        height: 56px;
+    }
+
+    .mobile-tab {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        padding: 12px;
+        border: none;
+        background: transparent;
+        font-family: inherit;
+        font-weight: 600;
+        font-size: 0.85rem;
+        color: #8a7a9e;
+        cursor: pointer;
+        transition: all 0.25s;
+        border-bottom: 2px solid transparent;
+        position: relative;
+    }
+
+    .mobile-tab.active {
+        color: #2d1b3d;
+        border-bottom-color: #2d1b3d;
+    }
+
+    .mobile-tab-icon {
+        font-size: 1.1rem;
+    }
+
     .app {
         flex-direction: column;
         height: auto;
-        overflow-y: auto;
+        overflow: visible;
+        padding-top: 56px;
     }
 
-    .panel-left {
+    .panel-left,
+    .panel-right {
         width: 100%;
         min-width: unset;
         height: auto;
-        max-height: 60vh;
+        max-height: none;
         border-right: none;
-        border-bottom: 1px solid #ede8f2;
+        border-bottom: none;
+        display: none;
+    }
+
+    .panel-left.active,
+    .panel-right.active {
+        display: flex;
+        flex-direction: column;
+        min-height: calc(100vh - 56px);
+    }
+
+    .panel-left {
+        height: calc(100vh - 56px);
+    }
+
+    .panel-right {
+        min-height: calc(100vh - 56px);
+        background: #f5f0fa;
+        padding: 20px;
     }
 
     .panel-body {
         padding: 20px 24px 0;
     }
 
-    .step-footer {
-        padding: 12px 0 20px;
+    .step-content {
+        padding-right: 3px;
+        padding-bottom: 0;
     }
 
-    .panel-right {
-        height: auto;
-        min-height: 60vh;
+    .step-footer {
+        padding: 12px 0 20px;
     }
 
     .panel-right .panel-header {
@@ -1153,26 +1041,35 @@ body {
     }
 
     .preview-body {
-        padding: 16px;
+        padding: 20px;
+        min-height: auto;
+        overflow-y: visible;
+        align-items: flex-start;
     }
 
     .preview-container {
         padding: 20px;
         min-height: 300px;
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .preview-progress {
+        padding: 0;
     }
 
     .result-modal {
         padding: 28px 24px;
-    }
-
-    .toast-container {
-        top: 12px;
-        right: 12px;
-        max-width: 300px;
+        max-width: calc(100vw - 32px);
     }
 }
 
 @media (max-width: 480px) {
+    .mobile-tab {
+        font-size: 0.8rem;
+        padding: 10px;
+    }
+
     .panel-left .panel-header {
         padding: 16px 20px;
     }
@@ -1185,12 +1082,27 @@ body {
         padding: 10px 0 16px;
     }
 
+    .panel-right {
+        padding: 16px;
+    }
+
     .panel-right .panel-header {
         padding: 12px 16px;
     }
 
     .preview-body {
         padding: 12px;
+    }
+
+    .form-row {
+        flex-direction: column;
+        gap: 0;
+    }
+
+    .preview-container {
+        padding: 16px;
+        min-height: 240px;
+        border-radius: 20px;
     }
 
     .progress-dot {
@@ -1207,24 +1119,6 @@ body {
         gap: 16px;
     }
 
-    .preview-container {
-        padding: 16px;
-        min-height: 240px;
-        border-radius: 20px;
-    }
-
-    .form-row {
-        flex-direction: column;
-        gap: 0;
-    }
-
-    .style-grid-2,
-    .mode-grid-2,
-    .anim-grid-2 {
-        grid-template-columns: 1fr 1fr;
-        gap: 6px;
-    }
-
     .preview-badges {
         flex-wrap: wrap;
     }
@@ -1233,41 +1127,23 @@ body {
         padding: 20px 16px;
     }
 
-    .toast-container {
-        top: 8px;
-        right: 8px;
-        max-width: 260px;
+    .result-link {
+        flex-direction: column;
+        gap: 8px;
     }
 
-    .toast {
-        padding: 10px 14px;
-        font-size: 0.8rem;
+    .result-link input {
+        width: 100%;
     }
-}
 
-/* ============================================================
-   BUILDER — ДОПОЛНИТЕЛЬНЫЕ АНИМАЦИИ
-   ============================================================ */
-
-/* Пульсирующая подсказка "👆 Нажми на конверт" */
-@keyframes pulseText {
-    0%, 100% {
-        opacity: 0.7;
-        transform: scale(1);
+    .btn-copy {
+        width: 100%;
     }
-    50% {
-        opacity: 1;
-        transform: scale(1.05);
+
+    .style-grid-2,
+    .mode-grid-2,
+    .anim-grid-2 {
+        grid-template-columns: 1fr 1fr;
+        gap: 6px;
     }
-}
-
-/* Эффект тряски при наведении на конверт (добавлен через JS) */
-.preview-slide .envelope-clickable:hover {
-    animation: shake 0.5s ease-in-out;
-}
-
-@keyframes shake {
-    0%, 100% { transform: rotate(0deg); }
-    25% { transform: rotate(-3deg); }
-    75% { transform: rotate(3deg); }
 }
