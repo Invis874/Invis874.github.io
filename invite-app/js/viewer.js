@@ -68,28 +68,26 @@ document.addEventListener('DOMContentLoaded', function() {
     // ============================================================
     // КНОПКА 2 — РАЗНАЯ ЛОГИКА ДЛЯ АКТИВНОЙ И ЗАБЛОКИРОВАННОЙ
     // ============================================================
-    let btn2Class = '';         // CSS-класс для кнопки 2
-    let btn2TrapStyle = '';     // Inline-стили для кнопки-ловушки
-    let btn2DisabledAttr = '';  // Атрибут disabled
+    let btn2Class = '';
+    let btn2DisabledAttr = '';
 
     if (btn2Enabled) {
-        // Кнопка АКТИВНА → используем анимацию кнопки 2
         btn2Class = data.btn2Animation && data.btn2Animation !== 'none' ? data.btn2Animation : '';
     } else {
-        // Кнопка ЗАБЛОКИРОВАНА → используем trap-эффекты
         btn2DisabledAttr = 'disabled';
+        
         switch (btn2Trap) {
             case 'fade':
-                btn2TrapStyle = 'opacity:0.3; transition: opacity 0.3s;';
+                btn2Class = 'trap-fade';
                 break;
-            case 'shake':
-                btn2Class = 'shake';
+            case 'run':
+                btn2Class = 'trap-run';
                 break;
             case 'push':
-                btn2TrapStyle = 'transition: transform 0.2s;';
+                btn2Class = 'trap-push';
                 break;
             default:
-                btn2TrapStyle = 'opacity:0.5;';
+                btn2Class = 'trap-none';
         }
     }
 
@@ -113,18 +111,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // ============================================================
-    // ЭФФЕКТ PUSH
-    // ============================================================
-
-    let pushEffect = '';
-    if (!btn2Enabled && btn2Trap === 'push') {
-        pushEffect = `
-            onmouseenter="this.style.animation='pushAway 0.4s ease'"
-            onmouseleave="this.style.animation=''"
-        `;
-    }
-
-    // ============================================================
     // СОЗДАНИЕ СЛАЙДОВ
     // ============================================================
 
@@ -144,7 +130,7 @@ document.addEventListener('DOMContentLoaded', function() {
             <button class="invite-btn invite-btn-primary ${anim1Class}" data-action="agree" style="background: ${colors.accent};">
                 ${Utils.escapeHtml(data.btn1Text || '💖 Согласен')}
             </button>
-            <button class="invite-btn invite-btn-secondary ${btn2Class}" data-action="maybe" ${btn2DisabledAttr} style="${btn2TrapStyle}" ${pushEffect}>
+            <button class="invite-btn invite-btn-secondary ${btn2Class}" data-action="maybe" ${btn2DisabledAttr}>
                 ${Utils.escapeHtml(data.btn2Text || '🤔 Подумаю')}
             </button>
         </div>
@@ -247,18 +233,21 @@ document.addEventListener('DOMContentLoaded', function() {
     // ============================================================
     // ОБРАБОТКА КНОПОК
     // ============================================================
-    document.addEventListener('click', function(e) {
+    document.addEventListener('pointerdown', function(e) {
         const btn = e.target.closest('.invite-btn');
         if (!btn) return;
 
+        // Если это trap-run — пропускаем (обрабатывается в utils.js)
+        if (btn.classList.contains('trap-run')) return;
+
         // Если кнопка заблокирована — игнорируем клик
         if (btn.disabled) {
-            // Эффект push при клике на заблокированную кнопку
-            if (btn2Trap === 'push') {
-                btn.style.animation = 'pushAway 0.4s ease';
-                setTimeout(function() {
-                    btn.style.animation = '';
-                }, 400);
+            if (btn.classList.contains('trap-none')) {
+                Toast.warning('😏 Ой, не нажимается!');
+            } else if (btn.classList.contains('trap-fade')) {
+                Toast.info('👻 Ой, исчезла!');
+            } else if (btn.classList.contains('trap-push')) {
+                Toast.warning('😈 Не так просто! Соглашайся!');
             }
             return;
         }
@@ -275,6 +264,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
+    Utils.initRunawayButtons();
     console.log('✅ Приглашение загружено!', data);
 
 });

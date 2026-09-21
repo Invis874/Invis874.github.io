@@ -83,6 +83,79 @@ const Utils = (function() {
     }
 
     // ============================================================
+    // ЭФФЕКТ "СБЕГАЕТ" — ОТСЛЕЖИВАНИЕ МЫШКИ
+    // ============================================================
+    function initRunawayButtons() {
+        if (window._runawayInit === true) return;
+        window._runawayInit = true;
+
+        document.addEventListener('pointerdown', function(e) {
+            const btn = e.target.closest('.trap-run');
+            if (!btn) return;
+
+            e.preventDefault();
+
+            const slide = btn.closest('.invite-slide')
+                       || btn.closest('.invite-envelope-screen')
+                       || btn.parentElement;
+            if (!slide) return;
+
+            const slideRect = slide.getBoundingClientRect();
+            const btnRect = btn.getBoundingClientRect();
+
+            const btnWidth = btnRect.width;
+            const btnHeight = btnRect.height;
+
+            const PADDING = 12;
+
+            // === НАКОПЛЕННОЕ СМЕЩЕНИЕ ===
+            let currentTranslateX = parseFloat(btn.dataset.translateX || 0);
+            let currentTranslateY = parseFloat(btn.dataset.translateY || 0);
+
+            // === ИСХОДНАЯ ПОЗИЦИЯ КНОПКИ (без transform) ===
+            const baseLeft = btnRect.left - slideRect.left - currentTranslateX;
+            const baseTop = btnRect.top - slideRect.top - currentTranslateY;
+
+            // === ГРАНИЦЫ ДЛЯ СМЕЩЕНИЯ ===
+            const minTranslateX = PADDING - baseLeft;
+            const maxTranslateX = slideRect.width - btnWidth - PADDING - baseLeft;
+            const minTranslateY = PADDING - baseTop;
+            const maxTranslateY = slideRect.height - btnHeight - PADDING - baseTop;
+
+            // === СЛУЧАЙНАЯ ЦЕЛЬ В ГРАНИЦАХ ===
+            const targetTranslateX = minTranslateX + Math.random() * (maxTranslateX - minTranslateX);
+            const targetTranslateY = minTranslateY + Math.random() * (maxTranslateY - minTranslateY);
+
+            // === СМЕЩЕНИЕ ===
+            let offsetX = targetTranslateX - currentTranslateX;
+            let offsetY = targetTranslateY - currentTranslateY;
+
+            // === МИНИМАЛЬНАЯ ДИСТАНЦИЯ ===
+            const MIN_DISTANCE = 80;
+            const distance = Math.sqrt(offsetX * offsetX + offsetY * offsetY);
+
+            if (distance < MIN_DISTANCE) {
+                const angle = Math.random() * Math.PI * 2;
+                offsetX = Math.cos(angle) * MIN_DISTANCE;
+                offsetY = Math.sin(angle) * MIN_DISTANCE;
+            }
+
+            // === НОВОЕ НАКОПЛЕННОЕ СМЕЩЕНИЕ ===
+            let newTranslateX = currentTranslateX + offsetX;
+            let newTranslateY = currentTranslateY + offsetY;
+
+            // === ОБРЕЗАЕМ ПО ГРАНИЦАМ ===
+            newTranslateX = Math.max(minTranslateX, Math.min(maxTranslateX, newTranslateX));
+            newTranslateY = Math.max(minTranslateY, Math.min(maxTranslateY, newTranslateY));
+
+            // === СОХРАНЯЕМ И ПРИМЕНЯЕМ ===
+            btn.dataset.translateX = newTranslateX;
+            btn.dataset.translateY = newTranslateY;
+
+            btn.style.transform = `translate(${newTranslateX}px, ${newTranslateY}px)`;
+        });
+    }
+    // ============================================================
     // КОДИРОВАНИЕ PAYLOAD В BASE64 (для URL)
     // ============================================================
     function encodePayload(payload) {
@@ -141,6 +214,7 @@ const Utils = (function() {
         formatDate: formatDate,
         getShapeRadius: getShapeRadius,
         adjustColorHSL: adjustColorHSL,
+        initRunawayButtons: initRunawayButtons,
         encodePayload: encodePayload,
         buildInviteLink: buildInviteLink,
         copyToClipboard: copyToClipboard,

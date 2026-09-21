@@ -36,12 +36,6 @@
     50%      { opacity: 1; transform: scale(1.05); }
 }
 
-@keyframes pushAway {
-    0%   { transform: translateX(0); }
-    50%  { transform: translateX(-20px); }
-    100% { transform: translateX(0); }
-}
-
 /* ============================================================
    СЛАЙД (ЛИСТ ПРИГЛАШЕНИЯ)
    ============================================================ */
@@ -148,10 +142,55 @@
     animation: bounce 1.5s ease-in-out infinite;
 }
 
-.invite-btn:disabled {
-    pointer-events: auto !important;
-    cursor: not-allowed !important;
+/* ============================================================
+   TRAP-ЭФФЕКТЫ ДЛЯ ЗАБЛОКИРОВАННОЙ КНОПКИ
+   ============================================================ */
+
+/* --- Без эффекта --- */
+.invite-btn.trap-none {
+    opacity: 0.5;
 }
+
+/* --- Исчезает --- */
+.invite-btn.trap-fade {
+    transition: opacity 0.4s ease, transform 0.4s ease;
+    opacity: 1;
+}
+
+.invite-btn.trap-fade:hover {
+    opacity: 0;
+    transform: scale(0.9);
+}
+
+/* --- Сбегает --- */
+.invite-btn.trap-run {
+    cursor: pointer;
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    will-change: transform;
+    position: relative;
+    z-index: 2;
+}
+
+.invite-btn.trap-run:disabled {
+    cursor: pointer;
+}
+
+
+/* --- Отталкивает --- */
+.invite-btn.trap-push {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.invite-btn.trap-push:hover {
+    transform: translateY(-8px) scale(0.97);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+.invite-btn:disabled {
+    pointer-events: auto;
+    cursor: not-allowed;
+}
+
 
 /* ============================================================
    КОНВЕРТ
@@ -277,5 +316,33 @@
 
     .invite-envelope-letter-title {
         font-size: 0.75rem;
+    }
+}
+
+/* ============================================================
+   АДАПТАЦИЯ TRAP-ЭФФЕКТОВ ПОД ТЕЛЕФОН
+   ============================================================ */
+@media (hover: none) and (pointer: coarse) {
+    /* Телефон/планшет — нет hover */
+    
+    /* "Сбегает" — на телефоне становится "Исчезает" */
+    .invite-btn.trap-run {
+        opacity: 1;
+        transition: opacity 0.4s ease;
+    }
+    
+    .invite-btn.trap-run:active {
+        opacity: 0;
+    }
+    
+    /* "Исчезает" — на телефоне тоже :active */
+    .invite-btn.trap-fade:active {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    
+    /* "Отталкивает" — на телефоне тоже :active */
+    .invite-btn.trap-push:active {
+        transform: translateY(-4px) scale(0.97);
     }
 }

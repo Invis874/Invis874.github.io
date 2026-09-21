@@ -316,27 +316,28 @@ document.addEventListener('DOMContentLoaded', function() {
         // ============================================================
         // КНОПКА 2 — РАЗНАЯ ЛОГИКА ДЛЯ АКТИВНОЙ И ЗАБЛОКИРОВАННОЙ
         // ============================================================
-        let btn2Class = '';      // CSS-класс для кнопки 2
-        let btn2TrapStyle = '';  // Inline-стили для кнопки-ловушки
+        let btn2Class = '';
+        let btn2DisabledAttr = '';
 
         if (btn2Enabled) {
             // Кнопка АКТИВНА → используем анимацию кнопки 2
             btn2Class = btn2Animation !== 'none' ? btn2Animation : '';
         } else {
             // Кнопка ЗАБЛОКИРОВАНА → используем trap-эффекты
+            btn2DisabledAttr = 'disabled';
+            
             switch (btn2Trap) {
                 case 'fade':
-                    btn2TrapStyle = 'opacity:0.3; transition: opacity 0.3s;';
+                    btn2Class = 'trap-fade';
                     break;
-                case 'shake':
-                    // Используем CSS-класс .shake (анимация уже в common.css)
-                    btn2Class = 'shake';
+                case 'run':
+                    btn2Class = 'trap-run';
                     break;
                 case 'push':
-                    btn2TrapStyle = 'transition: transform 0.2s;';
+                    btn2Class = 'trap-push';
                     break;
                 default:
-                    btn2TrapStyle = 'opacity:0.5;';
+                    btn2Class = 'trap-none';
             }
         }
 
@@ -390,7 +391,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     <div class="invite-slide-title">${mainTitle}</div>
                     <div class="invite-buttons">
                         <button class="invite-btn invite-btn-primary ${anim1Class}" style="background: ${colors.accent};">${btn1Text}</button>
-                        <button class="invite-btn invite-btn-secondary ${btn2Class}" style="${btn2TrapStyle}">${btn2Text}</button>
+                        <button class="invite-btn invite-btn-secondary ${btn2Class}" ${btn2DisabledAttr}>${btn2Text}</button>
                     </div>
                 `);
             }
@@ -407,7 +408,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 <div class="invite-slide-title" style="color: ${colors.text};">${mainTitle}</div>
                 <div class="invite-buttons">
                     <button class="invite-btn invite-btn-primary ${anim1Class}" style="background: ${colors.accent};">${btn1Text}</button>
-                    <button class="invite-btn invite-btn-secondary ${btn2Class}" style="${btn2TrapStyle}">${btn2Text}</button>
+                    <button class="invite-btn invite-btn-secondary ${btn2Class}" ${btn2DisabledAttr}>${btn2Text}</button>
                 </div>
             `);
         }
@@ -426,6 +427,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         previewContent.innerHTML = html;
+
     }
 
     // ============================================================
@@ -542,5 +544,8 @@ document.addEventListener('DOMContentLoaded', function() {
         // По умолчанию — активна панель "Настройки"
         panelLeft.classList.add('active');
     }
+
+    // Инициализируем эффект "сбегает" для новых кнопок
+    Utils.initRunawayButtons();
 
 });
