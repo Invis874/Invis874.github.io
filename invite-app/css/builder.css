@@ -1036,6 +1036,10 @@ body {
         padding: 12px 0 20px;
     }
 
+    .btn-prev {
+        flex: 0 0 33%;
+    }
+
     .panel-right .panel-header {
         padding: 16px 24px;
     }
