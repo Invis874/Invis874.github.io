@@ -70,15 +70,6 @@ const ImagePicker = (function() {
         // Рендер пикера подтверждений
         renderConfirms: function(pickerId, hiddenInputId, onUpdate) {
             render(pickerId, hiddenInputId, IMAGES.confirms, onUpdate);
-        },
-
-        // Получить список картинок (если понадобится)
-        getCovers: function() {
-            return IMAGES.covers;
-        },
-
-        getConfirms: function() {
-            return IMAGES.confirms;
         }
     };
 

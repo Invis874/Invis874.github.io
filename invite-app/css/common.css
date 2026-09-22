@@ -215,7 +215,6 @@
     cursor: not-allowed;
 }
 
-
 /* ============================================================
    КОНВЕРТ
    ============================================================ */
@@ -313,33 +312,6 @@
 /* ============================================================
    СОТРИ ФОН (SCRATCH)
    ============================================================ */
-.invite-scratch-screen {
-    position: fixed;
-    inset: 0;
-    z-index: 100;
-    overflow: hidden;
-    animation: fadeIn 0.5s ease;
-}
-
-/* После стирания — обычный layout */
-.invite-scratch-finished {
-    position: static;
-    inset: auto;
-    z-index: auto;
-    overflow: visible;
-    animation: none;
-}
-
-.invite-scratch-content-wrapper {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-    z-index: 1;
-}
-
 .invite-scratch-overlay {
     position: absolute;
     inset: 0;

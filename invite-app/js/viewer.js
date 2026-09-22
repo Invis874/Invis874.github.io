@@ -99,8 +99,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // --- СОСТОЯНИЕ ---
-    let currentSlide = 0;
-    let isEnvelopeOpen = false;
     let slides = [];
 
     // ============================================================
@@ -113,7 +111,6 @@ document.addEventListener('DOMContentLoaded', function() {
             s.classList.toggle('active', i === index);
         });
 
-        currentSlide = index;
         container.scrollTop = 0;
     }
 

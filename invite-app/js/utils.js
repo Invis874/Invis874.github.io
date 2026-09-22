@@ -355,7 +355,7 @@ const Utils = (function() {
                     }, 600);
                 } else if (enteredPin.length >= pinLength) {
                     if (typeof Toast !== 'undefined') {
-                        Toast.error('❌ Неверный пинкод');
+                        Toast.error('Неверный пинкод');
                     }
                     
                     // Добавляем класс .error на контейнер

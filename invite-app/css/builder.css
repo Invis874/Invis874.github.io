@@ -927,20 +927,6 @@ body {
     border-radius: 3px;
 }
 
-.preview-container {
-    width: 100%;
-    max-width: 520px;
-    background: white;
-    border-radius: 28px;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08);
-    padding: 30px;
-    min-height: 440px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.3s;
-}
-
 .preview-placeholder {
     text-align: center;
     color: #b5a8c4;
@@ -1241,13 +1227,6 @@ body {
         border-radius: 26px;
     }
 
-    .preview-container {
-        padding: 20px;
-        min-height: 300px;
-        width: 100%;
-        max-width: 100%;
-    }
-
     .preview-progress {
         padding: 0;
     }
@@ -1287,12 +1266,6 @@ body {
     .form-row {
         flex-direction: column;
         gap: 0;
-    }
-
-    .preview-container {
-        padding: 16px;
-        min-height: 240px;
-        border-radius: 20px;
     }
 
     .progress-dot {

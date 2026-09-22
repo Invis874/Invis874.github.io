@@ -382,9 +382,6 @@ document.addEventListener('DOMContentLoaded', function() {
         const isScratch = mode === 'scratch';
         const isPin = mode === 'pin';
 
-        // Пинкод
-        const pinCode = document.getElementById('pinCode')?.value || '';
-
         // ============================================================
         // КНОПКА 2 — РАЗНАЯ ЛОГИКА ДЛЯ АКТИВНОЙ И ЗАБЛОКИРОВАННОЙ
         // ============================================================
@@ -413,8 +410,6 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
 
-        const baseSlideStyle = `background: ${colors.bg}; border-radius: 20px; padding: 30px 24px; text-align: center;`;
-        
         // ============================================================
         // ХЕЛПЕР: обёртка слайда
         // ============================================================
