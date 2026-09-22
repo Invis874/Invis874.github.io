@@ -490,6 +490,23 @@ body {
 }
 
 /* ============================================================
+   НАСТРОЙКИ ПИНКОДА
+   ============================================================ */
+#pinSettingsGroup input {
+    letter-spacing: 8px;
+    text-align: center;
+    font-size: 1.2rem;
+    font-weight: 700;
+    font-family: monospace;
+}
+
+#pinSettingsGroup input::placeholder {
+    letter-spacing: normal;
+    font-weight: 400;
+    font-size: 0.95rem;
+}
+
+/* ============================================================
    АНИМАЦИИ
    ============================================================ */
 .anim-option {

@@ -22,7 +22,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const modeMap = {
         instant: '✨ Сразу показать',
-        envelope: '📩 Конверт'
+        envelope: '📩 Конверт',
+        scratch:  '🧽 Сотри фон',
+        pin:      '🔢 Пинкод'
     };
 
     // ============================================================
@@ -90,6 +92,13 @@ document.addEventListener('DOMContentLoaded', function() {
             const mode = this.dataset.mode;
             document.getElementById('selectedMode').value = mode;
             previewBadge.textContent = modeMap[mode] || mode;
+            
+            // Показываем/скрываем настройки пинкода
+            const pinGroup = document.getElementById('pinSettingsGroup');
+            if (pinGroup) {
+                pinGroup.style.display = mode === 'pin' ? 'block' : 'none';
+            }
+            
             updatePreview();
         });
     });
@@ -320,7 +329,13 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         const anim1Class = btn1Animation !== 'none' ? btn1Animation : '';
+
         const isEnvelope = mode === 'envelope';
+        const isScratch = mode === 'scratch';
+        const isPin = mode === 'pin';
+
+        // Пинкод
+        const pinCode = document.getElementById('pinCode')?.value || '';
 
         // ============================================================
         // КНОПКА 2 — РАЗНАЯ ЛОГИКА ДЛЯ АКТИВНОЙ И ЗАБЛОКИРОВАННОЙ
@@ -391,6 +406,48 @@ document.addEventListener('DOMContentLoaded', function() {
                         <div class="invite-envelope-hint">👆 Нажми на конверт</div>
                     </div>
                 `;
+            } else if (isScratch) {
+                // Сотри фон
+                html = `
+                    <div class="invite-scratch-screen">
+                        <div class="invite-scratch-hint">🧽 Сотри фон, чтобы увидеть приглашение</div>
+                        <div class="invite-scratch-canvas" id="scratchCanvasPreview">
+                            <!-- Скрытое приглашение -->
+                            <div class="invite-scratch-content">
+                                <div class="invite-slide-icon">
+                                    <img src="${coverImage}" alt="" />
+                                </div>
+                                <div class="invite-slide-title">${mainTitle}</div>
+                            </div>
+                            <!-- Слой-заглушка для превью -->
+                            <div class="invite-scratch-overlay" style="background: ${Utils.adjustColorHSL(colors.bg, -10, +15)};">
+                                <div class="invite-scratch-text">🧽 Сотри меня</div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            } else if (isPin) {
+                // Пинкод
+                html = `
+                    <div class="invite-pin-screen">
+                        <div class="invite-pin-icon">🔒</div>
+                        <div class="invite-pin-title">Введите пинкод</div>
+                        <div class="invite-pin-hint">Приглашение защищено</div>
+                        <div class="invite-pin-inputs">
+                            ${[1,2,3,4,5,6].map(i => `
+                                <div class="invite-pin-dot ${i <= (pinCode.length || 0) ? 'filled' : ''}"></div>
+                            `).join('')}
+                        </div>
+                        <div class="invite-pin-keyboard">
+                            ${[1,2,3,4,5,6,7,8,9].map(n => `
+                                <div class="invite-pin-key">${n}</div>
+                            `).join('')}
+                            <div class="invite-pin-key empty"></div>
+                            <div class="invite-pin-key">0</div>
+                            <div class="invite-pin-key empty"></div>
+                        </div>
+                    </div>
+                `;
             } else {
                 // Показываем сразу приглашение
                 html = wrapSlide(`
@@ -458,8 +515,23 @@ document.addEventListener('DOMContentLoaded', function() {
             confirmImage: document.getElementById('confirmImage').value || 'assets/images/confirms/1.png',
             confirmTitle: document.getElementById('confirmTitle').value || 'Отлично!',
             eventDate: document.getElementById('eventDate').value || '2026-09-15',
-            eventTime: document.getElementById('eventTime').value || '19:00'
+            eventTime: document.getElementById('eventTime').value || '19:00',
+            pinCode: document.getElementById('pinCode')?.value || ''
         };
+
+        // ============================================================
+        // ВАЛИДАЦИЯ
+        // ============================================================
+        const errors = [];
+        const mode = payload.mode;
+        
+        // Проверка пинкода
+        if (mode === 'pin') {
+            const pinCode = document.getElementById('pinCode')?.value || '';
+            if (!/^\d{3,6}$/.test(pinCode)) {
+                errors.push('Пинкод должен содержать от 3 до 6 цифр');
+            }
+        }
 
         try {
             const encoded = Utils.encodePayload(payload);

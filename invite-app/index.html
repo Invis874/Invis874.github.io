@@ -64,8 +64,33 @@
                                     <span class="mode-icon">📩</span>
                                     <span class="mode-label">Конверт</span>
                                 </div>
+                                <div class="mode-option" data-mode="scratch">
+                                    <span class="mode-icon">🧽</span>
+                                    <span class="mode-label">Сотри фон</span>
+                                </div>
+                                <div class="mode-option" data-mode="pin">
+                                    <span class="mode-icon">🔢</span>
+                                    <span class="mode-label">Пинкод</span>
+                                </div>
                             </div>
                             <input type="hidden" id="selectedMode" value="instant" />
+
+                            <!-- Настройки для ПИНКОДА (появляется при выборе pin) -->
+                            <div class="form-group" id="pinSettingsGroup" style="display: none;">
+                                <label>Пинкод (3-6 цифр)</label>
+                                <input 
+                                    type="text" 
+                                    id="pinCode" 
+                                    maxlength="6" 
+                                    placeholder="Например: 1234"
+                                    pattern="[0-9]{3,6}"
+                                    inputmode="numeric"
+                                />
+                                <div class="error-message"></div>
+                                <div style="margin-top: 8px; font-size: 0.75rem; color: #8a7a9e; background: #f5f0fa; padding: 8px 12px; border-radius: 8px;">
+                                    🔒 Гость увидит приглашение только после ввода правильного кода
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="step-footer">

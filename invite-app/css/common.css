@@ -294,6 +294,135 @@
 }
 
 /* ============================================================
+   СОТРИ ФОН (SCRATCH)
+   ============================================================ */
+.invite-scratch-screen {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    overflow: hidden;
+    animation: fadeIn 0.5s ease;
+}
+
+/* Слайд по центру (до и после стирания) */
+.invite-scratch-content-wrapper {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    z-index: 1;
+}
+
+/* Canvas поверх всего */
+.invite-scratch-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 9999;
+    cursor: crosshair;
+    touch-action: none;
+    user-select: none;
+    display: block;
+}
+
+/* ============================================================
+   ПИНКОД (PIN)
+   ============================================================ */
+.invite-pin-screen {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 30px 20px;
+    width: 100%;
+    min-height: 480px;
+    gap: 12px;
+}
+
+.invite-pin-icon {
+    font-size: 3rem;
+    margin-bottom: 8px;
+}
+
+.invite-pin-title {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #1c0f27;
+}
+
+.invite-pin-hint {
+    font-size: 0.85rem;
+    color: #7a6990;
+    margin-bottom: 8px;
+}
+
+.invite-pin-inputs {
+    display: flex;
+    gap: 10px;
+    margin: 16px 0;
+}
+
+.invite-pin-dot {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    border: 2px solid #c5b0d6;
+    background: transparent;
+    transition: all 0.3s;
+}
+
+.invite-pin-dot.filled {
+    background: #2d1b3d;
+    border-color: #2d1b3d;
+    transform: scale(1.1);
+}
+
+.invite-pin-keyboard {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    width: 100%;
+    max-width: 240px;
+    margin-top: 12px;
+}
+
+.invite-pin-key {
+    aspect-ratio: 1 / 1;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: #2d1b3d;
+    cursor: pointer;
+    transition: all 0.2s;
+    user-select: none;
+    border: 2px solid rgba(0, 0, 0, 0.05);
+}
+
+.invite-pin-key:hover {
+    background: rgba(255, 255, 255, 0.9);
+    transform: scale(1.05);
+}
+
+.invite-pin-key:active {
+    transform: scale(0.95);
+}
+
+.invite-pin-key.empty {
+    background: transparent;
+    border: none;
+    cursor: default;
+    pointer-events: none;
+}
+
+/* ============================================================
    АДАПТИВ
    ============================================================ */
 @media (max-width: 480px) {
@@ -331,6 +460,15 @@
 
     .invite-envelope-letter-title {
         font-size: 0.75rem;
+    }
+
+    .invite-pin-key {
+        font-size: 1.1rem;
+    }
+    
+    .invite-pin-dot {
+        width: 12px;
+        height: 12px;
     }
 }
 

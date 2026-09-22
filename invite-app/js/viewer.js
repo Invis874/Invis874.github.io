@@ -34,6 +34,14 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // ============================================================
+    // ОПРЕДЕЛЯЕМ РЕЖИМ
+    // ============================================================
+    const isEnvelope = data.mode === 'envelope';
+    const isScratch = data.mode === 'scratch';
+    const isPin = data.mode === 'pin';
+    const pinCode = data.pinCode || '';
+
+    // ============================================================
     // ЦВЕТА (палитры)
     // ============================================================
     const colorPalettes = {
@@ -61,7 +69,6 @@ document.addEventListener('DOMContentLoaded', function() {
     document.body.style.background = `linear-gradient(145deg, ${pageBg}, ${pageBg}dd)`;
 
     const anim1Class = data.btn1Animation && data.btn1Animation !== 'none' ? data.btn1Animation : '';
-    const isEnvelope = data.mode === 'envelope';
     const btn2Enabled = data.btn2Enabled !== undefined ? data.btn2Enabled : true;
     const btn2Trap = data.btn2Trap || 'none';
 
@@ -221,7 +228,60 @@ document.addEventListener('DOMContentLoaded', function() {
                 }, 2300);
             });
         }
-
+    } else if (isScratch) {
+        // === СОТРИ ФОН ===
+        // Показываем slide1 как обычно
+        slide1.classList.add('active');
+        container.appendChild(slide1);
+        container.appendChild(slide2);
+        
+        // Поверх всего — добавляем canvas на весь экран
+        const scratchOverlay = document.createElement('canvas');
+        scratchOverlay.className = 'invite-scratch-overlay';
+        scratchOverlay.id = 'scratchCanvasOverlay';
+        document.body.appendChild(scratchOverlay);
+        
+        // Инициализация scratch-эффекта
+        setTimeout(function() {
+            Utils.initScratchEffect(
+                Utils.adjustColorHSL(colors.bg, -25, +20),
+                function() {
+                    // Canvas стёрт — удаляем его
+                    // slide1 уже на месте, ничего не меняем
+                }
+            );
+        }, 100);
+    } else if (isPin) {
+        // === ПИНКОД ===
+        const pinScreen = document.createElement('div');
+        pinScreen.className = 'invite-pin-screen';
+        pinScreen.innerHTML = `
+            <div class="invite-pin-icon">🔒</div>
+            <div class="invite-pin-title">Введите пинкод</div>
+            <div class="invite-pin-hint">Приглашение защищено</div>
+            <div class="invite-pin-inputs" id="pinDots">
+                ${[1,2,3,4,5,6].map(() => '<div class="invite-pin-dot"></div>').join('')}
+            </div>
+            <div class="invite-pin-keyboard" id="pinKeyboard">
+                ${[1,2,3,4,5,6,7,8,9].map(n => `<div class="invite-pin-key" data-key="${n}">${n}</div>`).join('')}
+                <div class="invite-pin-key empty"></div>
+                <div class="invite-pin-key" data-key="0">0</div>
+                <div class="invite-pin-key" data-key="delete">⌫</div>
+            </div>
+        `;
+        
+        container.appendChild(pinScreen);
+        container.appendChild(slide1);
+        container.appendChild(slide2);
+        
+        // Инициализация пинкода
+        setTimeout(function() {
+            Utils.initPinCode(pinCode, function() {
+                // Колбэк: показываем полное приглашение
+                slide1.classList.add('active');
+            });
+        }, 100);
+        
     } else {
         // === РЕЖИМ "СРАЗУ ПОКАЗАТЬ" ===
         // Сразу показываем слайд 1
