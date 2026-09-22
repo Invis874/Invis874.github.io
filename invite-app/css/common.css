@@ -108,6 +108,13 @@
     transition: all 0.3s;
     min-width: 120px;
     flex: 1;
+    /* Автоперенос строки */
+    white-space: normal;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    word-break: break-word;
+    line-height: 1.3;
+    text-align: center;
 }
 
 .invite-btn-primary {
@@ -299,10 +306,18 @@
         font-size: 1.2rem;
     }
 
+    .invite-buttons {
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+    }
+
     .invite-btn {
         padding: 10px 20px;
-        font-size: 0.9rem;
-        min-width: 100px;
+        width: 80%;
+        max-width: 280px;
+        flex: none;
+        min-width: unset;
     }
 
     .invite-envelope-container {
