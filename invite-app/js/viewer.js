@@ -244,11 +244,19 @@ document.addEventListener('DOMContentLoaded', function() {
         // Инициализация scratch-эффекта
         setTimeout(function() {
             Utils.initScratchEffect(
-                Utils.adjustColorHSL(colors.bg, -25, +20),
-                function() {
-                    // Canvas стёрт — удаляем его
-                    // slide1 уже на месте, ничего не меняем
-                }
+                'scratchCanvasOverlay',                       // ← ID canvas
+                Utils.adjustColorHSL(colors.bg, -25, +20),    // ← цвет
+                function() {                                  // ← колбэк
+                    const canvas = document.getElementById('scratchCanvasOverlay');
+                    if (canvas) {
+                        canvas.style.transition = 'opacity 0.6s ease';
+                        canvas.style.opacity = '0';
+                        setTimeout(function() {
+                            canvas.remove();
+                        }, 600);
+                    }
+                },
+                55  
             );
         }, 100);
     } else if (isPin) {

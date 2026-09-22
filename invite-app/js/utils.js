@@ -85,10 +85,10 @@ const Utils = (function() {
     // ============================================================
     // ЭФФЕКТ "СОТРИ ФОН" (SCRATCH)
     // ============================================================
-    function initScratchEffect(overlayColor, onComplete) {
-        const canvas = document.getElementById('scratchCanvasOverlay');
+    function initScratchEffect(canvasId, overlayColor, onComplete, brushRadius) {
+        const canvas = document.getElementById(canvasId);
         if (!canvas) return;
-
+        
         // Размер canvas = размер экрана
         const rect = canvas.getBoundingClientRect();
         canvas.width = rect.width;
@@ -136,7 +136,7 @@ const Utils = (function() {
         let lastY = 0;
 
         // Кисть: большой радиус + размытие
-        const BRUSH_RADIUS = 55;
+        const brushSize = brushRadius || 55;
 
         function getCoords(e) {
             const r = canvas.getBoundingClientRect();
@@ -149,14 +149,14 @@ const Utils = (function() {
 
         function scratchAt(x, y) {
             // Мягкая кисть через радиальный градиент
-            const gradient = ctx.createRadialGradient(x, y, 0, x, y, BRUSH_RADIUS);
+            const gradient = ctx.createRadialGradient(x, y, 0, x, y, brushSize);
             gradient.addColorStop(0, 'rgba(0, 0, 0, 1)');       // центр — полное стирание
             gradient.addColorStop(0.6, 'rgba(0, 0, 0, 0.9)');   // чуть от центра
             gradient.addColorStop(1, 'rgba(0, 0, 0, 0)');       // край — плавное исчезновение
 
             ctx.fillStyle = gradient;
             ctx.beginPath();
-            ctx.arc(x, y, BRUSH_RADIUS, 0, Math.PI * 2);
+            ctx.arc(x, y, brushSize, 0, Math.PI * 2);
             ctx.fill();
 
             // Соединяем точки линией (для плавности при быстром движении)
@@ -168,13 +168,13 @@ const Utils = (function() {
                     const px = lastX + (x - lastX) * (i / steps);
                     const py = lastY + (y - lastY) * (i / steps);
                     
-                    const g = ctx.createRadialGradient(px, py, 0, px, py, BRUSH_RADIUS);
+                    const g = ctx.createRadialGradient(px, py, 0, px, py, brushSize);
                     g.addColorStop(0, 'rgba(0, 0, 0, 1)');
                     g.addColorStop(1, 'rgba(0, 0, 0, 0)');
                     
                     ctx.fillStyle = g;
                     ctx.beginPath();
-                    ctx.arc(px, py, BRUSH_RADIUS, 0, Math.PI * 2);
+                    ctx.arc(px, py, brushSize, 0, Math.PI * 2);
                     ctx.fill();
                 }
             }

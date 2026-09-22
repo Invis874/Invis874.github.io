@@ -6,11 +6,14 @@ body {
     background: #f5f0fa;
     overflow: hidden;
     height: 100vh;
+    height: -webkit-fill-available;
+    height: 100dvh;
 }
 
 .app {
     display: flex;
     height: 100vh;
+    height: 100dvh;
     width: 100vw;
     overflow: hidden;
 }
@@ -26,6 +29,7 @@ body {
     display: flex;
     flex-direction: column;
     height: 100vh;
+    height: 100dvh;
     overflow: hidden;
     flex-shrink: 0;
 }
@@ -490,6 +494,22 @@ body {
 }
 
 /* ============================================================
+   ПРЕВЬЮ: СОТРИ ФОН (внутри телефона)
+   ============================================================ */
+.preview-scratch-canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 9;
+    cursor: crosshair;
+    touch-action: none;
+    user-select: none;
+    display: block;
+    border-radius: 32px;
+}
+
+/* ============================================================
    НАСТРОЙКИ ПИНКОДА
    ============================================================ */
 #pinSettingsGroup input {
@@ -639,6 +659,7 @@ body {
     display: flex;
     flex-direction: column;
     height: 100vh;
+    height: 100dvh;
     overflow: hidden;
     padding: 0;
 }
@@ -847,6 +868,7 @@ body {
 
 /* Фон внутри телефона (как в реальном viewer) */
 .preview-phone-bg {
+    position: relative;
     width: 100%;
     height: 100%;
     display: flex;
@@ -1098,6 +1120,7 @@ body {
     .app {
         flex-direction: column;
         height: auto;
+        min-height: calc(100dvh - 56px);
         overflow: visible;
         padding-top: 56px;
     }
@@ -1118,14 +1141,17 @@ body {
         display: flex;
         flex-direction: column;
         min-height: calc(100vh - 56px);
+        min-height: calc(100dvh - 56px);
     }
 
     .panel-left {
         height: calc(100vh - 56px);
+        height: calc(100dvh - 56px);
     }
 
     .panel-right {
         min-height: calc(100vh - 56px);
+        min-height: calc(100dvh - 56px);
         background: #f5f0fa;
     }
 

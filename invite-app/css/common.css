@@ -304,7 +304,15 @@
     animation: fadeIn 0.5s ease;
 }
 
-/* Слайд по центру (до и после стирания) */
+/* После стирания — обычный layout */
+.invite-scratch-finished {
+    position: static;
+    inset: auto;
+    z-index: auto;
+    overflow: visible;
+    animation: none;
+}
+
 .invite-scratch-content-wrapper {
     position: absolute;
     inset: 0;
@@ -315,14 +323,12 @@
     z-index: 1;
 }
 
-/* Canvas поверх всего */
 .invite-scratch-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    z-index: 9999;
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10;
     cursor: crosshair;
     touch-action: none;
     user-select: none;

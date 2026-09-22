@@ -406,26 +406,6 @@ document.addEventListener('DOMContentLoaded', function() {
                         <div class="invite-envelope-hint">👆 Нажми на конверт</div>
                     </div>
                 `;
-            } else if (isScratch) {
-                // Сотри фон
-                html = `
-                    <div class="invite-scratch-screen">
-                        <div class="invite-scratch-hint">🧽 Сотри фон, чтобы увидеть приглашение</div>
-                        <div class="invite-scratch-canvas" id="scratchCanvasPreview">
-                            <!-- Скрытое приглашение -->
-                            <div class="invite-scratch-content">
-                                <div class="invite-slide-icon">
-                                    <img src="${coverImage}" alt="" />
-                                </div>
-                                <div class="invite-slide-title">${mainTitle}</div>
-                            </div>
-                            <!-- Слой-заглушка для превью -->
-                            <div class="invite-scratch-overlay" style="background: ${Utils.adjustColorHSL(colors.bg, -10, +15)};">
-                                <div class="invite-scratch-text">🧽 Сотри меня</div>
-                            </div>
-                        </div>
-                    </div>
-                `;
             } else if (isPin) {
                 // Пинкод
                 html = `
@@ -493,6 +473,34 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         previewContent.innerHTML = html;
+
+        // ============================================================
+        // ИНИЦИАЛИЗАЦИЯ ПРЕВЬЮ "СОТРИ ФОН"
+        // ============================================================
+        if (isScratch && currentStep === 1) {
+            const previewPhoneBg = document.getElementById('previewPhoneBg');
+    
+            // Убираем старый canvas
+            const oldCanvas = document.getElementById('previewScratchCanvas');
+            if (oldCanvas) oldCanvas.remove();
+            
+            if (previewPhoneBg) {
+                // Создаём canvas и накладываем на экран телефона
+                const canvas = document.createElement('canvas');
+                canvas.className = 'preview-scratch-canvas';
+                canvas.id = 'previewScratchCanvas';
+                previewPhoneBg.appendChild(canvas);
+                
+                setTimeout(function() {
+                    Utils.initScratchEffect(
+                        'previewScratchCanvas',
+                        Utils.adjustColorHSL(colors.bg, -25, +20),
+                        null,
+                        30
+                    );
+                }, 50);
+            }
+        }
 
     }
 
