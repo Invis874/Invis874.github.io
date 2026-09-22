@@ -1,6 +1,23 @@
 /* ============================================================
    АНИМАЦИИ
    ============================================================ */
+@keyframes dotAppear {
+    from {
+        opacity: 0;
+        transform: scale(0);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes dotShake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-3px); }
+    75% { transform: translateX(3px); }
+}
+
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(20px); }
     to   { opacity: 1; transform: translateY(0); }
@@ -345,7 +362,6 @@
     justify-content: center;
     padding: 30px 20px;
     width: 100%;
-    min-height: 480px;
     gap: 12px;
 }
 
@@ -370,21 +386,31 @@
     display: flex;
     gap: 10px;
     margin: 16px 0;
+    justify-content: center;
+    flex-wrap: wrap;
 }
 
 .invite-pin-dot {
     width: 14px;
     height: 14px;
     border-radius: 50%;
-    border: 2px solid #c5b0d6;
+    border: 2px solid var(--pin-accent, #c5b0d6);
     background: transparent;
     transition: all 0.3s;
+    animation: dotAppear 0.3s ease;
 }
 
 .invite-pin-dot.filled {
-    background: #2d1b3d;
-    border-color: #2d1b3d;
+    background: var(--pin-accent, #2d1b3d);
+    border-color: var(--pin-accent, #2d1b3d);
     transform: scale(1.1);
+}
+
+/* Ошибка ввода пинкода */
+.invite-pin-inputs.error .invite-pin-dot {
+    background: #e74c3c;
+    border-color: #e74c3c;
+    animation: dotShake 0.4s ease;
 }
 
 .invite-pin-keyboard {
@@ -399,22 +425,23 @@
 .invite-pin-key {
     aspect-ratio: 1 / 1;
     border-radius: 50%;
-    background: rgba(255, 255, 255, 0.7);
+    background: white;
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 1.3rem;
     font-weight: 600;
-    color: #2d1b3d;
+    color: var(--pin-accent, #2d1b3d);
     cursor: pointer;
     transition: all 0.2s;
     user-select: none;
-    border: 2px solid rgba(0, 0, 0, 0.05);
+    border: 2px solid var(--pin-accent, #c5b0d6);
 }
 
 .invite-pin-key:hover {
-    background: rgba(255, 255, 255, 0.9);
     transform: scale(1.05);
+    background: var(--pin-accent, #d4617e);
+    color: white;
 }
 
 .invite-pin-key:active {

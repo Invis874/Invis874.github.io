@@ -15,6 +15,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const previewProgress = document.getElementById('previewProgress');
     let currentStep = 1; // текущий шаг
+    let pinCodeInstance = null;
 
     // --- МАППИНГ ---
     let selectedShape = 'rounded';
@@ -283,9 +284,50 @@ document.addEventListener('DOMContentLoaded', function() {
     // ОБНОВЛЕНИЕ ПРЕВЬЮ ПРИ ИЗМЕНЕНИИ ПОЛЕЙ
     // ============================================================
     document.querySelectorAll('input, select').forEach(function(input) {
+        if (input.id === 'pinCode') return;
+
         input.addEventListener('input', updatePreview);
         input.addEventListener('change', updatePreview);
     });
+
+    // ============================================================
+    // ОБНОВЛЕНИЕ ПРЕВЬЮ ПИНКОДА ПРИ ВВОДЕ В ПОЛЕ
+    // ============================================================
+    const pinCodeInput = document.getElementById('pinCode');
+    if (pinCodeInput) {
+        pinCodeInput.addEventListener('input', function() {
+            // Ограничиваем только цифрами
+            this.value = this.value.replace(/\D/g, '');
+           
+            // Обновляем превью через инстанс
+            if (pinCodeInstance) {
+                // Меняем правильный пинкод → меняется длина → меняются точки
+                pinCodeInstance.setCorrectPin(this.value);
+            }
+        });
+    }
+
+    // ============================================================
+    // ОБНОВЛЕНИЕ ПРЕВЬЮ ПИНКОДА (при вводе в input)
+    // ============================================================
+    function createPinScreen(colors) {
+        return `
+            <div class="invite-pin-screen">
+                <div class="invite-pin-icon">🔒</div>
+                <div class="invite-pin-title">Введите пинкод</div>
+                <div class="invite-pin-hint">Приглашение защищено</div>
+                <div class="invite-pin-inputs" style="--pin-accent: ${colors.accent}; --pin-bg: ${colors.bg};"></div>  
+                <div class="invite-pin-keyboard" style="--pin-accent: ${colors.accent}; --pin-bg: ${colors.bg};">
+                    ${[1,2,3,4,5,6,7,8,9].map(n => `
+                        <div class="invite-pin-key" data-key="${n}">${n}</div>
+                    `).join('')}
+                    <div class="invite-pin-key empty"></div>
+                    <div class="invite-pin-key" data-key="0">0</div>
+                    <div class="invite-pin-key" data-key="delete">⌫</div>
+                </div>
+            </div>
+        `;
+    }
 
     // ============================================================
     // ФУНКЦИЯ ОБНОВЛЕНИЯ ПРЕВЬЮ
@@ -306,6 +348,12 @@ document.addEventListener('DOMContentLoaded', function() {
         const confirmTitle = document.getElementById('confirmTitle').value || 'Отлично!';
         const eventDate = document.getElementById('eventDate').value || '2026-09-15';
         const eventTime = document.getElementById('eventTime').value || '19:00';
+
+        const oldCanvas = document.getElementById('previewScratchCanvas');
+        if (oldCanvas) oldCanvas.remove(); // Убираем старый CANVAS "СОТРИ ФОН"
+
+        const oldPinOverlay = document.getElementById('previewPinOverlay');
+        if (oldPinOverlay) oldPinOverlay.remove();
 
         // Стили для превью
         const colorPalettes = {
@@ -406,28 +454,6 @@ document.addEventListener('DOMContentLoaded', function() {
                         <div class="invite-envelope-hint">👆 Нажми на конверт</div>
                     </div>
                 `;
-            } else if (isPin) {
-                // Пинкод
-                html = `
-                    <div class="invite-pin-screen">
-                        <div class="invite-pin-icon">🔒</div>
-                        <div class="invite-pin-title">Введите пинкод</div>
-                        <div class="invite-pin-hint">Приглашение защищено</div>
-                        <div class="invite-pin-inputs">
-                            ${[1,2,3,4,5,6].map(i => `
-                                <div class="invite-pin-dot ${i <= (pinCode.length || 0) ? 'filled' : ''}"></div>
-                            `).join('')}
-                        </div>
-                        <div class="invite-pin-keyboard">
-                            ${[1,2,3,4,5,6,7,8,9].map(n => `
-                                <div class="invite-pin-key">${n}</div>
-                            `).join('')}
-                            <div class="invite-pin-key empty"></div>
-                            <div class="invite-pin-key">0</div>
-                            <div class="invite-pin-key empty"></div>
-                        </div>
-                    </div>
-                `;
             } else {
                 // Показываем сразу приглашение
                 html = wrapSlide(`
@@ -502,6 +528,33 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
 
+        // ============================================================
+        // ИНИЦИАЛИЗАЦИЯ ПРЕВЬЮ "ПИНКОД"
+        // ============================================================
+        if (isPin && currentStep === 1) {
+            const previewPhoneBg = document.getElementById('previewPhoneBg');
+            if (previewPhoneBg) {
+                const overlay = document.createElement('div');
+                overlay.className = 'preview-pin-overlay';
+                overlay.id = 'previewPinOverlay';
+                overlay.innerHTML = createPinScreen(colors);
+                
+                previewPhoneBg.appendChild(overlay);
+                
+                // ← ПРАВИЛЬНЫЙ ПИНКОД
+                const correctPin = document.getElementById('pinCode')?.value || '';
+                
+                setTimeout(function() {
+                    pinCodeInstance = Utils.initPinCode(overlay, {
+                        pinCode: correctPin,      // ← длина = длина пинкода
+                        isPreview: true
+                    });
+                }, 50);
+            }
+        } else {
+            pinCodeInstance = null;
+        }
+
     }
 
     // ============================================================
@@ -536,9 +589,14 @@ document.addEventListener('DOMContentLoaded', function() {
         // Проверка пинкода
         if (mode === 'pin') {
             const pinCode = document.getElementById('pinCode')?.value || '';
-            if (!/^\d{3,6}$/.test(pinCode)) {
-                errors.push('Пинкод должен содержать от 3 до 6 цифр');
+            if (!/^\d{1,6}$/.test(pinCode)) {
+                errors.push('Пинкод должен содержать от 1 до 6 цифр');
             }
+        }
+
+        if (errors.length > 0) {
+            Toast.error(errors[0]);
+            return;
         }
 
         try {
@@ -623,6 +681,14 @@ document.addEventListener('DOMContentLoaded', function() {
                 } else if (target === 'preview') {
                     panelLeft.classList.remove('active');
                     panelRight.classList.add('active');
+
+                    // Пересоздаём canvas после переключения
+                    setTimeout(function() {
+                        const mode = document.getElementById('selectedMode').value;
+                        if (mode === 'scratch' && currentStep === 1) {
+                            updatePreview();
+                        }
+                    }, 100);
                 }
 
                 // Скролл вверх

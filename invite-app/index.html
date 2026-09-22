@@ -77,14 +77,14 @@
 
                             <!-- Настройки для ПИНКОДА (появляется при выборе pin) -->
                             <div class="form-group" id="pinSettingsGroup" style="display: none;">
-                                <label>Пинкод (3-6 цифр)</label>
+                                <label>Пинкод (1-6 цифр)</label>
                                 <input 
                                     type="text" 
                                     id="pinCode" 
                                     maxlength="6" 
                                     placeholder="Например: 1234"
-                                    pattern="[0-9]{3,6}"
                                     inputmode="numeric"
+                                    autocomplete="off"
                                 />
                                 <div class="error-message"></div>
                                 <div style="margin-top: 8px; font-size: 0.75rem; color: #8a7a9e; background: #f5f0fa; padding: 8px 12px; border-radius: 8px;">

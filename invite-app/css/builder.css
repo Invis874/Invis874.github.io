@@ -506,7 +506,6 @@ body {
     touch-action: none;
     user-select: none;
     display: block;
-    border-radius: 32px;
 }
 
 /* ============================================================
@@ -524,6 +523,46 @@ body {
     letter-spacing: normal;
     font-weight: 400;
     font-size: 0.95rem;
+}
+
+.preview-pin-overlay {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(6px);
+    border-radius: 32px;
+}
+
+.preview-pin-overlay .invite-pin-screen {
+    padding: 20px;
+}
+
+.preview-pin-overlay .invite-pin-icon {
+    font-size: 2rem;
+}
+
+.preview-pin-overlay .invite-pin-title {
+    font-size: 1rem;
+}
+
+.preview-pin-overlay .invite-pin-keyboard {
+    max-width: 180px;
+    gap: 6px;
+}
+
+.preview-pin-overlay .invite-pin-key {
+    font-size: 1rem;
+}
+
+.preview-pin-overlay .invite-pin-dot {
+    width: 10px;
+    height: 10px;
 }
 
 /* ============================================================

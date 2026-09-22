@@ -262,33 +262,47 @@ document.addEventListener('DOMContentLoaded', function() {
     } else if (isPin) {
         // === ПИНКОД ===
         const pinScreen = document.createElement('div');
-        pinScreen.className = 'invite-pin-screen';
+        pinScreen.className = 'invite-pin-overlay';
+        pinScreen.id = 'pinOverlay';
+        
+        // HTML пинкода — прямо здесь (для viewer'а)
         pinScreen.innerHTML = `
-            <div class="invite-pin-icon">🔒</div>
-            <div class="invite-pin-title">Введите пинкод</div>
-            <div class="invite-pin-hint">Приглашение защищено</div>
-            <div class="invite-pin-inputs" id="pinDots">
-                ${[1,2,3,4,5,6].map(() => '<div class="invite-pin-dot"></div>').join('')}
-            </div>
-            <div class="invite-pin-keyboard" id="pinKeyboard">
-                ${[1,2,3,4,5,6,7,8,9].map(n => `<div class="invite-pin-key" data-key="${n}">${n}</div>`).join('')}
-                <div class="invite-pin-key empty"></div>
-                <div class="invite-pin-key" data-key="0">0</div>
-                <div class="invite-pin-key" data-key="delete">⌫</div>
+            <div class="invite-pin-screen">
+                <div class="invite-pin-icon">🔒</div>
+                <div class="invite-pin-title">Введите пинкод</div>
+                <div class="invite-pin-hint">Приглашение защищено</div>
+                <div class="invite-pin-inputs" style="--pin-accent: ${colors.accent}; --pin-bg: ${colors.bg};">
+                    <div class="invite-pin-dot"></div>
+                    <div class="invite-pin-dot"></div>
+                    <div class="invite-pin-dot"></div>
+                    <div class="invite-pin-dot"></div>
+                </div>
+                <div class="invite-pin-keyboard" style="--pin-accent: ${colors.accent}; --pin-bg: ${colors.bg};">
+                    ${[1,2,3,4,5,6,7,8,9].map(n => `
+                        <div class="invite-pin-key" data-key="${n}">${n}</div>
+                    `).join('')}
+                    <div class="invite-pin-key empty"></div>
+                    <div class="invite-pin-key" data-key="0">0</div>
+                    <div class="invite-pin-key" data-key="delete">⌫</div>
+                </div>
             </div>
         `;
         
-        container.appendChild(pinScreen);
+        document.body.appendChild(pinScreen);
+        
+        // Показываем slide1 под overlay
+        slide1.classList.add('active');
         container.appendChild(slide1);
         container.appendChild(slide2);
         
-        // Инициализация пинкода
-        setTimeout(function() {
-            Utils.initPinCode(pinCode, function() {
-                // Колбэк: показываем полное приглашение
-                slide1.classList.add('active');
-            });
-        }, 100);
+        // Инициализация логики
+        Utils.initPinCode(pinScreen, {
+            pinCode: pinCode,
+            isPreview: false,
+            onSuccess: function() {
+                pinScreen.remove();
+            }
+        });
         
     } else {
         // === РЕЖИМ "СРАЗУ ПОКАЗАТЬ" ===

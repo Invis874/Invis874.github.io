@@ -276,54 +276,131 @@ const Utils = (function() {
     // ============================================================
     // ПИНКОД (PIN)
     // ============================================================
-    function initPinCode(correctPin, onComplete) {
-        const dots = document.querySelectorAll('.invite-pin-dot');
-        const keyboard = document.getElementById('pinKeyboard');
-        const pinScreen = document.querySelector('.invite-pin-screen');
+    function initPinCode(container, options) {
+        options = options || {};
+        let correctPin = options.pinCode || '';
+        const onSuccess = options.onSuccess || null;
+        const onUpdate = options.onUpdate || null;
+        const isPreview = options.isPreview || false;
         
-        if (!keyboard) return;
+        // Длина пинкода = количество точек (фиксированное)
+        // Если пинкод не задан — 4 по умолчанию
+        let pinLength = correctPin.length || 4;
+        
+        const keyboard = container.querySelector('.invite-pin-keyboard');
+        const inputs = container.querySelector('.invite-pin-inputs');
+        
+        if (!keyboard || !inputs) return;
         
         let enteredPin = '';
         
+        // Обновление точек
         function updateDots() {
-            dots.forEach(function(dot, i) {
-                dot.classList.toggle('filled', i < enteredPin.length);
+            // Сколько точек нужно сейчас
+            const neededCount = pinLength;
+            
+            // Сколько точек есть в DOM
+            const existingDots = inputs.querySelectorAll('.invite-pin-dot');
+            const existingCount = existingDots.length;
+            
+            // Если точек меньше — добавляем новые
+            if (existingCount < neededCount) {
+                for (let i = existingCount; i < neededCount; i++) {
+                    const dot = document.createElement('div');
+                    dot.className = 'invite-pin-dot';
+                    inputs.appendChild(dot);
+                }
+            }
+            // Если точек больше — удаляем лишние
+            else if (existingCount > neededCount) {
+                for (let i = existingCount - 1; i >= neededCount; i--) {
+                    existingDots[i].remove();
+                }
+            }
+            
+            // Обновляем класс .filled у существующих точек
+            const allDots = inputs.querySelectorAll('.invite-pin-dot');
+            allDots.forEach(function(dot, index) {
+                const shouldBeFilled = index < enteredPin.length;
+                dot.classList.toggle('filled', shouldBeFilled);
             });
         }
         
+        // Первичная отрисовка
+        updateDots();
+        
+        // ============================================================
+        // Проверка пинкода
+        // ============================================================
         function checkPin() {
-            if (enteredPin === correctPin) {
-                // Правильный пинкод
-                if (pinScreen) {
-                    pinScreen.style.animation = 'fadeOut 0.5s ease forwards';
+            if (isPreview) {
+                if (correctPin && enteredPin === correctPin) {
+                    container.style.animation = 'fadeOut 0.6s ease forwards';
+                    
+                    if (typeof Toast !== 'undefined') {
+                        Toast.success('🎉 Пинкод верный!');
+                    }
+                    
                     setTimeout(function() {
-                        pinScreen.remove();
-                        // Показываем приглашение через колбэк
-                        if (typeof onComplete === 'function') {
-                            onComplete();
-                        }
-                    }, 500);
+                        container.style.opacity = '0';
+                        container.style.pointerEvents = 'none';
+                        
+                        setTimeout(function() {
+                            enteredPin = '';
+                            updateDots();
+                            container.style.animation = '';
+                            container.style.opacity = '';
+                            container.style.pointerEvents = '';
+                        }, 2000);
+                    }, 600);
+                } else if (enteredPin.length >= pinLength) {
+                    if (typeof Toast !== 'undefined') {
+                        Toast.error('❌ Неверный пинкод');
+                    }
+                    
+                    // Добавляем класс .error на контейнер
+                    inputs.classList.add('error');
+                    
+                    // Через секунду — сбрасываем
+                    setTimeout(function() {
+                        inputs.classList.remove('error');
+                        enteredPin = '';
+                        updateDots();
+                    }, 1000);
                 }
-            } else {
-                // Неправильный пинкод
-                dots.forEach(function(dot) {
-                    dot.style.background = '#e74c3c';
-                    dot.style.borderColor = '#e74c3c';
-                });
                 
-                Toast.error('Неверный пинкод');
+                if (typeof onUpdate === 'function') {
+                    onUpdate(enteredPin);
+                }
+                return;
+            }
+            
+            // Live-режим (viewer)
+            if (enteredPin === correctPin) {
+                container.style.animation = 'fadeOut 0.5s ease forwards';
+                setTimeout(function() {
+                    if (typeof onSuccess === 'function') {
+                        onSuccess();
+                    }
+                }, 500);
+            } else {
+                inputs.classList.add('error');
+    
+                if (typeof Toast !== 'undefined') {
+                    Toast.error('Неверный пинкод');
+                }
                 
                 setTimeout(function() {
+                    inputs.classList.remove('error');
                     enteredPin = '';
                     updateDots();
-                    dots.forEach(function(dot) {
-                        dot.style.background = '';
-                        dot.style.borderColor = '';
-                    });
-                }, 500);
+                }, 1000);
             }
         }
         
+        // ============================================================
+        // Клик по клавиатуре
+        // ============================================================
         keyboard.addEventListener('click', function(e) {
             const key = e.target.closest('.invite-pin-key');
             if (!key || key.classList.contains('empty')) return;
@@ -333,16 +410,46 @@ const Utils = (function() {
             if (keyValue === 'delete') {
                 enteredPin = enteredPin.slice(0, -1);
                 updateDots();
-            } else if (enteredPin.length < correctPin.length) {
+            } else if (enteredPin.length < pinLength) {
                 enteredPin += keyValue;
                 updateDots();
                 
-                // Если достигли длины пинкода — проверяем
-                if (enteredPin.length === correctPin.length) {
-                    setTimeout(checkPin, 200);
+                // Если длина совпала — проверяем
+                if (enteredPin.length === pinLength) {
+                    setTimeout(checkPin, 300);
                 }
             }
+            
+            if (typeof onUpdate === 'function') {
+                onUpdate(enteredPin);
+            }
         });
+        
+        // ============================================================
+        // API
+        // ============================================================
+        return {
+            getValue: function() { return enteredPin; },
+            
+            // Обновить правильный пинкод + длину
+            setCorrectPin: function(newPin) {
+                options.pinCode = newPin;
+                correctPin = newPin;
+                pinLength = newPin.length || 4;
+                
+                // Если пользователь сократил пинкод — обрезаем введённое
+                if (enteredPin.length > pinLength) {
+                    enteredPin = enteredPin.slice(0, pinLength);
+                }
+                
+                updateDots();
+            },
+            
+            clear: function() {
+                enteredPin = '';
+                updateDots();
+            }
+        };
     }
 
     // ============================================================
