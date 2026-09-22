@@ -310,6 +310,15 @@ document.addEventListener('DOMContentLoaded', function() {
 
         const colors = colorPalettes[color] || colorPalettes.rose;
 
+        // ============================================================
+        // ФОН ПРЕВЬЮ (как в реальном viewer)
+        // ============================================================
+        const previewPhoneBg = document.getElementById('previewPhoneBg');
+        if (previewPhoneBg) {
+            const pageBg = colors.bg;
+            previewPhoneBg.style.background = `linear-gradient(145deg, ${pageBg}, ${pageBg}dd)`;
+        }
+
         const anim1Class = btn1Animation !== 'none' ? btn1Animation : '';
         const isEnvelope = mode === 'envelope';
 
@@ -350,7 +359,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const radius = Utils.getShapeRadius(shape);
             return `
                 <div class="invite-slide active" style="
-                    background: ${colors.bg};
+                    background: ${Utils.adjustColorHSL(colors.bg, -6, +10)};
                     border-radius: ${radius};
                 ">
                     ${content}

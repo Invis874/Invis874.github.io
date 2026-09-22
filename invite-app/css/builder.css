@@ -669,8 +669,9 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 30px;
-    overflow-y: auto;
+    padding: 20px;
+    overflow: hidden;
+    min-height: 0;
 }
 
 /* ============================================================
@@ -686,6 +687,7 @@ body {
 }
 
 .preview-progress {
+    flex-shrink: 0;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -767,6 +769,84 @@ body {
 
 .progress-line.completed {
     background: #7c5b9a;
+}
+
+/* Рамка телефона — адаптивная */
+.preview-phone {
+    width: min(375px, 100%);
+    max-height: 100%;
+    min-height: 0;
+    aspect-ratio: 375 / 720;
+    background: #1c0f27;
+    border-radius: 44px;
+    padding: 12px;
+    box-shadow: 
+        0 30px 80px rgba(0, 0, 0, 0.25),
+        inset 0 0 0 2px rgba(255, 255, 255, 0.05);
+    position: relative;
+    flex-shrink: 0;
+    box-sizing: border-box;
+    transition: all 0.3s;
+}
+
+/* Чёлка */
+.preview-phone-notch {
+    position: absolute;
+    top: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 120px;
+    height: 24px;
+    background: #1c0f27;
+    border-radius: 0 0 16px 16px;
+    z-index: 10;
+}
+
+/* Кнопка "домой" */
+.preview-phone-home {
+    position: absolute;
+    bottom: 16px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 120px;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.35);
+    border-radius: 4px;
+    z-index: 10;
+}
+
+/* Экран телефона */
+.preview-phone-screen {
+    width: 100%;
+    height: 100%;
+    background: white;
+    border-radius: 32px;
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Фон внутри телефона (как в реальном viewer) */
+.preview-phone-bg {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px 50px;
+    overflow-y: auto;
+    transition: background 0.4s ease;
+}
+
+.preview-phone-bg::-webkit-scrollbar {
+    width: 3px;
+}
+
+.preview-phone-bg::-webkit-scrollbar-thumb {
+    background: #d5c5e6;
+    border-radius: 3px;
 }
 
 .preview-container {
@@ -945,6 +1025,16 @@ body {
 }
 
 /* ============================================================
+   АДАПТИВ РАМКИ ТЕЛЕФОНА
+   ============================================================ */
+@media (max-width: 1100px) {
+    .preview-phone {
+        width: 340px;
+        height: 650px;
+    }
+}
+
+/* ============================================================
    АДАПТИВ
    ============================================================ */
 @media (max-width: 900px) {
@@ -1020,7 +1110,6 @@ body {
     .panel-right {
         min-height: calc(100vh - 56px);
         background: #f5f0fa;
-        padding: 20px;
     }
 
     .panel-body {
@@ -1045,10 +1134,29 @@ body {
     }
 
     .preview-body {
-        padding: 20px;
-        min-height: auto;
-        overflow-y: visible;
+        padding: 16px;
         align-items: flex-start;
+    }
+
+    .preview-phone {
+        width: min(340px, 85vw);
+        max-height: 70vh;
+        padding: 10px;
+        border-radius: 36px;
+    }
+    
+    .preview-phone-notch {
+        width: 100px;
+        height: 20px;
+        border-radius: 0 0 14px 14px;
+    }
+    
+    .preview-phone-home {
+        width: 100px;
+    }
+    
+    .preview-phone-screen {
+        border-radius: 26px;
     }
 
     .preview-container {
@@ -1086,10 +1194,6 @@ body {
         padding: 10px 0 16px;
     }
 
-    .panel-right {
-        padding: 16px;
-    }
-
     .panel-right .panel-header {
         padding: 12px 16px;
     }
@@ -1125,6 +1229,34 @@ body {
 
     .preview-badges {
         flex-wrap: wrap;
+    }
+
+    .preview-phone {
+        width: min(320px, 92vw);
+        max-height: 65vh;
+        padding: 8px;
+        border-radius: 28px;
+    }
+    
+    .preview-phone-notch {
+        top: 8px;
+        width: 80px;
+        height: 18px;
+        border-radius: 0 0 12px 12px;
+    }
+    
+    .preview-phone-home {
+        bottom: 12px;
+        width: 70px;
+        height: 3px;
+    }
+    
+    .preview-phone-screen {
+        border-radius: 20px;
+    }
+
+    .preview-phone-bg {
+        padding: 30px 12px 40px;
     }
 
     .result-modal {
