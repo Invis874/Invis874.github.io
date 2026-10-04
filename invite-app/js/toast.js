@@ -16,8 +16,8 @@ const Toast = (function() {
         style.textContent = `
             .toast-wrapper {
                 position: fixed;
-                bottom: 30px;
                 left: 50%;
+                bottom: calc(20px + env(safe-area-inset-bottom, 0px));
                 transform: translateX(-50%);
                 z-index: 9999;
                 display: flex;
@@ -25,27 +25,44 @@ const Toast = (function() {
                 gap: 10px;
                 align-items: center;
                 pointer-events: none;
-                max-width: 90vw;
+                max-width: 100vw;
+                max-height: 60vh;
+                padding: 0 12px;
             }
 
             .toast-item {
                 background: #1c0f27;
                 color: white;
-                padding: 14px 24px;
-                border-radius: 40px;
-                font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+                padding: clamp(10px, 3vw, 14px) clamp(16px, 5vw, 24px);
+                border-radius: 20px;
                 font-weight: 500;
-                font-size: 0.95rem;
+                font-size: clamp(0.85rem, 3.5vw, 0.95rem);
                 line-height: 1.3;
                 box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
                 display: flex;
                 align-items: center;
                 gap: 10px;
                 border: 1px solid rgba(255, 255, 255, 0.08);
-                max-width: 90vw;
+                max-width: min(90vw, 420px);
                 pointer-events: auto;
                 animation: toastIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
                 word-wrap: break-word;
+            }
+
+            @media (max-width: 480px) {
+                .toast-item {
+                    border-radius: 14px;
+                    padding: 12px 16px;
+                    font-size: 0.875rem;
+                }
+                @keyframes toastIn {
+                    from { opacity: 0; transform: translateY(12px) scale(0.96); }
+                    to   { opacity: 1; transform: translateY(0) scale(1); }
+                }
+            }
+
+            @media (prefers-reduced-motion: reduce) {
+                .toast-item, .toast-item.hiding { animation-duration: 0.01ms; }
             }
 
             .toast-item.success { background: #1a6d3c; }

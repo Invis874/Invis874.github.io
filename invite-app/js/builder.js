@@ -138,7 +138,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // ============================================================
     // ЗАГРУЗКА СВОИХ КАРТИНОК
     // ============================================================
-    const MAX_FILE_SIZE = 50 * 1024; // 450 КБ
+    const MAX_FILE_SIZE = 50 * 1024; // 50 КБ
 
     function setupImageUpload(uploadId, previewId, previewImgId, removeId, pickerId, hiddenInputId) {
         const upload = document.getElementById(uploadId);
@@ -147,6 +147,52 @@ document.addEventListener('DOMContentLoaded', function() {
         const removeBtn = document.getElementById(removeId);
         const picker = document.getElementById(pickerId);
         const hiddenInput = document.getElementById(hiddenInputId);
+
+        // ============================================================
+        // СЖАТИЕ КАРТИНКИ ЧЕРЕЗ CANVAS
+        // ============================================================
+        function compressImage(file, maxWidth, maxHeight, quality, callback) {
+            const reader = new FileReader();
+            
+            reader.onload = function(e) {
+                const img = new Image();
+                
+                img.onload = function() {
+                    // Вычисляем новые размеры с сохранением пропорций
+                    let width = img.width;
+                    let height = img.height;
+                    
+                    if (width > maxWidth || height > maxHeight) {
+                        const ratio = Math.min(maxWidth / width, maxHeight / height);
+                        width = Math.round(width * ratio);
+                        height = Math.round(height * ratio);
+                    }
+                    
+                    // Создаём canvas
+                    const canvas = document.createElement('canvas');
+                    canvas.width = width;
+                    canvas.height = height;
+                    
+                    const ctx = canvas.getContext('2d');
+                    
+                    // Белый фон (для прозрачных PNG)
+                    ctx.fillStyle = '#ffffff';
+                    ctx.fillRect(0, 0, width, height);
+                    
+                    // Рисуем картинку
+                    ctx.drawImage(img, 0, 0, width, height);
+                    
+                    // Экспортируем в JPEG (меньше размер)
+                    const compressedDataUrl = canvas.toDataURL('image/webp', quality);
+                    
+                    callback(compressedDataUrl);
+                };
+                
+                img.src = e.target.result;
+            };
+            
+            reader.readAsDataURL(file);
+        }
 
         if (!upload) return;
 
@@ -168,27 +214,20 @@ document.addEventListener('DOMContentLoaded', function() {
                 return;
             }
 
-            // Читаем файл как Data URL
-            const reader = new FileReader();
-            reader.onload = function(event) {
-                const dataUrl = event.target.result;
-
-                // Показываем превью
-                previewImg.src = dataUrl;
+            // === СЖИМАЕМ КАРТИНКУ ===
+            compressImage(file, 160, 160, 0.6, function(compressedDataUrl) {
+                previewImg.src = compressedDataUrl;
                 preview.style.display = 'inline-block';
-
-                // Снимаем активность со всех готовых картинок
+                
                 picker.querySelectorAll('.image-option').forEach(function(opt) {
                     opt.classList.remove('active');
                 });
-
-                // Сохраняем в hidden input
-                hiddenInput.value = dataUrl;
+                
+                hiddenInput.value = compressedDataUrl;
                 updatePreview();
-
+                
                 Toast.success('Картинка загружена!');
-            };
-            reader.readAsDataURL(file);
+            });
         });
 
         removeBtn.addEventListener('click', function() {
@@ -597,6 +636,10 @@ document.addEventListener('DOMContentLoaded', function() {
         try {
             const encoded = Utils.encodePayload(payload);
             const link = Utils.buildInviteLink(encoded);
+
+            if (link.length > 2000) {
+                Toast.warning('Ссылка длинная — может не открыться в мессенджерах. Попробуйте картинку поменьше.');
+            }
 
             resultLinkInput.value = link;
             resultOverlay.classList.add('show');
