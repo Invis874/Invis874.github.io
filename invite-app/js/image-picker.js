@@ -12,13 +12,16 @@ const ImagePicker = (function() {
             { src: 'assets/images/covers/1.png',      alt: '1' },
             { src: 'assets/images/covers/2.png',      alt: '2' },
             { src: 'assets/images/covers/3.gif',      alt: '3' },
-            { src: 'assets/images/covers/4.gif',      alt: '4' }
+            { src: 'assets/images/covers/4.gif',      alt: '4' },
+            { src: 'assets/images/covers/5.jpg',      alt: '5' },
+            { src: 'assets/images/covers/6.jpg',      alt: '6' }
         ],
         confirms: [
             { src: 'assets/images/confirms/1.png',     alt: '1' },
             { src: 'assets/images/confirms/2.png',     alt: '2' },
             { src: 'assets/images/confirms/3.gif',     alt: '3' },
-            { src: 'assets/images/confirms/4.gif',     alt: '4' }
+            { src: 'assets/images/confirms/4.gif',     alt: '4' },
+            { src: 'assets/images/confirms/5.jpg',     alt: '5' }
         ]
     };
 
