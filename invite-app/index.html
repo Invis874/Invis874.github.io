@@ -53,19 +53,19 @@
                             <label>Как будет открываться приглашение?</label>
                             <div class="mode-selector mode-grid-2">
                                 <div class="mode-option active" data-mode="instant">
-                                    <span class="mode-icon">✨</span>
+                                    <span class="invite-icon icon-lg" data-icon="instant"></span>
                                     <span class="mode-label">Сразу показать</span>
                                 </div>
                                 <div class="mode-option" data-mode="envelope">
-                                    <span class="mode-icon">📩</span>
+                                    <span class="invite-icon icon-lg" data-icon="envelope"></span>
                                     <span class="mode-label">Конверт</span>
                                 </div>
                                 <div class="mode-option" data-mode="scratch">
-                                    <span class="mode-icon">🧽</span>
+                                    <span class="invite-icon icon-lg" data-icon="scratch"></span>
                                     <span class="mode-label">Сотри фон</span>
                                 </div>
                                 <div class="mode-option" data-mode="pin">
-                                    <span class="mode-icon">🔢</span>
+                                    <span class="invite-icon icon-lg" data-icon="pin"></span>
                                     <span class="mode-label">Пинкод</span>
                                 </div>
                             </div>
@@ -333,9 +333,15 @@
         <main class="panel panel-right">
             <div class="panel-header">
                 <div class="preview-header">
-                    <h2>👁️ Превью</h2>
+                    <h2>
+                        <span class="invite-icon icon-md" data-icon="eye"></span>
+                        Превью
+                    </h2>
                     <div class="preview-badges">
-                        <span class="preview-badge" id="previewBadge">✨ Сразу показать</span>
+                        <span class="preview-badge" id="previewBadge">
+                            <span class="invite-icon icon-sm" data-icon="instant" id="previewBadgeIcon"></span>
+                            <span id="previewBadgeText">Сразу показать</span>
+                        </span>
                     </div>
                 </div>
             </div>

@@ -28,6 +28,9 @@ h2 {
     color: #1c0f27;
     margin-top: 4px;
     line-height: 1.2;
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
 h3 {
@@ -38,9 +41,53 @@ h3 {
     text-align: center;
 }
 
-.subhead {
-    color: #5b4a6b;
-    margin-bottom: 30px;
-    font-size: 1rem;
-    opacity: 0.8;
+.invite-icon {
+    display: inline-block;
+    flex-shrink: 0;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    vertical-align: middle;
+    filter: brightness(0) saturate(100%) invert(15%) sepia(30%) saturate(1500%) hue-rotate(240deg) brightness(90%) contrast(95%);
 }
+
+/* Размеры */
+.invite-icon.icon-sm {
+    width: 16px;
+    height: 16px;
+}
+
+.invite-icon.icon-md {
+    width: 24px;
+    height: 24px;
+}
+
+.invite-icon.icon-lg {
+    width: 32px;
+    height: 32px;
+}
+
+.invite-icon.icon-pin {
+    width: 50px;
+    height: 50px;
+}
+
+.invite-icon.icon-light,
+.mode-option.active .invite-icon,
+.mobile-tab.active .invite-icon {
+    filter: brightness(0) invert(1);
+}
+
+/* Для акцентного цвета */
+.icon-accent {
+    filter: brightness(0) saturate(100%);
+}
+
+.invite-icon[data-icon="instant"]    { background-image: url('../assets/icons/modes/instant.svg'); }
+.invite-icon[data-icon="envelope"]   { background-image: url('../assets/icons/modes/envelope.png'); }
+.invite-icon[data-icon="scratch"]    { background-image: url('../assets/icons/modes/scratch2.svg'); }
+.invite-icon[data-icon="pin"]        { background-image: url('../assets/icons/modes/pin.png'); }
+
+.invite-icon[data-icon="eye"]        { background-image: url('../assets/icons/ui/eye.svg'); }
+
+.invite-icon[data-icon="lock"] { background-image: url('../assets/icons/ui/lock.svg'); }

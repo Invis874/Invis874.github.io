@@ -336,15 +336,10 @@
     gap: 12px;
 }
 
-.invite-pin-icon {
-    font-size: 3rem;
-    margin-bottom: 8px;
-}
-
 .invite-pin-title {
     font-size: 1.3rem;
     font-weight: 700;
-    color: #1c0f27;
+    color: #250541;
 }
 
 .invite-pin-hint {

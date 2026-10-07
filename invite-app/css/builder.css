@@ -65,6 +65,7 @@ body {
     color: #8a7a9e;
     margin: 0;
     font-weight: 400;
+    opacity: 0.8;
 }
 
 /* ============================================================
@@ -482,12 +483,6 @@ body {
     color: white;
 }
 
-.mode-icon {
-    font-size: 1.8rem;
-    line-height: 1;
-    margin: 0;
-}
-
 .mode-label {
     font-size: 0.8rem;
     font-weight: 500;
@@ -543,8 +538,9 @@ body {
     padding: 20px;
 }
 
-.preview-pin-overlay .invite-pin-icon {
-    font-size: 2rem;
+.preview-pin-overlay .invite-icon.icon-pin {
+    width: 40px;
+    height: 40px;
 }
 
 .preview-pin-overlay .invite-pin-title {
@@ -625,12 +621,6 @@ body {
     border-color: #e74c3c;
     background: #e74c3c;
     color: white;
-}
-
-.trap-option .anim-icon {
-    display: block;
-    font-size: 1.4rem;
-    margin-bottom: 2px;
 }
 
 /* ============================================================
@@ -739,6 +729,9 @@ body {
     background: #f0ebf5;
     color: #5b4a6b;
     transition: all 0.3s;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
 }
 
 .preview-body {

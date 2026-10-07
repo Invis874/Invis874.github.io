@@ -22,10 +22,10 @@ document.addEventListener('DOMContentLoaded', function() {
     let selectedColor = 'rose';
 
     const modeMap = {
-        instant: '✨ Сразу показать',
-        envelope: '📩 Конверт',
-        scratch:  '🧽 Сотри фон',
-        pin:      '🔢 Пинкод'
+        instant:  'Сразу показать',
+        envelope: 'Конверт',
+        scratch:  'Сотри фон',
+        pin:      'Пинкод'
     };
 
     // ============================================================
@@ -92,7 +92,19 @@ document.addEventListener('DOMContentLoaded', function() {
             this.classList.add('active');
             const mode = this.dataset.mode;
             document.getElementById('selectedMode').value = mode;
-            previewBadge.textContent = modeMap[mode] || mode;
+            
+            // ============================================================
+            // ОБНОВЛЯЕМ БЕЙДЖ (иконка + текст отдельно)
+            // ============================================================
+            const badgeIcon = document.getElementById('previewBadgeIcon');
+            const badgeText = document.getElementById('previewBadgeText');
+            
+            if (badgeIcon) {
+                badgeIcon.setAttribute('data-icon', mode);
+            }
+            if (badgeText) {
+                badgeText.textContent = modeMap[mode] || mode;
+            }
             
             // Показываем/скрываем настройки пинкода
             const pinGroup = document.getElementById('pinSettingsGroup');
@@ -352,7 +364,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function createPinScreen(colors) {
         return `
             <div class="invite-pin-screen">
-                <div class="invite-pin-icon">🔒</div>
+                <span class="invite-icon icon-pin" data-icon="lock"></span>
                 <div class="invite-pin-title">Введите пинкод</div>
                 <div class="invite-pin-hint">Приглашение защищено</div>
                 <div class="invite-pin-inputs" style="--pin-accent: ${colors.accent}; --pin-bg: ${colors.bg};"></div>  
