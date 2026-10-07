@@ -83,11 +83,13 @@ h3 {
     filter: brightness(0) saturate(100%);
 }
 
+.invite-icon[data-icon="logo"] { background-image: url('../assets/icons/ui/logo.png'); }
+
+.invite-icon[data-icon="eye"]        { background-image: url('../assets/icons/ui/eye.svg'); }
+
 .invite-icon[data-icon="instant"]    { background-image: url('../assets/icons/modes/instant.svg'); }
 .invite-icon[data-icon="envelope"]   { background-image: url('../assets/icons/modes/envelope.png'); }
 .invite-icon[data-icon="scratch"]    { background-image: url('../assets/icons/modes/scratch2.svg'); }
 .invite-icon[data-icon="pin"]        { background-image: url('../assets/icons/modes/pin.png'); }
 
-.invite-icon[data-icon="eye"]        { background-image: url('../assets/icons/ui/eye.svg'); }
-
-.invite-icon[data-icon="lock"] { background-image: url('../assets/icons/ui/lock.svg'); }
+.invite-icon[data-icon="lock"]       { background-image: url('../assets/icons/ui/lock.svg'); }
