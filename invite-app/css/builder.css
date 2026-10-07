@@ -584,10 +584,10 @@ body {
     color: white;
 }
 
-.anim-icon {
+.anim-option .invite-icon,
+.trap-option .invite-icon {
     display: block;
-    font-size: 1.4rem;
-    margin-bottom: 2px;
+    margin: 0 auto 4px;
 }
 
 /* ============================================================

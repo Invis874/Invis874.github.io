@@ -68,7 +68,9 @@ h3 {
 }
 
 .invite-icon.icon-light,
-.mode-option.active .invite-icon {
+.mode-option.active .invite-icon,
+.anim-option.active .invite-icon,
+.trap-option.active .invite-icon {
     filter: brightness(0) invert(1);
 }
 
@@ -86,3 +88,15 @@ h3 {
 .invite-icon[data-icon="pin"]        { background-image: url('../assets/icons/modes/pin.png'); }
 
 .invite-icon[data-icon="lock"]       { background-image: url('../assets/icons/ui/lock.svg'); }
+
+/* Анимации */
+.invite-icon[data-icon="anim-none"]   { background-image: url('../assets/icons/animations/none.svg'); }
+.invite-icon[data-icon="anim-pulse"]  { background-image: url('../assets/icons/animations/pulse.svg'); }
+.invite-icon[data-icon="anim-shake"]  { background-image: url('../assets/icons/animations/shake.png'); }
+.invite-icon[data-icon="anim-bounce"] { background-image: url('../assets/icons/animations/bounce.svg'); }
+
+/* Trap-эффекты */
+.invite-icon[data-icon="trap-none"] { background-image: url('../assets/icons/trap/none.svg'); }
+.invite-icon[data-icon="trap-fade"] { background-image: url('../assets/icons/trap/fade.svg'); }
+.invite-icon[data-icon="trap-run"]  { background-image: url('../assets/icons/trap/run.svg'); }
+.invite-icon[data-icon="trap-push"] { background-image: url('../assets/icons/trap/push.webp'); }
