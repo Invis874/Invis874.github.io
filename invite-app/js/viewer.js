@@ -152,7 +152,10 @@ document.addEventListener('DOMContentLoaded', function() {
             <img src="${data.confirmImage || 'assets/images/confirms/1.png'}" alt="" />
         </div>
         <div class="invite-slide-title" style="color: ${colors.text};">${Utils.escapeHtml(data.confirmTitle || 'Отлично! Жду тебя!')}</div>
-        <div class="invite-slide-datetime">📅 ${Utils.formatDate(data.eventDate || '2026-09-15')} в ${Utils.escapeHtml(data.eventTime || '19:00')}</div>
+        <div class="invite-slide-datetime">
+            <span class="invite-icon icon-md" data-icon="calendar"></span>
+            ${Utils.formatDate(data.eventDate || '2026-09-15')} в ${Utils.escapeHtml(data.eventTime || '19:00')}
+        </div>
     `;
 
     slides = [slide1, slide2];

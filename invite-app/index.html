@@ -82,9 +82,9 @@
                                     inputmode="numeric"
                                     autocomplete="off"
                                 />
-                                <div style="margin-top: 8px; font-size: 0.75rem; color: #8a7a9e; background: #f5f0fa; padding: 8px 12px; border-radius: 8px;">
+                                <div class="form-hint">
                                     <span class="invite-icon icon-sm" data-icon="lock"></span>
-                                    Гость увидит приглашение только после ввода правильного кода
+                                    <span>Гость увидит приглашение только после ввода правильного кода</span>
                                 </div>
                             </div>
                         </div>
@@ -166,7 +166,8 @@
 
                             <!-- Кнопка загрузки своей картинки -->
                             <label class="upload-btn">
-                                📁 Загрузить свою картинку
+                                <span class="invite-icon icon-sm" data-icon="upload"></span>
+                                Загрузить свою картинку
                                 <input type="file" id="coverUpload" accept="image/png,image/jpeg,image/gif" style="display:none;" />
                             </label>
                             <div class="upload-preview" id="coverUploadPreview" style="display:none;">
@@ -250,9 +251,9 @@
                         <!-- ЭФФЕКТЫ ДЛЯ ЗАБЛОКИРОВАННОЙ КНОПКИ 2 -->
                         <div class="form-group" id="btn2TrapGroup" style="display:none;">
                             <input type="hidden" id="btn2Trap" value="none" />
-                            <div style="margin-bottom:8px; font-size:0.75rem; color:#8a7a9e; background:#f5f0fa; padding:8px 12px; border-radius:8px;">
+                            <div class="form-hint">
                                 <span class="invite-icon icon-sm" data-icon="lock"></span>
-                                Кнопка 2 заблокирована — гость не сможет её нажать
+                                <span>Кнопка 2 заблокирована — гость не сможет её нажать</span>
                             </div>
                             <label>Эффект при наведении (ловушка)</label>
                             <div class="animation-selector anim-grid-2">
@@ -296,7 +297,8 @@
                             <input type="hidden" id="confirmImage" value="" />
 
                             <label class="upload-btn">
-                                📁 Загрузить свою картинку
+                                <span class="invite-icon icon-sm" data-icon="upload"></span>
+                                Загрузить свою картинку
                                 <input type="file" id="confirmUpload" accept="image/png,image/jpeg,image/gif" style="display:none;" />
                             </label>
                             <div class="upload-preview" id="confirmUploadPreview" style="display:none;">
@@ -323,7 +325,10 @@
                     </div>
                     <div class="step-footer">
                         <button class="btn-prev" data-prev="2">← Назад</button>
-                        <button class="btn-generate">🚀 Создать ссылку</button>
+                        <button class="btn-generate">
+                            <span class="invite-icon icon-sm" data-icon="rocket"></span>
+                            Создать ссылку
+                        </button>
                     </div>
                 </div>
 
@@ -386,13 +391,16 @@
     <div class="result-overlay" id="resultOverlay">
         <div class="result-modal">
             <div class="result-header">
-                <span class="result-icon">✅</span>
+                <span class="invite-icon icon-md no-filter" data-icon="check"></span>
                 <h3>Ссылка готова!</h3>
             </div>
             <p class="result-hint">Отправьте эту ссылку другу — он увидит ваше приглашение</p>
             <div class="result-link">
                 <input type="text" id="resultLinkInput" readonly />
-                <button class="btn-copy" id="copyBtn">📋 Копировать</button>
+                <button class="btn-copy" id="copyBtn">
+                    <span class="invite-icon icon-sm" data-icon="copy"></span>
+                    Копировать
+                </button>
             </div>
             <button class="btn-close-result" id="closeResult">Закрыть</button>
         </div>

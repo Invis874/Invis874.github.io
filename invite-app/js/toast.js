@@ -74,11 +74,6 @@ const Toast = (function() {
                 animation: toastOut 0.3s ease forwards;
             }
 
-            .toast-icon {
-                font-size: 1.2rem;
-                flex-shrink: 0;
-            }
-
             @keyframes toastIn {
                 from { opacity: 0; transform: translateY(20px) scale(0.95); }
                 to   { opacity: 1; transform: translateY(0) scale(1); }
@@ -111,17 +106,10 @@ const Toast = (function() {
         ensureStyles();
         ensureContainer();
 
-        const icons = {
-            success: '✅',
-            error: '❌',
-            warning: '⚠️',
-            info: 'ℹ️'
-        };
-
         const toast = document.createElement('div');
         toast.className = 'toast-item ' + type;
         toast.innerHTML = `
-            <span class="toast-icon">${icons[type] || 'ℹ️'}</span>
+            <span class="invite-icon icon-md no-filter" data-icon="toast-${type}"></span>
             <span>${message}</span>
         `;
 

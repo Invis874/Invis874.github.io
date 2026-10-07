@@ -11,6 +11,27 @@ const Utils = (function() {
         if (!isoDate) return '';
         const parts = isoDate.split('-'); // [yyyy, mm, dd]
         if (parts.length !== 3) return isoDate;
+        
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        
+        const tomorrow = new Date(today);
+        tomorrow.setDate(tomorrow.getDate() + 1);
+        
+        const eventDate = new Date(isoDate);
+        eventDate.setHours(0, 0, 0, 0);
+        
+        if (eventDate.getTime() === today.getTime()) {
+            return 'Сегодня';
+        }
+        
+        if (eventDate.getTime() === tomorrow.getTime()) {
+            return 'Завтра';
+        }
+        
+        // ============================================================
+        // ОБЫЧНЫЙ ФОРМАТ
+        // ============================================================
         return parts[2] + '.' + parts[1] + '.' + parts[0];
     }
 

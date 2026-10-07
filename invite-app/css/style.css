@@ -51,6 +51,10 @@ h3 {
     filter: brightness(0) saturate(100%) invert(15%) sepia(30%) saturate(1500%) hue-rotate(240deg) brightness(90%) contrast(95%);
 }
 
+.invite-icon.no-filter {
+    filter: none;
+}
+
 /* Размеры */
 .invite-icon.icon-sm {
     width: 16px;
@@ -70,7 +74,9 @@ h3 {
 .invite-icon.icon-light,
 .mode-option.active .invite-icon,
 .anim-option.active .invite-icon,
-.trap-option.active .invite-icon {
+.trap-option.active .invite-icon,
+.btn-generate .invite-icon,
+.btn-copy .invite-icon {
     filter: brightness(0) invert(1);
 }
 
@@ -79,7 +85,7 @@ h3 {
     filter: brightness(0) saturate(100%);
 }
 
-.invite-icon[data-icon="logo"] { background-image: url('../assets/icons/ui/logo.png'); }
+.invite-icon[data-icon="logo"]       { background-image: url('../assets/icons/ui/logo.png'); }
 .invite-icon[data-icon="eye"]        { background-image: url('../assets/icons/ui/eye.svg'); }
 
 .invite-icon[data-icon="instant"]    { background-image: url('../assets/icons/modes/instant.svg'); }
@@ -88,6 +94,8 @@ h3 {
 .invite-icon[data-icon="pin"]        { background-image: url('../assets/icons/modes/pin.png'); }
 
 .invite-icon[data-icon="lock"]       { background-image: url('../assets/icons/ui/lock.svg'); }
+.invite-icon[data-icon="upload"]     { background-image: url('../assets/icons/ui/upload.svg'); }
+.invite-icon[data-icon="calendar"] { background-image: url('../assets/icons/ui/calendar.svg'); }
 
 /* Анимации */
 .invite-icon[data-icon="anim-none"]   { background-image: url('../assets/icons/animations/none.svg'); }
@@ -100,3 +108,13 @@ h3 {
 .invite-icon[data-icon="trap-fade"] { background-image: url('../assets/icons/trap/fade.svg'); }
 .invite-icon[data-icon="trap-run"]  { background-image: url('../assets/icons/trap/run.svg'); }
 .invite-icon[data-icon="trap-push"] { background-image: url('../assets/icons/trap/push.webp'); }
+
+.invite-icon[data-icon="rocket"] { background-image: url('../assets/icons/ui/rocket.svg'); }
+.invite-icon[data-icon="check"] { background-image: url('../assets/icons/ui/check.svg'); }
+.invite-icon[data-icon="copy"] { background-image: url('../assets/icons/ui/copy.svg'); }
+
+/* Уведомления */
+.invite-icon[data-icon="toast-success"] { background-image: url('../assets/icons/ui/check.svg'); }
+.invite-icon[data-icon="toast-error"]   { background-image: url('../assets/icons/ui/toast-error.svg'); }
+.invite-icon[data-icon="toast-warning"] { background-image: url('../assets/icons/ui/toast-warning.svg'); }
+.invite-icon[data-icon="toast-info"]    { background-image: url('../assets/icons/ui/toast-info.svg'); }

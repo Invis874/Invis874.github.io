@@ -540,7 +540,10 @@ document.addEventListener('DOMContentLoaded', function() {
                     <img src="${confirmImage}" style="width:160px; height:160px; object-fit:contain;" alt="" />
                 </div>
                 <div class="invite-slide-title" style="color:${colors.text};">${confirmTitle}</div>
-                <div class="invite-slide-datetime">📅 ${Utils.formatDate(eventDate)} в ${eventTime}</div>
+                <div class="invite-slide-datetime">
+                    <span class="invite-icon icon-md" data-icon="calendar"></span>
+                    ${Utils.formatDate(eventDate)} в ${eventTime}
+                </div>
             `);
         }
 
