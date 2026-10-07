@@ -265,7 +265,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // HTML пинкода — прямо здесь (для viewer'а)
         pinScreen.innerHTML = `
             <div class="invite-pin-screen">
-                <span class="invite-icon icon-pin" data-icon="lock"></span>
+                <span class="invite-icon icon-lg" data-icon="lock"></span>
                 <div class="invite-pin-title">Введите пинкод</div>
                 <div class="invite-pin-hint">Приглашение защищено</div>
                 <div class="invite-pin-inputs" style="--pin-accent: ${colors.accent}; --pin-bg: ${colors.bg};">

@@ -364,7 +364,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function createPinScreen(colors) {
         return `
             <div class="invite-pin-screen">
-                <span class="invite-icon icon-pin" data-icon="lock"></span>
+                <span class="invite-icon icon-lg" data-icon="lock"></span>
                 <div class="invite-pin-title">Введите пинкод</div>
                 <div class="invite-pin-hint">Приглашение защищено</div>
                 <div class="invite-pin-inputs" style="--pin-accent: ${colors.accent}; --pin-bg: ${colors.bg};"></div>  

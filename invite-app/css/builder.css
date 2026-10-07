@@ -533,7 +533,7 @@ body {
     padding: 20px;
 }
 
-.preview-pin-overlay .invite-icon.icon-pin {
+.preview-pin-overlay .invite-icon.icon-lg {
     width: 40px;
     height: 40px;
 }
@@ -1136,6 +1136,10 @@ body {
         font-size: 1.1rem;
     }
 
+    .panel-left .panel-header {
+        padding: 12px 20px;
+    }
+
     .app {
         flex-direction: column;
         height: auto;
@@ -1239,7 +1243,7 @@ body {
     }
 
     .panel-left .panel-header {
-        padding: 16px 20px;
+        padding: 10px 15px;
     }
 
     .panel-body {
