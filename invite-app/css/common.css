@@ -217,6 +217,33 @@
     cursor: not-allowed;
 }
 
+/* КНОПКА ПЕРЕХОДА В ЧАТ (экран подтверждения) */
+.invite-chat-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 14px;
+    padding: 10px 24px;
+    border-radius: 40px;
+    background: #2d1b3d;
+    color: #fff;
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    transition: all 0.25s;
+    width: 80%;
+    max-width: 280px;
+}
+
+.invite-chat-btn:hover {
+    background: #1c0f27;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 16px rgba(45, 27, 61, 0.25);
+}
+
 /* ============================================================
    КОНВЕРТ
    ============================================================ */
@@ -433,6 +460,13 @@
    АДАПТИВ
    ============================================================ */
 @media (max-width: 480px) {
+    .invite-chat-btn {
+        width: 100%;
+        max-width: none;
+        font-size: 0.85rem;
+        padding: 9px 18px;
+    }
+
     .invite-envelope-container {
         max-width: 300px;
     }
@@ -481,5 +515,10 @@
     /* "Отталкивает" — на телефоне тоже :active */
     .invite-btn.trap-push:active {
         transform: translateY(-4px) scale(0.97);
+    }
+
+    .invite-chat-btn:hover {
+        transform: none;
+        box-shadow: none;
     }
 }

@@ -158,6 +158,20 @@ document.addEventListener('DOMContentLoaded', function() {
         </div>
     `;
 
+    // Ссылка на чат (если включена)
+    if (data.chatLinkEnabled === true && typeof data.chatLink === 'string' && data.chatLink.trim()) {
+        const chatBtn = document.createElement('a');
+        chatBtn.className = 'invite-chat-btn';
+        chatBtn.href = data.chatLink.trim();
+        chatBtn.target = '_blank';
+        chatBtn.rel = 'noopener noreferrer';
+        chatBtn.innerHTML = `
+            <span class="invite-icon icon-sm" data-icon="chat"></span>
+            Перейти в чат
+        `;
+        slide2.appendChild(chatBtn);
+    }
+
     slides = [slide1, slide2];
 
     // ============================================================

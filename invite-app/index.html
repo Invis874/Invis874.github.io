@@ -3,413 +3,168 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Конструктор приглашений</title>
+    <title>Пригласи меня — онлайн-приглашение</title>
+    <meta name="description" content="Создай милое онлайн-приглашение и отправь ссылку человеку, который тебе дорог." />
 
     <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/favicon.png" />
     <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png" />
 
     <link rel="stylesheet" href="css/style.css" />
     <link rel="stylesheet" href="css/common.css" />
-    <link rel="stylesheet" href="css/builder.css" />
+    <link rel="stylesheet" href="css/landing.css" />
 </head>
-<body>
-    <!-- ТАБЫ ДЛЯ МОБИЛЬНЫХ -->
-    <div class="mobile-tabs" id="mobileTabs">
-        <button class="mobile-tab active" data-tab="builder">
-            <span class="invite-icon icon-md" data-icon="logo"></span>
-            Настройки
-        </button>
-        <button class="mobile-tab" data-tab="preview">
-            <span class="invite-icon icon-md" data-icon="eye"></span>
-            Превью
-        </button>
+<body class="landing">
+
+    <!-- ДЕКОР -->
+    <div class="landing-decor" aria-hidden="true">
+        <span class="decor-cloud cloud-1"></span>
+        <span class="decor-cloud cloud-2"></span>
+        <span class="decor-cloud cloud-3"></span>
+        <span class="decor-cloud cloud-4"></span>
     </div>
 
-    <div class="app">
-        <!-- ===== ЛЕВАЯ ПАНЕЛЬ ===== -->
-        <aside class="panel panel-left">
-            <div class="panel-header">
-                <div class="logo">
-                    <span class="invite-icon icon-lg" data-icon="logo"></span>
-                    <div>
-                        <h1>Конструктор</h1>
-                        <p class="subhead">Настрой внешний вид приглашения</p>
+    <!-- ХЕДЕР -->
+    <header class="landing-header">
+        <a href="index.html" class="landing-logo">
+            <span class="landing-logo-text">пригласи<span class="logo-dot">·</span>меня</span>
+        </a>
+    </header>
+
+    <!-- HERO -->
+    <section class="hero">
+        <div class="hero-inner">
+
+            <!-- Телефон -->
+            <div class="hero-phone-wrap">
+                <div class="hero-phone">
+                    <div class="hero-phone-notch"></div>
+                    <div class="hero-phone-screen">
+                        <img
+                            src="assets/images/introduction/hero-preview.png"
+                            alt="Пример приглашения"
+                            class="hero-phone-img"
+                        />
                     </div>
+                    <div class="hero-phone-home"></div>
                 </div>
             </div>
 
-            <div class="panel-body" id="panelBody">
+            <!-- Контент -->
+            <div class="hero-content">
+                <h1 class="hero-title">
+                    <span class="hero-title-line">онлайн-</span>
+                    <span class="hero-title-line">приглашение</span>
+                    <span class="hero-title-line hero-title-accent">на свидание</span>
+                </h1>
 
-                <!-- ======================================== -->
-                <!-- ШАГ 1: СПОСОБ ПОКАЗА -->
-                <!-- ======================================== -->
-                <div class="step active" data-step="1">
-                    <div class="step-header">
-                        <span class="step-number">1</span>
-                        <span class="step-title">Способ показа</span>
-                    </div>
-                    <div class="step-content">
-                        <div class="form-group">
-                            <label>Как будет открываться приглашение?</label>
-                            <div class="mode-selector mode-grid-2">
-                                <div class="mode-option active" data-mode="instant">
-                                    <span class="invite-icon icon-lg" data-icon="instant"></span>
-                                    <span class="mode-label">Сразу показать</span>
-                                </div>
-                                <div class="mode-option" data-mode="envelope">
-                                    <span class="invite-icon icon-lg" data-icon="envelope"></span>
-                                    <span class="mode-label">Конверт</span>
-                                </div>
-                                <div class="mode-option" data-mode="scratch">
-                                    <span class="invite-icon icon-lg" data-icon="scratch"></span>
-                                    <span class="mode-label">Сотри фон</span>
-                                </div>
-                                <div class="mode-option" data-mode="pin">
-                                    <span class="invite-icon icon-lg" data-icon="pin"></span>
-                                    <span class="mode-label">Пинкод</span>
-                                </div>
-                            </div>
-                            <input type="hidden" id="selectedMode" value="instant" />
-
-                            <!-- Настройки для ПИНКОДА (появляется при выборе pin) -->
-                            <div class="form-group" id="pinSettingsGroup" style="display: none;">
-                                <label>Пинкод (1-6 цифр)</label>
-                                <input 
-                                    type="text" 
-                                    id="pinCode" 
-                                    maxlength="6" 
-                                    placeholder="Например: 1234"
-                                    inputmode="numeric"
-                                    autocomplete="off"
-                                />
-                                <div class="form-hint">
-                                    <span class="invite-icon icon-sm" data-icon="lock"></span>
-                                    <span>Гость увидит приглашение только после ввода правильного кода</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="step-footer">
-                        <button class="btn-next btn-full" data-next="2">Продолжить →</button>
-                    </div>
+                <div class="hero-tags">
+                    <span class="hero-tag hero-tag-main">для неё</span>
+                    <span class="hero-tag hero-tag-soft">и для него</span>
                 </div>
 
-                <!-- ======================================== -->
-                <!-- ШАГ 2: ОСНОВНОЙ ЭКРАН -->
-                <!-- ======================================== -->
-                <div class="step" data-step="2">
-                    <div class="step-header">
-                        <span class="step-number">2</span>
-                        <span class="step-title">Основной экран</span>
-                    </div>
-                    <div class="step-content">
-                        <!-- ВИД ГРАНЕЙ -->
-                        <div class="form-group">
-                            <label>Вид граней</label>
-                            <div class="shape-selector shape-grid-2">
-                                <div class="shape-option active" data-shape="rounded">
-                                    <div class="shape-preview shape-rounded"></div>
-                                    <span class="shape-label">Скруглённые</span>
-                                </div>
-                                <div class="shape-option" data-shape="soft">
-                                    <div class="shape-preview shape-soft"></div>
-                                    <span class="shape-label">Мягкие</span>
-                                </div>
-                                <div class="shape-option" data-shape="sharp">
-                                    <div class="shape-preview shape-sharp"></div>
-                                    <span class="shape-label">Острые</span>
-                                </div>
-                                <div class="shape-option" data-shape="wave">
-                                    <div class="shape-preview shape-wave"></div>
-                                    <span class="shape-label">Волнистые</span>
-                                </div>
-                            </div>
-                            <input type="hidden" id="selectedShape" value="rounded" />
-                        </div>
+                <p class="hero-subtitle">
+                    Создай милое приглашение на свидание и отправь ссылку
+                    человеку, который тебе дорог.
+                </p>
 
-                        <!-- ЦВЕТОВАЯ ПАЛИТРА -->
-                        <div class="form-group">
-                            <label>Цветовая палитра</label>
-                            <div class="color-selector color-grid-3">
-                                <div class="color-option active" data-color="rose">
-                                    <div class="color-swatch" style="background: linear-gradient(135deg, #fce4ec, #d4617e);"></div>
-                                    <span class="color-label">Роза</span>
-                                </div>
-                                <div class="color-option" data-color="gold">
-                                    <div class="color-swatch" style="background: linear-gradient(135deg, #fff3d6, #e5a500);"></div>
-                                    <span class="color-label">Золото</span>
-                                </div>
-                                <div class="color-option" data-color="ocean">
-                                    <div class="color-swatch" style="background: linear-gradient(135deg, #dce5f2, #1f5090);"></div>
-                                    <span class="color-label">Океан</span>
-                                </div>
-                                <div class="color-option" data-color="mint">
-                                    <div class="color-swatch" style="background: linear-gradient(135deg, #d6f5e6, #2e9c6a);"></div>
-                                    <span class="color-label">Мята</span>
-                                </div>
-                                <div class="color-option" data-color="lavender">
-                                    <div class="color-swatch" style="background: linear-gradient(135deg, #ede5f5, #7c5b9a);"></div>
-                                    <span class="color-label">Лаванда</span>
-                                </div>
-                                <div class="color-option" data-color="peach">
-                                    <div class="color-swatch" style="background: linear-gradient(135deg, #ffe8d6, #e07b39);"></div>
-                                    <span class="color-label">Персик</span>
-                                </div>
-                            </div>
-                            <input type="hidden" id="selectedColor" value="rose" />
-                        </div>
-
-                        <div class="form-group">
-                            <label>Картинка на обложке</label>
-                            <div class="image-picker" id="coverImagePicker"></div>
-                                <input type="hidden" id="coverImage" value="" />
-
-                            <!-- Кнопка загрузки своей картинки -->
-                            <label class="upload-btn">
-                                <span class="invite-icon icon-sm" data-icon="upload"></span>
-                                Загрузить свою картинку
-                                <input type="file" id="coverUpload" accept="image/png,image/jpeg,image/gif" style="display:none;" />
-                            </label>
-                            <div class="upload-preview" id="coverUploadPreview" style="display:none;">
-                                <img id="coverUploadImg" src="" alt="Загруженная" />
-                                <button type="button" class="upload-remove" id="coverUploadRemove">✕</button>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label>Заголовок</label>
-                            <input type="text" id="mainTitle" placeholder="Например: Приглашаю тебя на вечеринку!" value="Приглашаю тебя!" />
-                        </div>
-
-                        <!-- КНОПКА 1 -->
-                        <div class="form-group">
-                            <label>Кнопка 1 (всегда активна)</label>
-                            <input type="text" id="btn1Text" value="💖 Согласен" />
-                        </div>
-
-                        <!-- АНИМАЦИЯ КНОПКИ 1 -->
-                        <div class="form-group">
-                            <label>Анимация кнопки 1</label>
-                            <div class="animation-selector anim-grid-2">
-                                <div class="anim-option active" data-anim="none" data-target="btn1">
-                                    <span class="invite-icon icon-md" data-icon="anim-none"></span>
-                                    Без анимации
-                                </div>
-                                <div class="anim-option" data-anim="pulse" data-target="btn1">
-                                    <span class="invite-icon icon-md" data-icon="anim-pulse"></span>
-                                    Пульсация
-                                </div>
-                                <div class="anim-option" data-anim="shake" data-target="btn1">
-                                    <span class="invite-icon icon-md" data-icon="anim-shake"></span>
-                                    Тряска
-                                </div>
-                                <div class="anim-option" data-anim="bounce" data-target="btn1">
-                                    <span class="invite-icon icon-md" data-icon="anim-bounce"></span>
-                                    Подпрыгивание
-                                </div>
-                            </div>
-                            <input type="hidden" id="btn1Animation" value="none" />
-                        </div>
-
-                        <!-- КНОПКА 2 С ЧЕКБОКСОМ "Активна" -->
-                        <div class="form-group">
-                            <div style="display:flex; align-items:center; gap:12px; margin-bottom:6px;">
-                                <label style="margin:0; font-weight:600; font-size:0.85rem; color:#2d1b3d;">Кнопка 2</label>
-                            </div>
-                            <div style="display:flex; align-items:center; gap:10px;">
-                                <input type="text" id="btn2Text" value="🤔 Подумаю" style="flex:1; height:42px;" />
-                                <label title="Возможность нажатия" style="display:flex; align-items:center; justify-content:center; cursor:pointer; height:42px; width:42px; border:2px solid #ede8f2; border-radius:12px; background:#faf8fc; transition:all 0.2s; user-select:none;">
-                                    <input type="checkbox" id="btn2Enabled" checked style="width:20px; height:20px; accent-color:#7c5b9a; cursor:pointer; margin:0;" />
-                                </label>
-                            </div>
-                        </div>
-
-                        <!-- АНИМАЦИЯ КНОПКИ 2 (активна) -->
-                        <div class="form-group" id="btn2AnimationGroup">
-                            <label>Анимация кнопки 2</label>
-                            <div class="animation-selector anim-grid-2">
-                                <div class="anim-option active" data-anim="none" data-target="btn2">
-                                    <span class="invite-icon icon-md" data-icon="anim-none"></span>
-                                    Без анимации
-                                </div>
-                                <div class="anim-option" data-anim="pulse" data-target="btn2">
-                                    <span class="invite-icon icon-md" data-icon="anim-pulse"></span>
-                                    Пульсация
-                                </div>
-                                <div class="anim-option" data-anim="shake" data-target="btn2">
-                                    <span class="invite-icon icon-md" data-icon="anim-shake"></span>
-                                    Тряска
-                                </div>
-                                <div class="anim-option" data-anim="bounce" data-target="btn2">
-                                    <span class="invite-icon icon-md" data-icon="anim-bounce"></span>
-                                    Подпрыгивание
-                                </div>
-                            </div>
-                            <input type="hidden" id="btn2Animation" value="none" />
-                        </div>
-
-                        <!-- ЭФФЕКТЫ ДЛЯ ЗАБЛОКИРОВАННОЙ КНОПКИ 2 -->
-                        <div class="form-group" id="btn2TrapGroup" style="display:none;">
-                            <input type="hidden" id="btn2Trap" value="none" />
-                            <div class="form-hint">
-                                <span class="invite-icon icon-sm" data-icon="lock"></span>
-                                <span>Кнопка 2 заблокирована — гость не сможет её нажать</span>
-                            </div>
-                            <label>Эффект при наведении (ловушка)</label>
-                            <div class="animation-selector anim-grid-2">
-                                <div class="trap-option active" data-trap="none">
-                                    <span class="invite-icon icon-md" data-icon="trap-none"></span>
-                                    Без эффекта
-                                </div>
-                                <div class="trap-option" data-trap="fade">
-                                    <span class="invite-icon icon-md" data-icon="trap-fade"></span>
-                                    Исчезает
-                                </div>
-                                <div class="trap-option" data-trap="run">
-                                    <span class="invite-icon icon-md" data-icon="trap-run"></span>
-                                    Сбегает
-                                </div>
-                                <div class="trap-option" data-trap="push">
-                                    <span class="invite-icon icon-md" data-icon="trap-push"></span>
-                                    Отталкивает
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="step-footer">
-                        <button class="btn-prev" data-prev="1">← Назад</button>
-                        <button class="btn-next" data-next="3">Продолжить →</button>
-                    </div>
-                </div>
-
-                <!-- ======================================== -->
-                <!-- ШАГ 3: ЭКРАН ПОДТВЕРЖДЕНИЯ -->
-                <!-- ======================================== -->
-                <div class="step" data-step="3">
-                    <div class="step-header">
-                        <span class="step-number">3</span>
-                        <span class="step-title">Экран подтверждения</span>
-                    </div>
-                    <div class="step-content">
-                        <div class="form-group">
-                            <label>Картинка подтверждения</label>
-                            <div class="image-picker" id="confirmImagePicker"></div>
-                            <input type="hidden" id="confirmImage" value="" />
-
-                            <label class="upload-btn">
-                                <span class="invite-icon icon-sm" data-icon="upload"></span>
-                                Загрузить свою картинку
-                                <input type="file" id="confirmUpload" accept="image/png,image/jpeg,image/gif" style="display:none;" />
-                            </label>
-                            <div class="upload-preview" id="confirmUploadPreview" style="display:none;">
-                                <img id="confirmUploadImg" src="" alt="Загруженная" />
-                                <button type="button" class="upload-remove" id="confirmUploadRemove">✕</button>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label>Заголовок</label>
-                            <input type="text" id="confirmTitle" value="Отлично! Жду тебя!" />
-                        </div>
-
-                        <div class="form-row">
-                            <div class="form-group half">
-                                <label>Дата</label>
-                                <input type="date" id="eventDate" />
-                            </div>
-                            <div class="form-group half">
-                                <label>Время</label>
-                                <input type="time" id="eventTime" value="19:00" />
-                            </div>
-                        </div>
-                    </div>
-                    <div class="step-footer">
-                        <button class="btn-prev" data-prev="2">← Назад</button>
-                        <button class="btn-generate">
-                            <span class="invite-icon icon-sm" data-icon="rocket"></span>
-                            Создать ссылку
-                        </button>
-                    </div>
-                </div>
-
-            </div>
-        </aside>
-
-        <!-- ===== ПРАВАЯ ПАНЕЛЬ ===== -->
-        <main class="panel panel-right">
-            <div class="panel-header">
-                <div class="preview-header">
-                    <h2>
-                        <span class="invite-icon icon-md" data-icon="eye"></span>
-                        Превью
-                    </h2>
-                    <div class="preview-badges">
-                        <span class="preview-badge" id="previewBadge">
-                            <span class="invite-icon icon-sm" data-icon="instant" id="previewBadgeIcon"></span>
-                            <span id="previewBadgeText">Сразу показать</span>
-                        </span>
-                    </div>
-                </div>
+                <a href="builder.html" class="landing-btn landing-btn-primary">
+                    Создать приглашение
+                    <span class="landing-btn-icon" aria-hidden="true">💌</span>
+                </a>
             </div>
 
-            <div class="preview-body">
-                <div class="preview-wrapper">
-                    <!-- ПОЛЗУНОК ЭТАПОВ -->
-                    <div class="preview-progress" id="previewProgress">
-                        <div class="progress-step active" data-step="1">
-                            <span class="progress-dot">1</span>
-                            <span class="progress-label">Способ</span>
-                        </div>
-                        <div class="progress-line"></div>
-                        <div class="progress-step" data-step="2">
-                            <span class="progress-dot">2</span>
-                            <span class="progress-label">Экран</span>
-                        </div>
-                        <div class="progress-line"></div>
-                        <div class="progress-step" data-step="3">
-                            <span class="progress-dot">3</span>
-                            <span class="progress-label">Финал</span>
-                        </div>
-                    </div>
-
-                    <div class="preview-phone">
-                        <div class="preview-phone-notch"></div>
-                        <div class="preview-phone-screen">
-                            <div class="preview-phone-bg" id="previewPhoneBg">
-                                <div id="previewContent">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="preview-phone-home"></div>
-                    </div>
-                </div>
-            </div>
-        </main>
-    </div>
-
-    <!-- ===== МОДАЛКА С РЕЗУЛЬТАТОМ ===== -->
-    <div class="result-overlay" id="resultOverlay">
-        <div class="result-modal">
-            <div class="result-header">
-                <span class="invite-icon icon-md no-filter" data-icon="check"></span>
-                <h3>Ссылка готова!</h3>
-            </div>
-            <p class="result-hint">Отправьте эту ссылку другу — он увидит ваше приглашение</p>
-            <div class="result-link">
-                <input type="text" id="resultLinkInput" readonly />
-                <button class="btn-copy" id="copyBtn">
-                    <span class="invite-icon icon-sm" data-icon="copy"></span>
-                    Копировать
-                </button>
-            </div>
-            <button class="btn-close-result" id="closeResult">Закрыть</button>
         </div>
-    </div>
+    </section>
 
-    <script src="js/utils.js"></script>
-    <script src="js/toast.js"></script>
-    <script src="js/image-picker.js"></script>
-    <script src="js/builder.js"></script>
+    <!-- КАК ЭТО РАБОТАЕТ -->
+    <section class="how">
+        <div class="how-inner">
+
+            <h2 class="how-title">
+                <span class="how-title-line">как это работает</span>
+                <span class="how-title-line how-title-accent">3 простых шага</span>
+            </h2>
+
+            <div class="how-steps">
+
+                <!-- Шаг 1 -->
+                <article class="how-step how-step-with-media">
+                    <div class="how-step-media">
+                        <img src="assets/images/introduction/step-1.gif" alt="Открытие конструктора" />
+                    </div>
+                    <div class="how-step-body">
+                        <span class="how-step-num">01</span>
+                        <h3 class="how-step-title">Откройте конструктор</h3>
+                        <p class="how-step-text">
+                            Нажмите «Создать приглашение» — откроется страница, 
+                            где вы соберёте своё приглашение.
+                        </p>
+                    </div>
+                </article>
+
+                <!-- Шаг 2 -->
+                <article class="how-step how-step-with-media">
+                    <div class="how-step-media">
+                        <video autoplay loop muted playsinline>
+                            <source src="assets/images/introduction/step-2.webm" type="video/webm" />
+                        </video>
+                    </div>
+                    <div class="how-step-body">
+                        <span class="how-step-num">02</span>
+                        <h3 class="how-step-title">Создайте приглашение</h3>
+                        <p class="how-step-text">
+                            Выберите цвет, картинку, способ показа и текст кнопок — 
+                            и приглашение готово.
+                        </p>
+                    </div>
+                </article>
+
+                <!-- Шаг 3 -->
+                <article class="how-step how-step-with-media">
+                    <div class="how-step-media">
+                        <img src="assets/images/introduction/step-3.png" alt="Ссылка" />
+                    </div>
+                    <div class="how-step-body">
+                        <span class="how-step-num">03</span>
+                        <h3 class="how-step-title">Отправьте ссылку</h3>
+                        <p class="how-step-text">
+                            Скопируйте ссылку и отправьте тому, кого хотите пригласить. Он откроет её у себя в телефоне — и увидит ваше приглашение.
+                        </p>
+                    </div>
+                </article>
+
+            </div>
+
+            <div class="how-cta">
+                <a href="builder.html" class="landing-btn landing-btn-primary">
+                    Создать приглашение
+                    <span class="landing-btn-icon" aria-hidden="true">💌</span>
+                </a>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ФУТЕР -->
+    <footer class="landing-footer">
+        <p>Сделано с 💜 для тебя</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const observer = new IntersectionObserver(function (entries) {
+                entries.forEach(function (entry) {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.15 });
+
+            document.querySelectorAll('.how-step, .how-cta, .hero-content, .hero-phone-wrap')
+                .forEach(function (el) { observer.observe(el); });
+        });
+    </script>
 
 </body>
 </html>

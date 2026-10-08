@@ -332,6 +332,19 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // ============================================================
+    // ССЫЛКА НА ЧАТ (Шаг 3)
+    // ============================================================
+    const chatLinkEnabled = document.getElementById('chatLinkEnabled');
+    const chatLinkGroup = document.getElementById('chatLinkGroup');
+
+    if (chatLinkEnabled && chatLinkGroup) {
+        chatLinkEnabled.addEventListener('change', function() {
+            chatLinkGroup.style.display = this.checked ? 'block' : 'none';
+            updatePreview();
+        });
+    }
+
+    // ============================================================
     // ОБНОВЛЕНИЕ ПРЕВЬЮ ПРИ ИЗМЕНЕНИИ ПОЛЕЙ
     // ============================================================
     document.querySelectorAll('input, select').forEach(function(input) {
@@ -535,15 +548,24 @@ document.addEventListener('DOMContentLoaded', function() {
         // ШАГ 3: ПОДТВЕРЖДЕНИЕ — только экран подтверждения
         // ============================================================
         else if (currentStep === 3) {
+            const chatEnabled = document.getElementById('chatLinkEnabled')?.checked;
+            const chatLink = document.getElementById('chatLink')?.value?.trim() || '';
+
             html = wrapSlide(`
-                <div style="display:flex; justify-content:center; margin:8px 0;">
-                    <img src="${confirmImage}" style="width:160px; height:160px; object-fit:contain;" alt="" />
+                <div class="invite-slide-icon">
+                    <img src="${confirmImage}" alt="" />
                 </div>
                 <div class="invite-slide-title" style="color:${colors.text};">${confirmTitle}</div>
                 <div class="invite-slide-datetime">
                     <span class="invite-icon icon-md" data-icon="calendar"></span>
                     ${Utils.formatDate(eventDate)} в ${eventTime}
                 </div>
+                ${chatEnabled && chatLink ? `
+                    <a href="${chatLink}" target="_blank" rel="noopener" class="invite-chat-btn">
+                        <span class="invite-icon icon-sm" data-icon="chat"></span>
+                        Перейти в чат
+                    </a>
+                ` : ''}
             `);
         }
 
@@ -626,7 +648,9 @@ document.addEventListener('DOMContentLoaded', function() {
             confirmTitle: document.getElementById('confirmTitle').value || 'Отлично!',
             eventDate: document.getElementById('eventDate').value || '2026-09-15',
             eventTime: document.getElementById('eventTime').value || '19:00',
-            pinCode: document.getElementById('pinCode')?.value || ''
+            pinCode: document.getElementById('pinCode')?.value || '',
+            chatLinkEnabled: document.getElementById('chatLinkEnabled')?.checked || false,
+            chatLink: document.getElementById('chatLink')?.value?.trim() || ''
         };
 
         // ============================================================
@@ -640,6 +664,14 @@ document.addEventListener('DOMContentLoaded', function() {
             const pinCode = document.getElementById('pinCode')?.value || '';
             if (!/^\d{1,6}$/.test(pinCode)) {
                 errors.push('Пинкод должен содержать от 1 до 6 цифр');
+            }
+        }
+
+        if (payload.chatLinkEnabled && payload.chatLink) {
+            try {
+                new URL(payload.chatLink);
+            } catch (e) {
+                errors.push('Ссылка на чат должна быть корректным URL (https://...)');
             }
         }
 

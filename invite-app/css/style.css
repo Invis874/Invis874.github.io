@@ -76,7 +76,8 @@ h3 {
 .anim-option.active .invite-icon,
 .trap-option.active .invite-icon,
 .btn-generate .invite-icon,
-.btn-copy .invite-icon {
+.btn-copy .invite-icon,
+.invite-chat-btn .invite-icon {
     filter: brightness(0) invert(1);
 }
 
@@ -95,7 +96,8 @@ h3 {
 
 .invite-icon[data-icon="lock"]       { background-image: url('../assets/icons/ui/lock.svg'); }
 .invite-icon[data-icon="upload"]     { background-image: url('../assets/icons/ui/upload.svg'); }
-.invite-icon[data-icon="calendar"] { background-image: url('../assets/icons/ui/calendar.svg'); }
+.invite-icon[data-icon="calendar"]   { background-image: url('../assets/icons/ui/calendar.svg'); }
+.invite-icon[data-icon="chat"]       { background-image: url('../assets/icons/ui/chat.svg'); }
 
 /* Анимации */
 .invite-icon[data-icon="anim-none"]   { background-image: url('../assets/icons/animations/none.svg'); }
