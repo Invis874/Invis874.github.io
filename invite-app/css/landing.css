@@ -458,6 +458,7 @@ body.landing {
     }
 
     .hero-phone-notch {
+        top: 9px;
         width: 90px;
         height: 20px;
         border-radius: 0 0 13px 13px;
