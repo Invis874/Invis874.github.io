@@ -88,6 +88,7 @@ h3 {
 
 .invite-icon[data-icon="logo"]       { background-image: url('../assets/icons/ui/logo.png'); }
 .invite-icon[data-icon="eye"]        { background-image: url('../assets/icons/ui/eye.svg'); }
+.invite-icon[data-icon="trash"]      { background-image: url('../assets/icons/ui/trash.svg'); }
 
 .invite-icon[data-icon="instant"]    { background-image: url('../assets/icons/modes/instant.svg'); }
 .invite-icon[data-icon="envelope"]   { background-image: url('../assets/icons/modes/envelope.png'); }

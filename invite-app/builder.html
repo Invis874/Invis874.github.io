@@ -36,6 +36,9 @@
                         <p class="subhead">Настрой внешний вид приглашения</p>
                     </div>
                 </div>
+                <button type="button" class="btn-reset" id="resetDraft" title="Сбросить всё">
+                    <span class="invite-icon icon-md" data-icon="trash"></span>
+                </button>
             </div>
 
             <div class="panel-body" id="panelBody">
@@ -425,6 +428,10 @@
                     Копировать
                 </button>
             </div>
+            <div class="result-qr" id="resultQr">
+                <div id="qrcodeContainer"></div>
+                <p class="result-qr-hint">Наведи камеру телефона</p>
+            </div>
             <button class="btn-close-result" id="closeResult">Закрыть</button>
         </div>
     </div>
@@ -432,6 +439,7 @@
     <script src="js/utils.js"></script>
     <script src="js/toast.js"></script>
     <script src="js/image-picker.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <script src="js/builder.js"></script>
 
 </body>

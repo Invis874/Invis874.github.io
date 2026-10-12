@@ -3,6 +3,118 @@
 // ============================================================
 
 document.addEventListener('DOMContentLoaded', function() {
+    // СОХРАНЕНИЕ ЧЕРНОВИКА В LOCALSTORAGE
+    const DRAFT_KEY = 'invite_draft_v1';
+
+    // Сохранить текущее состояние
+    function saveDraft() {
+        try {
+            const draft = {
+                mode: document.getElementById('selectedMode')?.value || 'instant',
+                shape: document.getElementById('selectedShape')?.value || 'rounded',
+                color: document.getElementById('selectedColor')?.value || 'rose',
+                coverImage: document.getElementById('coverImage')?.value || '',
+                mainTitle: document.getElementById('mainTitle')?.value || '',
+                btn1Text: document.getElementById('btn1Text')?.value || '',
+                btn2Text: document.getElementById('btn2Text')?.value || '',
+                btn1Animation: document.getElementById('btn1Animation')?.value || 'none',
+                btn2Animation: document.getElementById('btn2Animation')?.value || 'none',
+                btn2Enabled: document.getElementById('btn2Enabled')?.checked ?? true,
+                btn2Trap: document.getElementById('btn2Trap')?.value || 'none',
+                confirmImage: document.getElementById('confirmImage')?.value || '',
+                confirmTitle: document.getElementById('confirmTitle')?.value || '',
+                eventDate: document.getElementById('eventDate')?.value || '',
+                eventTime: document.getElementById('eventTime')?.value || '',
+                pinCode: document.getElementById('pinCode')?.value || '',
+                chatLinkEnabled: document.getElementById('chatLinkEnabled')?.checked || false,
+                chatLink: document.getElementById('chatLink')?.value || '',
+                currentStep: currentStep
+            };
+            localStorage.setItem(DRAFT_KEY, JSON.stringify(draft));
+        } catch (e) {
+            // Тихо игнорируем — localStorage может быть недоступен
+            console.warn('Не удалось сохранить черновик:', e);
+        }
+    }
+
+    // Восстановить состояние
+    function loadDraft() {
+        try {
+            const raw = localStorage.getItem(DRAFT_KEY);
+            if (!raw) return false;
+            
+            const draft = JSON.parse(raw);
+            if (!draft || typeof draft !== 'object') return false;
+
+            // Восстанавливаем поля
+            if (draft.mode) {
+                const modeEl = document.querySelector(`.mode-option[data-mode="${draft.mode}"]`);
+                if (modeEl) modeEl.click();
+            }
+            if (draft.shape) {
+                const shapeEl = document.querySelector(`.shape-option[data-shape="${draft.shape}"]`);
+                if (shapeEl) shapeEl.click();
+            }
+            if (draft.color) {
+                const colorEl = document.querySelector(`.color-option[data-color="${draft.color}"]`);
+                if (colorEl) colorEl.click();
+            }
+            
+            // Текстовые поля
+            const textFields = ['coverImage', 'mainTitle', 'btn1Text', 'btn2Text', 
+                                'confirmImage', 'confirmTitle', 'eventDate', 'eventTime', 
+                                'pinCode', 'chatLink'];
+            textFields.forEach(id => {
+                const el = document.getElementById(id);
+                if (el && draft[id] !== undefined) el.value = draft[id];
+            });
+
+            // Анимации кнопок
+            if (draft.btn1Animation) {
+                const animEl = document.querySelector(`.anim-option[data-target="btn1"][data-anim="${draft.btn1Animation}"]`);
+                if (animEl) animEl.click();
+            }
+            if (draft.btn2Animation) {
+                const animEl = document.querySelector(`.anim-option[data-target="btn2"][data-anim="${draft.btn2Animation}"]`);
+                if (animEl) animEl.click();
+            }
+            if (draft.btn2Trap) {
+                const trapEl = document.querySelector(`.trap-option[data-trap="${draft.btn2Trap}"]`);
+                if (trapEl) trapEl.click();
+            }
+            
+            // Чекбоксы
+            const btn2EnabledEl = document.getElementById('btn2Enabled');
+            if (btn2EnabledEl && draft.btn2Enabled !== undefined) {
+                btn2EnabledEl.checked = draft.btn2Enabled;
+                btn2EnabledEl.dispatchEvent(new Event('change'));
+            }
+            const chatEnabledEl = document.getElementById('chatLinkEnabled');
+            if (chatEnabledEl && draft.chatLinkEnabled !== undefined) {
+                chatEnabledEl.checked = draft.chatLinkEnabled;
+                chatEnabledEl.dispatchEvent(new Event('change'));
+            }
+
+            // Восстанавливаем текущий шаг
+            if (draft.currentStep) {
+                showStep(draft.currentStep);
+            }
+
+            return true;
+        } catch (e) {
+            console.warn('Не удалось восстановить черновик:', e);
+            return false;
+        }
+    }
+
+    // Очистить черновик
+    function clearDraft() {
+        try {
+            localStorage.removeItem(DRAFT_KEY);
+        } catch (e) {
+            console.warn('Не удалось очистить черновик:', e);
+        }
+    }
 
     // --- ЭЛЕМЕНТЫ ---
     const steps = document.querySelectorAll('.step');
@@ -79,6 +191,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
         updateProgress(num);
         updatePreview();
+        saveDraft();
     }
 
     // ============================================================
@@ -113,6 +226,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
             
             updatePreview();
+            saveDraft();
         });
     });
 
@@ -128,6 +242,7 @@ document.addEventListener('DOMContentLoaded', function() {
             selectedShape = this.dataset.shape;
             document.getElementById('selectedShape').value = selectedShape;
             updatePreview();
+            saveDraft();
         });
     });
 
@@ -143,6 +258,7 @@ document.addEventListener('DOMContentLoaded', function() {
             selectedColor = this.dataset.color;
             document.getElementById('selectedColor').value = selectedColor;
             updatePreview();
+            saveDraft();
         });
     });
 
@@ -237,7 +353,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 
                 hiddenInput.value = compressedDataUrl;
                 updatePreview();
-                
+                saveDraft();
                 Toast.success('Картинка загружена!');
             });
         });
@@ -254,6 +370,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 hiddenInput.value = firstOption.dataset.image;
             }
             updatePreview();
+            saveDraft();
         });
     }
 
@@ -287,6 +404,7 @@ document.addEventListener('DOMContentLoaded', function() {
             this.classList.add('active');
             document.getElementById('btn1Animation').value = this.dataset.anim;
             updatePreview();
+            saveDraft();
         });
     });
 
@@ -299,6 +417,7 @@ document.addEventListener('DOMContentLoaded', function() {
             this.classList.add('active');
             document.getElementById('btn2Animation').value = this.dataset.anim;
             updatePreview();
+            saveDraft();
         });
     });
 
@@ -311,6 +430,7 @@ document.addEventListener('DOMContentLoaded', function() {
             this.classList.add('active');
             document.getElementById('btn2Trap').value = this.dataset.trap;
             updatePreview();
+            saveDraft();
         });
     });
 
@@ -329,6 +449,7 @@ document.addEventListener('DOMContentLoaded', function() {
             btn2TrapGroup.style.display = 'block';
         }
         updatePreview();
+        saveDraft();
     });
 
     // ============================================================
@@ -341,6 +462,7 @@ document.addEventListener('DOMContentLoaded', function() {
         chatLinkEnabled.addEventListener('change', function() {
             chatLinkGroup.style.display = this.checked ? 'block' : 'none';
             updatePreview();
+            saveDraft();
         });
     }
 
@@ -350,8 +472,14 @@ document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('input, select').forEach(function(input) {
         if (input.id === 'pinCode') return;
 
-        input.addEventListener('input', updatePreview);
-        input.addEventListener('change', updatePreview);
+        input.addEventListener('input', function() {
+            updatePreview();
+            saveDraft();
+        });
+        input.addEventListener('change', function() {
+            updatePreview();
+            saveDraft();
+        });
     });
 
     // ============================================================
@@ -368,6 +496,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 // Меняем правильный пинкод → меняется длина → меняются точки
                 pinCodeInstance.setCorrectPin(this.value);
             }
+            saveDraft();
         });
     }
 
@@ -628,6 +757,47 @@ document.addEventListener('DOMContentLoaded', function() {
 
     }
 
+    // QR-КОД
+    const MAX_LINK_FOR_QR = 1200;
+
+    function renderQRCode(link) {
+        const container = document.getElementById('qrcodeContainer');
+        const wrapper = document.getElementById('resultQr');
+        if (!container || !wrapper) return;
+
+        // Очищаем старый QR
+        container.innerHTML = '';
+
+        // Слишком длинная ссылка — QR не показываем
+        if (!link || link.length > MAX_LINK_FOR_QR) {
+            wrapper.classList.remove('show');
+            console.info('QR не показан: ссылка длиннее', MAX_LINK_FOR_QR, 'символов. Длина:', link.length);
+            return;
+        }
+
+        // Библиотека не загрузилась?
+        if (typeof QRCode === 'undefined') {
+            console.warn('QRCode.js не загружен');
+            wrapper.classList.remove('show');
+            return;
+        }
+
+        try {
+            new QRCode(container, {
+                text: link,
+                width: 200,
+                height: 200,
+                colorDark: '#2d1b3d',
+                colorLight: '#ffffff',
+                correctLevel: QRCode.CorrectLevel.L   // ← L даёт максимум данных
+            });
+            wrapper.classList.add('show');
+        } catch (e) {
+            console.warn('Не удалось создать QR-код:', e);
+            wrapper.classList.remove('show');
+        }
+    }
+
     // ============================================================
     // ГЕНЕРАЦИЯ ССЫЛКИ
     // ============================================================
@@ -691,6 +861,8 @@ document.addEventListener('DOMContentLoaded', function() {
             resultLinkInput.value = link;
             resultOverlay.classList.add('show');
             Toast.success('Ссылка успешно создана!');
+
+            renderQRCode(link);
         } catch (error) {
             console.error('Ошибка:', error);
             Toast.error('Ошибка при создании ссылки');
@@ -729,15 +901,34 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // ============================================================
+    // СБРОС ЧЕРНОВИКА
+    // ============================================================
+    document.getElementById('resetDraft')?.addEventListener('click', function() {
+        if (confirm('Сбросить черновик и начать заново?')) {
+            clearDraft();
+            location.reload();
+        }
+    });
+
+    // ============================================================
     // ПЕРВОНАЧАЛЬНОЕ ОБНОВЛЕНИЕ
     // ============================================================
+    if (loadDraft()) {
+        Toast.info('Черновик восстановлен');
+    }
     updatePreview();
 
     // ============================================================
     // РЕНДЕР ПИКЕРОВ КАРТИНОК (через компонент)
     // ============================================================
-    ImagePicker.renderCovers('coverImagePicker', 'coverImage', updatePreview);
-    ImagePicker.renderConfirms('confirmImagePicker', 'confirmImage', updatePreview);
+    ImagePicker.renderCovers('coverImagePicker', 'coverImage', function() {
+        updatePreview();
+        saveDraft();
+    });
+    ImagePicker.renderConfirms('confirmImagePicker', 'confirmImage', function() {
+        updatePreview();
+        saveDraft();
+    });
 
     // ============================================================
     // МОБИЛЬНЫЕ ТАБЫ — ПЕРЕКЛЮЧЕНИЕ ПАНЕЛЕЙ

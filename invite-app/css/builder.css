@@ -38,6 +38,10 @@ body {
     padding: 28px 32px 20px;
     border-bottom: 1px solid #f0ebf5;
     flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
 }
 
 .logo {
@@ -61,6 +65,33 @@ body {
     margin: 0;
     font-weight: 400;
     opacity: 0.8;
+}
+
+.btn-reset {
+    flex-shrink: 0;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: none;
+    background: #f0ebf5;
+    color: #7c5b9a;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+}
+
+.btn-reset:hover {
+    background: #ede5f5;
+    color: #5f4379;
+    transform: scale(1.05);
+}
+
+.btn-reset:active {
+    transform: scale(0.95);
 }
 
 /* ============================================================
@@ -1171,6 +1202,52 @@ body {
 }
 
 /* ============================================================
+   QR-КОД В МОДАЛКЕ РЕЗУЛЬТАТА
+   ============================================================ */
+.result-qr {
+    display: none;
+    margin-top: 20px;
+    text-align: center;
+}
+
+.result-qr.show {
+    display: block;
+    animation: qrFadeIn 0.4s ease;
+}
+
+@keyframes qrFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+#qrcodeContainer {
+    display: inline-block;
+    padding: 12px;
+    background: #fff;
+    border-radius: 16px;
+    border: 2px solid #ede8f2;
+}
+
+#qrcodeContainer canvas,
+#qrcodeContainer img {
+    display: block;
+    width: 200px;
+    height: 200px;
+}
+
+.result-qr-hint {
+    font-size: 0.75rem;
+    color: #8a7a9e;
+    margin: 8px 0 0;
+}
+
+/* ============================================================
    МОБИЛЬНЫЕ ТАБЫ
    ============================================================ */
 .mobile-tabs {
@@ -1426,6 +1503,12 @@ body {
     .anim-grid-2 {
         grid-template-columns: 1fr 1fr;
         gap: 6px;
+    }
+
+    #qrcodeContainer canvas,
+    #qrcodeContainer img {
+        width: 160px;
+        height: 160px;
     }
 }
 
