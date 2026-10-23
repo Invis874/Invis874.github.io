@@ -1,0 +1,748 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+    background: linear-gradient(145deg, #fdf6f0 0%, #f0e6d8 100%);
+    font-family: 'Georgia', 'Times New Roman', serif;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 15px 15px;
+    overflow-x: hidden;
+}
+
+.main-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    max-width: 500px;
+    margin: 10px 0 20px;
+}
+
+.rose-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+/* ===== РОЗА ===== */
+.rose {
+    position: relative;
+    width: 180px;
+    height: 180px;
+    margin-bottom: 20px;
+}
+
+.rose-bud {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 30% 30%, #ff4d6d, #b3002d);
+    box-shadow: 0 10px 25px rgba(180, 0, 30, 0.4);
+    z-index: 10;
+}
+
+.rose-bud::before {
+    content: '';
+    position: absolute;
+    top: -10%;
+    left: -10%;
+    width: 70%;
+    height: 70%;
+    border-radius: 50% 50% 50% 0;
+    background: radial-gradient(circle at 70% 30%, #ff6b8a, #cc0033);
+    transform: rotate(-20deg);
+    box-shadow: -5px -5px 15px rgba(200, 0, 50, 0.3);
+    z-index: 2;
+}
+
+.rose-bud::after {
+    content: '';
+    position: absolute;
+    bottom: -5%;
+    right: -5%;
+    width: 65%;
+    height: 65%;
+    border-radius: 50% 0 50% 50%;
+    background: radial-gradient(circle at 30% 70%, #ff597b, #a6002a);
+    transform: rotate(30deg);
+    box-shadow: 5px 5px 15px rgba(150, 0, 30, 0.3);
+    z-index: 1;
+}
+
+.rose-bud .petal-1,
+.rose-bud .petal-2,
+.rose-bud .petal-3 {
+    position: absolute;
+    border-radius: 50%;
+    background: radial-gradient(circle at 40% 40%, #ff7a9a, #d9003a);
+    box-shadow: 0 4px 10px rgba(200, 0, 50, 0.2);
+    opacity: 0.8;
+}
+
+.rose-bud .petal-1 {
+    width: 55px;
+    height: 55px;
+    top: 5%;
+    left: 25%;
+    transform: rotate(15deg);
+    background: radial-gradient(circle at 60% 30%, #ff8aad, #cc0033);
+    z-index: 3;
+}
+
+.rose-bud .petal-2 {
+    width: 50px;
+    height: 50px;
+    bottom: 8%;
+    right: 15%;
+    transform: rotate(-25deg);
+    background: radial-gradient(circle at 30% 70%, #ff6b8a, #b8002d);
+    z-index: 3;
+}
+
+.rose-bud .petal-3 {
+    width: 45px;
+    height: 45px;
+    top: 40%;
+    left: 5%;
+    transform: rotate(45deg);
+    background: radial-gradient(circle at 60% 60%, #ff597b, #a6002a);
+    z-index: 3;
+}
+
+.rose-stem {
+    position: absolute;
+    bottom: -40px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 6px;
+    height: 70px;
+    background: linear-gradient(to bottom, #2d6a2d, #1e4d1e);
+    border-radius: 3px;
+    z-index: 5;
+    box-shadow: 0 0 8px rgba(30, 80, 30, 0.3);
+}
+
+.rose-stem::before {
+    content: '';
+    position: absolute;
+    left: -12px;
+    top: 30px;
+    width: 20px;
+    height: 10px;
+    background: #2e7d32;
+    border-radius: 50% 0 50% 50%;
+    transform: rotate(-30deg);
+    box-shadow: 0 0 6px rgba(40, 100, 40, 0.4);
+}
+
+.rose-stem::after {
+    content: '';
+    position: absolute;
+    right: -12px;
+    top: 45px;
+    width: 22px;
+    height: 10px;
+    background: #388e3c;
+    border-radius: 0 50% 50% 50%;
+    transform: rotate(30deg);
+    box-shadow: 0 0 6px rgba(40, 100, 40, 0.4);
+}
+
+.message {
+    font-size: 1.4rem;
+    color: #4a2c1a;
+    text-align: center;
+    line-height: 1.6;
+    margin: 10px 0 5px;
+    padding: 0 10px;
+    background: rgba(255, 245, 235, 0.5);
+    border-radius: 30px;
+    padding: 8px 20px;
+    backdrop-filter: blur(3px);
+    box-shadow: 0 2px 10px rgba(100, 60, 30, 0.1);
+    font-weight: 400;
+    letter-spacing: 0.5px;
+}
+
+.message small {
+    display: block;
+    font-size: 0.9rem;
+    opacity: 0.8;
+    margin-top: 5px;
+    font-style: italic;
+}
+
+/* ===== БУКЕТ ПОДСОЛНУХОВ ===== */
+.bouquet {
+    max-width: 90vw;
+    height: 220px;
+    position: relative;
+    margin: 10px auto;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+}
+
+/* ===== ПОДСОЛНУХ ===== */
+.sunflower {
+    position: absolute;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transform-origin: center bottom;
+}
+
+.sunflower-head {
+    position: relative;
+    border-radius: 50%;
+    background: radial-gradient(circle at 40% 40%, #f5c542, #d49a1a);
+    box-shadow: 0 4px 12px rgba(180, 120, 20, 0.3);
+    z-index: 2;
+    flex-shrink: 0;
+}
+
+.sunflower-head::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    background: radial-gradient(circle, #4a3a2a, #2d2418);
+    box-shadow: inset 0 0 8px #1a140e;
+    z-index: 3;
+}
+
+.sunflower-head::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    background: transparent;
+    z-index: 1;
+}
+
+.sunflower-stem {
+    width: 3px;
+    background: linear-gradient(to top, #2d6a2d, #4a8a3a);
+    border-radius: 2px;
+    margin-top: -2px;
+    z-index: 0;
+    flex-shrink: 0;
+    position: relative;
+}
+
+.sunflower-stem::before {
+    content: '';
+    position: absolute;
+    background: #3d7a3d;
+    border-radius: 50% 0 50% 50%;
+    transform: rotate(-20deg);
+}
+
+/* ---- Позиционирование цветов ---- */
+
+/* 1-й - крайний левый */
+.sunflower-1 {
+    transform: rotate(22deg);
+}
+.sunflower-1 .sunflower-head {
+    width: 44px;
+    height: 44px;
+}
+.sunflower-1 .sunflower-head::before {
+    width: 22px;
+    height: 22px;
+}
+.sunflower-1 .sunflower-head::after {
+    width: 38px;
+    height: 38px;
+    box-shadow:
+        0 -22px 0 -2px #f5c542,
+        0 22px 0 -2px #f5c542,
+        22px 0 0 -2px #f5c542,
+        -22px 0 0 -2px #f5c542,
+        16px -16px 0 -2px #f5c542,
+        -16px 16px 0 -2px #f5c542,
+        16px 16px 0 -2px #f5c542,
+        -16px -16px 0 -2px #f5c542,
+        20px -8px 0 -2px #f5c542,
+        -20px 8px 0 -2px #f5c542,
+        20px 8px 0 -2px #f5c542,
+        -20px -8px 0 -2px #f5c542,
+        8px -20px 0 -2px #f5c542,
+        -8px 20px 0 -2px #f5c542,
+        8px 20px 0 -2px #f5c542,
+        -8px -20px 0 -2px #f5c542;
+}
+.sunflower-1 .sunflower-stem {
+    height: 140px;
+}
+.sunflower-1 .sunflower-stem::before {
+    left: -7px;
+    top: 50px;
+    width: 9px;
+    height: 5px;
+}
+
+/* 2-й - левый ближе к центру */
+.sunflower-2 {
+    transform: rotate(12deg);
+}
+.sunflower-2 .sunflower-head {
+    width: 34px;
+    height: 34px;
+}
+.sunflower-2 .sunflower-head::before {
+    width: 16px;
+    height: 16px;
+}
+.sunflower-2 .sunflower-head::after {
+    width: 30px;
+    height: 30px;
+    box-shadow:
+        0 -18px 0 -1px #f5c542,
+        0 18px 0 -1px #f5c542,
+        18px 0 0 -1px #f5c542,
+        -18px 0 0 -1px #f5c542,
+        13px -13px 0 -1px #f5c542,
+        -13px 13px 0 -1px #f5c542,
+        13px 13px 0 -1px #f5c542,
+        -13px -13px 0 -1px #f5c542,
+        16px -6px 0 -1px #f5c542,
+        -16px 6px 0 -1px #f5c542,
+        16px 6px 0 -1px #f5c542,
+        -16px -6px 0 -1px #f5c542,
+        6px -16px 0 -1px #f5c542,
+        -6px 16px 0 -1px #f5c542,
+        6px 16px 0 -1px #f5c542,
+        -6px -16px 0 -1px #f5c542;
+}
+.sunflower-2 .sunflower-stem {
+    height: 120px;
+}
+.sunflower-2 .sunflower-stem::before {
+    left: -5px;
+    top: 35px;
+    width: 7px;
+    height: 4px;
+}
+
+/* 3-й - центр */
+.sunflower-3 {
+    left: 50%;
+    transform: translateX(-50%) rotate(0deg);
+    z-index: 3;
+}
+.sunflower-3 .sunflower-head {
+    width: 54px;
+    height: 54px;
+}
+.sunflower-3 .sunflower-head::before {
+    width: 28px;
+    height: 28px;
+}
+.sunflower-3 .sunflower-head::after {
+    width: 48px;
+    height: 48px;
+    box-shadow:
+        0 -28px 0 -2px #f5c542,
+        0 28px 0 -2px #f5c542,
+        28px 0 0 -2px #f5c542,
+        -28px 0 0 -2px #f5c542,
+        20px -20px 0 -2px #f5c542,
+        -20px 20px 0 -2px #f5c542,
+        20px 20px 0 -2px #f5c542,
+        -20px -20px 0 -2px #f5c542,
+        26px -10px 0 -2px #f5c542,
+        -26px 10px 0 -2px #f5c542,
+        26px 10px 0 -2px #f5c542,
+        -26px -10px 0 -2px #f5c542,
+        10px -26px 0 -2px #f5c542,
+        -10px 26px 0 -2px #f5c542,
+        10px 26px 0 -2px #f5c542,
+        -10px -26px 0 -2px #f5c542;
+}
+.sunflower-3 .sunflower-stem {
+    height: 160px;
+}
+.sunflower-3 .sunflower-stem::before {
+    left: -9px;
+    top: 55px;
+    width: 11px;
+    height: 6px;
+}
+
+/* 4-й - правый ближе к центру */
+.sunflower-4 {
+    transform: rotate(-12deg);
+}
+.sunflower-4 .sunflower-head {
+    width: 40px;
+    height: 40px;
+}
+.sunflower-4 .sunflower-head::before {
+    width: 20px;
+    height: 20px;
+}
+.sunflower-4 .sunflower-head::after {
+    width: 36px;
+    height: 36px;
+    box-shadow:
+        0 -22px 0 -2px #f5c542,
+        0 22px 0 -2px #f5c542,
+        22px 0 0 -2px #f5c542,
+        -22px 0 0 -2px #f5c542,
+        16px -16px 0 -2px #f5c542,
+        -16px 16px 0 -2px #f5c542,
+        16px 16px 0 -2px #f5c542,
+        -16px -16px 0 -2px #f5c542,
+        20px -8px 0 -2px #f5c542,
+        -20px 8px 0 -2px #f5c542,
+        20px 8px 0 -2px #f5c542,
+        -20px -8px 0 -2px #f5c542,
+        8px -20px 0 -2px #f5c542,
+        -8px 20px 0 -2px #f5c542,
+        8px 20px 0 -2px #f5c542,
+        -8px -20px 0 -2px #f5c542;
+}
+.sunflower-4 .sunflower-stem {
+    height: 130px;
+}
+.sunflower-4 .sunflower-stem::before {
+    left: -6px;
+    top: 40px;
+    width: 8px;
+    height: 5px;
+}
+
+/* 5-й - крайний правый */
+.sunflower-5 {
+    transform: rotate(-22deg);
+}
+.sunflower-5 .sunflower-head {
+    width: 32px;
+    height: 32px;
+}
+.sunflower-5 .sunflower-head::before {
+    width: 15px;
+    height: 15px;
+}
+.sunflower-5 .sunflower-head::after {
+    width: 28px;
+    height: 28px;
+    box-shadow:
+        0 -16px 0 -1px #f5c542,
+        0 16px 0 -1px #f5c542,
+        16px 0 0 -1px #f5c542,
+        -16px 0 0 -1px #f5c542,
+        12px -12px 0 -1px #f5c542,
+        -12px 12px 0 -1px #f5c542,
+        12px 12px 0 -1px #f5c542,
+        -12px -12px 0 -1px #f5c542,
+        14px -6px 0 -1px #f5c542,
+        -14px 6px 0 -1px #f5c542,
+        14px 6px 0 -1px #f5c542,
+        -14px -6px 0 -1px #f5c542,
+        6px -14px 0 -1px #f5c542,
+        -6px 14px 0 -1px #f5c542,
+        6px 14px 0 -1px #f5c542,
+        -6px -14px 0 -1px #f5c542;
+}
+.sunflower-5 .sunflower-stem {
+    height: 110px;
+}
+.sunflower-5 .sunflower-stem::before {
+    left: -5px;
+    top: 30px;
+    width: 7px;
+    height: 4px;
+}
+
+/* ===== ЛЕНТА ===== */
+.ribbon {
+    position: absolute;
+    bottom: 18px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 39px;
+    height: 10px;
+    background: linear-gradient(90deg, #ff4757, #ff6b81, #ff4757);
+    border-radius: 12px;
+    box-shadow: 0 3px 15px rgba(255, 50, 50, 0.4);
+    z-index: 5;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.ribbon-bow {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 6;
+    font-size: 32px;
+    filter: drop-shadow(0 3px 8px rgba(0, 0, 0, 0.2));
+    animation: bowFloat 2s ease-in-out infinite;
+}
+
+@keyframes bowFloat {
+    0%, 100% { transform: translateX(-50%) scale(1); }
+    50% { transform: translateX(-50%) scale(1.1); }
+}
+
+.ribbon::before {
+    content: '';
+    position: absolute;
+    bottom: -12px;
+    left: 15px;
+    width: 30px;
+    height: 17px;
+    background: linear-gradient(135deg, #ff4757, #ff6b81);
+    clip-path: polygon(0 0, 100% 0, 50% 100%);
+    transform: rotate(-15deg);
+    border-radius: 0 0 4px 4px;
+}
+
+.ribbon::after {
+    content: '';
+    position: absolute;
+    bottom: -12px;
+    right: 15px;
+    width: 30px;
+    height: 17px;
+    background: linear-gradient(225deg, #ff4757, #ff6b81);
+    clip-path: polygon(0 0, 100% 0, 50% 100%);
+    transform: rotate(15deg);
+    border-radius: 0 0 4px 4px;
+}
+
+/* ===== АДАПТИВ ===== */
+@media (max-width: 480px) {
+    .rose {
+        width: 140px;
+        height: 140px;
+    }
+    .rose-bud {
+        width: 80px;
+        height: 80px;
+    }
+    .rose-bud .petal-1 {
+        width: 40px;
+        height: 40px;
+    }
+    .rose-bud .petal-2 {
+        width: 38px;
+        height: 38px;
+    }
+    .rose-bud .petal-3 {
+        width: 34px;
+        height: 34px;
+    }
+    .rose-stem {
+        height: 50px;
+        bottom: -30px;
+    }
+    .message {
+        font-size: 1.1rem;
+        padding: 6px 14px;
+    }
+
+    .bouquet {
+        height: 180px;
+    }
+
+    .ribbon {
+        width: 39px;
+        bottom: 18px;
+    }
+
+    .ribbon-bow {
+        font-size: 26px;
+    }
+
+    .ribbon::before,
+    .ribbon::after {
+        width: 22px;
+        height: 15px;
+        bottom: -14px;
+    }
+
+    .sunflower-1 {
+        transform: rotate(18deg);
+    }
+    .sunflower-1 .sunflower-head {
+        width: 36px;
+        height: 36px;
+    }
+    .sunflower-1 .sunflower-head::before {
+        width: 18px;
+        height: 18px;
+    }
+    .sunflower-1 .sunflower-head::after {
+        width: 32px;
+        height: 32px;
+        box-shadow:
+            0 -18px 0 -2px #f5c542,
+            0 18px 0 -2px #f5c542,
+            18px 0 0 -2px #f5c542,
+            -18px 0 0 -2px #f5c542,
+            13px -13px 0 -2px #f5c542,
+            -13px 13px 0 -2px #f5c542,
+            13px 13px 0 -2px #f5c542,
+            -13px -13px 0 -2px #f5c542;
+    }
+    .sunflower-1 .sunflower-stem {
+        height: 110px;
+    }
+
+    .sunflower-2 {
+        transform: rotate(10deg);
+    }
+    .sunflower-2 .sunflower-head {
+        width: 28px;
+        height: 28px;
+    }
+    .sunflower-2 .sunflower-head::before {
+        width: 14px;
+        height: 14px;
+    }
+    .sunflower-2 .sunflower-head::after {
+        width: 24px;
+        height: 24px;
+        box-shadow:
+            0 -14px 0 -1px #f5c542,
+            0 14px 0 -1px #f5c542,
+            14px 0 0 -1px #f5c542,
+            -14px 0 0 -1px #f5c542,
+            10px -10px 0 -1px #f5c542,
+            -10px 10px 0 -1px #f5c542,
+            10px 10px 0 -1px #f5c542,
+            -10px -10px 0 -1px #f5c542;
+    }
+    .sunflower-2 .sunflower-stem {
+        height: 95px;
+    }
+
+    .sunflower-3 .sunflower-head {
+        width: 44px;
+        height: 44px;
+    }
+    .sunflower-3 .sunflower-head::before {
+        width: 22px;
+        height: 22px;
+    }
+    .sunflower-3 .sunflower-head::after {
+        width: 40px;
+        height: 40px;
+        box-shadow:
+            0 -22px 0 -2px #f5c542,
+            0 22px 0 -2px #f5c542,
+            22px 0 0 -2px #f5c542,
+            -22px 0 0 -2px #f5c542,
+            16px -16px 0 -2px #f5c542,
+            -16px 16px 0 -2px #f5c542,
+            16px 16px 0 -2px #f5c542,
+            -16px -16px 0 -2px #f5c542,
+            20px -8px 0 -2px #f5c542,
+            -20px 8px 0 -2px #f5c542,
+            20px 8px 0 -2px #f5c542,
+            -20px -8px 0 -2px #f5c542;
+    }
+    .sunflower-3 .sunflower-stem {
+        height: 125px;
+    }
+
+    .sunflower-4 {
+        transform: rotate(-10deg);
+    }
+    .sunflower-4 .sunflower-head {
+        width: 32px;
+        height: 32px;
+    }
+    .sunflower-4 .sunflower-head::before {
+        width: 16px;
+        height: 16px;
+    }
+    .sunflower-4 .sunflower-head::after {
+        width: 28px;
+        height: 28px;
+        box-shadow:
+            0 -16px 0 -1px #f5c542,
+            0 16px 0 -1px #f5c542,
+            16px 0 0 -1px #f5c542,
+            -16px 0 0 -1px #f5c542,
+            12px -12px 0 -1px #f5c542,
+            -12px 12px 0 -1px #f5c542,
+            12px 12px 0 -1px #f5c542,
+            -12px -12px 0 -1px #f5c542;
+    }
+    .sunflower-4 .sunflower-stem {
+        height: 105px;
+    }
+
+    .sunflower-5 {
+        transform: rotate(-18deg);
+    }
+    .sunflower-5 .sunflower-head {
+        width: 26px;
+        height: 26px;
+    }
+    .sunflower-5 .sunflower-head::before {
+        width: 12px;
+        height: 12px;
+    }
+    .sunflower-5 .sunflower-head::after {
+        width: 22px;
+        height: 22px;
+        box-shadow:
+            0 -12px 0 -1px #f5c542,
+            0 12px 0 -1px #f5c542,
+            12px 0 0 -1px #f5c542,
+            -12px 0 0 -1px #f5c542,
+            8px -8px 0 -1px #f5c542,
+            -8px 8px 0 -1px #f5c542,
+            8px 8px 0 -1px #f5c542,
+            -8px -8px 0 -1px #f5c542;
+    }
+    .sunflower-5 .sunflower-stem {
+        height: 88px;
+    }
+}
+
+@media (max-width: 380px) {
+    .bouquet {
+        height: 160px;
+    }
+
+    .ribbon {
+        bottom: 35px;
+    }
+    
+    .ribbon-bow {
+        bottom: 26px;
+        font-size: 20px;
+    }
+
+    .ribbon::before,
+    .ribbon::after {
+        width: 18px;
+        height: 12px;
+        bottom: -11px;
+    }
+}

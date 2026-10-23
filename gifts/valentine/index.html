@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Для тебя ❤️</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/favicon.png" />
+    <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png" />
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <div class="container" onclick="this.classList.toggle('open')">
+        <div class="envelope-back"></div>
+        <div class="letter">
+            <div class="heart-icon">❤️</div>
+            <p>Ты — самое прекрасное, что случилось в моей жизни. Каждый миг с тобой — это подарок. Люблю тебя! ✨</p>
+        </div>
+        <div class="envelope-front"></div>
+        <div class="envelope-lid"></div>
+        <div class="heart-seal"></div>
+    </div>
+
+    <script>
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.className = 'floating-heart';
+            heart.innerHTML = '❤️';
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.top = '100vh';
+            heart.style.fontSize = (Math.random() * 20 + 10) + 'px';
+            heart.style.animationDuration = (Math.random() * 3 + 2) + 's';
+            heart.style.opacity = Math.random();
+            document.body.appendChild(heart);
+            setTimeout(() => heart.remove(), 5000);
+        }
+        setInterval(createHeart, 300);
+    </script>
+</body>
+</html>
